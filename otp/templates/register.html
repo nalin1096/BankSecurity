@@ -1,0 +1,31 @@
+{% load material_form %}
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+<title>Register</title>
+
+ {% include 'material/includes/material_css.html' %}
+ <script src="{% static 'material/js/jquery-2.2.0.js' %}"></script>
+ {% include 'material/includes/material_js.html' %}
+
+
+</head>
+<body>
+{% if registered %}
+        <strong>Thank you for registering!</strong>
+        <a href="/">Return to the homepage.</a><br />
+        {% else %}
+        <h1>Register here!</h1>
+        <form id = "user_form" method="post" action="/register/" >
+            {% csrf_token %}
+        	{% form form=user_form %}{% endform %}
+        	{%form form=profile_form%}{% endform %}
+    		<button type="submit" name="_submit" class="btn">Submit</button>
+		</form>
+{% endif %}
+
+
+</body>
+
+</html>
