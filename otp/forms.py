@@ -34,14 +34,20 @@ class UserProfileForm(forms.ModelForm):
 		('d','d'),
 		('e','e'),
 		('f','f'),
+		('g','d1'),
+		('h','d2'),
+		('i','m1'),
+		('j','m2'),
+		('k','min1'),
+		('l','min2'),
 	)
 	modifier = (
 		(' ',' '),
 		('-','-'),
 		('~','~'),
 		('^2','^2'),
-		('-^2','-^2'),
-		('~^2','~^2'),
+		# ('-^2','-^2'),
+		# ('~^2','~^2'),
 	)
 	operator = (
 		('',''),
@@ -49,62 +55,49 @@ class UserProfileForm(forms.ModelForm):
 		('*','*'),
 	)
 
-	a1 = forms.ChoiceField(choices=functions, required=False)
-	a2 = forms.ChoiceField(choices=modifier, required=False)
-	a3 = forms.ChoiceField(choices=operator, required=False)
-	a4 = forms.ChoiceField(choices=functions, required=False)
-	a5 = forms.ChoiceField(choices=modifier, required=False)
+	a1 = forms.ChoiceField(choices=functions, required=False, label = "Operand 1")
+	a2 = forms.ChoiceField(choices=modifier, required=False, label = "Modifier")
+	a3 = forms.ChoiceField(choices=operator, required=False, label = "Operator")
+	a4 = forms.ChoiceField(choices=functions, required=False, label = "Operand 2")
+	a5 = forms.ChoiceField(choices=modifier, required=False, label = "Modifier")
 
-	b1 = forms.ChoiceField(choices=functions, required=False)
-	b2 = forms.ChoiceField(choices=modifier, required=False)
-	b3 = forms.ChoiceField(choices=operator, required=False)
-	b4 = forms.ChoiceField(choices=functions, required=False)
-	b5 = forms.ChoiceField(choices=modifier, required=False)
+	b1 = forms.ChoiceField(choices=functions, required=False, label = "Operand 1")
+	b2 = forms.ChoiceField(choices=modifier, required=False, label = "Modifier")
+	b3 = forms.ChoiceField(choices=operator, required=False, label = "Operator")
+	b4 = forms.ChoiceField(choices=functions, required=False, label = "Operand 2")
+	b5 = forms.ChoiceField(choices=modifier, required=False, label = "Modifier")
 
-	c1 = forms.ChoiceField(choices=functions, required=False)
-	c2 = forms.ChoiceField(choices=modifier, required=False)
-	c3 = forms.ChoiceField(choices=operator, required=False)
-	c4 = forms.ChoiceField(choices=functions, required=False)
-	c5 = forms.ChoiceField(choices=modifier, required=False)
+	c1 = forms.ChoiceField(choices=functions, required=False, label = "Operand 1")
+	c2 = forms.ChoiceField(choices=modifier, required=False, label = "Modifier")
+	c3 = forms.ChoiceField(choices=operator, required=False, label = "Operator")
+	c4 = forms.ChoiceField(choices=functions, required=False, label = "Operand 2")
+	c5 = forms.ChoiceField(choices=modifier, required=False, label = "Modifier")
 
-	d1 = forms.ChoiceField(choices=functions, required=False)
-	d2 = forms.ChoiceField(choices=modifier, required=False)
-	d3 = forms.ChoiceField(choices=operator, required=False)
-	d4 = forms.ChoiceField(choices=functions, required=False)
-	d5 = forms.ChoiceField(choices=modifier, required=False)
+	d1 = forms.ChoiceField(choices=functions, required=False, label = "Operand 1")
+	d2 = forms.ChoiceField(choices=modifier, required=False, label = "Modifier")
+	d3 = forms.ChoiceField(choices=operator, required=False, label = "Operator")
+	d4 = forms.ChoiceField(choices=functions, required=False, label = "Operand 2")
+	d5 = forms.ChoiceField(choices=modifier, required=False, label = "Modifier")
 
-	e1 = forms.ChoiceField(choices=functions, required=False)
-	e2 = forms.ChoiceField(choices=modifier, required=False)
-	e3 = forms.ChoiceField(choices=operator, required=False)
-	e4 = forms.ChoiceField(choices=functions, required=False)
-	e5 = forms.ChoiceField(choices=modifier, required=False)
+	e1 = forms.ChoiceField(choices=functions, required=False, label = "Operand 1")
+	e2 = forms.ChoiceField(choices=modifier, required=False, label = "Modifier")
+	e3 = forms.ChoiceField(choices=operator, required=False, label = "Operator")
+	e4 = forms.ChoiceField(choices=functions, required=False, label = "Operand 2")
+	e5 = forms.ChoiceField(choices=modifier, required=False, label = "Modifier")
 
-	f1 = forms.ChoiceField(choices=functions, required=False)
-	f2 = forms.ChoiceField(choices=modifier, required=False)
-	f3 = forms.ChoiceField(choices=operator, required=False)
-	f4 = forms.ChoiceField(choices=functions, required=False)
-	f5 = forms.ChoiceField(choices=modifier, required=False)
+	f1 = forms.ChoiceField(choices=functions, required=False, label = "Operand 1")
+	f2 = forms.ChoiceField(choices=modifier, required=False, label = "Modifier")
+	f3 = forms.ChoiceField(choices=operator, required=False, label = "Operator")
+	f4 = forms.ChoiceField(choices=functions, required=False, label = "Operand 2")
+	f5 = forms.ChoiceField(choices=modifier, required=False, label = "Modifier")
 
-	fieldsets = (
-        ('first_digit', {
-            'fields': ('a1', 'a2', 'a3','a4','a5',),
-        }),
-        ('second_digit', {
-            'fields': ('b1', 'b2', 'b3','b4','b5',),
-        }),
-        ('third_digit', {
-            'fields': ('c1', 'c2', 'c3','c4','c5',),
-        }),
-        ('fourth_digit', {
-            'fields': ('d1', 'd2', 'd3','d4','d5',),
-        }),
-        ('fifth_digit', {
-            'fields': ('e1', 'e2', 'e3','e4','e5',),
-        }),
-        ('sixth_digit', {
-            'fields': ('f1', 'f2', 'f3','f4','f5',),
-        }),
-    )
+	exp1 = forms.CharField(required=False, label = "Expression 1")
+	exp2 = forms.CharField(required=False, label = "Expression 2")
+	exp3 = forms.CharField(required=False, label = "Expression 3")
+	exp4 = forms.CharField(required=False, label = "Expression 4")
+	exp5 = forms.CharField(required=False, label = "Expression 5")
+	exp6 = forms.CharField(required=False, label = "Expression 6")
+
 
 	def save (self, commit=True):
 		a1 = self.cleaned_data.get('a1', None)
@@ -146,56 +139,64 @@ class UserProfileForm(forms.ModelForm):
 
 		return super(UserProfileForm, self).save(commit=commit)
 
-	layout = Layout(
-			Fieldset (
-				'First Digit',
-				Row('a1',
-				'a2',
-				'a3',
-				'a4',
-				'a5')
-			),
-			Fieldset (
-				'Second Digit',
-				Row('b1',
-				'b2',
-				'b3',
-				'b4',
-				'b5')
-			),
-			Fieldset (
-				'Third Digit',
-				Row('c1',
-				'c2',
-				'c3',
-				'c4',
-				'c5')
-			),
-			Fieldset (
-				'Fourth Digit',
-				Row('d1',
-				'd2',
-				'd3',
-				'd4',
-				'd5')
-			),
-			Fieldset (
-				'Fifth Digit',
-				Row('e1',
-				'e2',
-				'e3',
-				'e4',
-				'e5')
-			),
-			Fieldset (
-				'Sixth Digit',
-				Row('f1',
-				'f2',
-				'f3',
-				'f4',
-				'f5')
-			),
-		)
+	# layout = Layout(
+	# 		Fieldset ('OTP Functions',
+	# 			Fieldset (
+	# 				'First Digit',
+	# 				Row(('a1'),
+	# 				('a2'),
+	# 				('a3'),
+	# 				('a4'),
+	# 				('a5'),
+	# 				('exp1'))
+	# 			),
+	# 			Fieldset (
+	# 				'Second Digit',
+	# 				Row('b1',
+	# 				'b2',
+	# 				'b3',
+	# 				'b4',
+	# 				'b5',
+	# 				'exp2')
+	# 			),
+	# 			Fieldset (
+	# 				'Third Digit',
+	# 				Row('c1',
+	# 				'c2',
+	# 				'c3',
+	# 				'c4',
+	# 				'c5',
+	# 				'exp3')
+	# 			),
+	# 			Fieldset (
+	# 				'Fourth Digit',
+	# 				Row('d1',
+	# 				'd2',
+	# 				'd3',
+	# 				'd4',
+	# 				'd5',
+	# 				'exp4')
+	# 			),
+	# 			Fieldset (
+	# 				'Fifth Digit',
+	# 				Row('e1',
+	# 				'e2',
+	# 				'e3',
+	# 				'e4',
+	# 				'e5',
+	# 				'exp5')
+	# 			),
+	# 			Fieldset (
+	# 				'Sixth Digit',
+	# 				Row('f1',
+	# 				'f2',
+	# 				'f3',
+	# 				'f4',
+	# 				'f5',
+	# 				'exp6')
+	# 			)
+	# 		)
+	# 	)
 
 
 

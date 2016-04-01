@@ -1,31 +1,72 @@
-{% load material_form %}
+<!-- {% load material_form %} -->
 {% load staticfiles %}
 <!DOCTYPE html>
 <html>
 <head>
 <title>Register</title>
 
- {% include 'material/includes/material_css.html' %}
+ <!-- {% include 'material/includes/material_css.html' %}
  <script src="{% static 'material/js/jquery-2.2.0.js' %}"></script>
- {% include 'material/includes/material_js.html' %}
-
+ {% include 'material/includes/material_js.html' %} -->
+ <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/jquery.material.form.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/material-font.css' %}">
+<link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" type = "text/css"/>
+<link href="{% static 'css/landing-page.css' %}" rel="stylesheet" type = "text/css"/>
 
 </head>
-<body>
-{% if registered %}
-        <strong>Thank you for registering!</strong>
-        <a href="/">Return to the homepage.</a><br />
-        {% else %}
-        <h1>Register here!</h1>
-        <form id = "user_form" method="post" action="/register/" >
-            {% csrf_token %}
-        	{% form form=user_form %}{% endform %}
-        	{%form form=profile_form%}{% endform %}
-    		<button type="submit" name="_submit" class="btn">Submit</button>
-		</form>
-{% endif %}
+<!-- class="valign-wrapper2"   this goes in body tag for material -->
+<body >
+    <div class="container">
+        <center><h3>REGISTER</h3></center>
+        <!-- <div class="container expand-on-small-only">
+          
+            <div class="row valign change-form">
+                <div class="col s12 m8 offset-m2 l11 offset-l1">
+                    <div class="card"> -->
+                    <form id = "user_form" method="post" action="/register/" class="material">
+                        <!-- <div class="card-content"> -->
+                        {% csrf_token %}
+                    	<!-- {% form form=user_form %}{% endform %} -->
+                        {{ user_form }}
+                        <a href="\otp_help\">Need Help?</a>
+                    	<!-- {%form form=profile_form%}{% endform %} -->
+                        <br>
+                        <!-- <input type="text" name = '{{profile_form.exp1}}' label="Username"> -->
+                        <select id="oplist" name="operand1" placeholder="a1">
+                            {% for id, name in profile_form.fields.a1.choices %}
+                                <option value="{{ id }}">{{ name }}</option>
+                            {% endfor %}
+                        </select>
+                        <!-- <div class="row">
+                            <div class = "col-md-8">
+                                {{ profile_form.a1 }}
+                                 <br>
+                            </div>
+                            <div class = "col-md-4">
+                                {{ profile_form.a2 }}
+                            </div>
+                        </div> -->
+                		<center><button type="submit" name="_submit" class="btn">Submit</button></center>
+                        <!-- </div> -->
+            		</form>
+                    <!-- </div>
+                </div>
+            </div>
+        </div> -->
+    </div>
+<script type="text/javascript" src="{% static 'js/jquery-2.0.3.min.js' %}"></script> <!-- JQUERY -->
+<script type="text/javascript" src="{% static 'js/jquery.validate.min.js' %}"></script> <!-- JQUERY VALIDATOR (additional) -->
+<script type="text/javascript" src="{% static 'js/jquery.material.form.js' %}"></script> <!-- JQUERY MATERIAL FORM PLUGIN -->
 
-
+<script type="text/javascript">
+    $(function(){
+        $('form.material').materialForm(); // Apply material
+        $('form').validate({ 
+            errorPlacement: function(error, element) {}
+        }); // Apply validator with no error messages but classes only
+    });
+</script>
 </body>
 
 </html>

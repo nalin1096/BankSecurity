@@ -6,14 +6,19 @@ from .forms import UserForm,UserProfileForm
 from .models import BankUser
 from django.contrib.auth.models import User
 import random, re
+import datetime
 
 # Create your views here.
 
 def index (request):
 	return render (request,'index.html')
 
+@login_required
+def user_logout(request):
+	logout(request)
+	return HttpResponseRedirect('/')
+
 def register(request):
-	registered = False
 	if request.method == 'POST':
 		user_form = UserForm(data=request.POST)
 		profile_form = UserProfileForm(data=request.POST)
@@ -31,7 +36,8 @@ def register(request):
 			profile.fifth_digit = data.get('e1') + data.get('e2') + data.get('e3') + data.get('e4') + data.get('e5')
 			profile.sixth_digit = data.get('f1') + data.get('f2') + data.get('f3') + data.get('f4') + data.get('f5')
 			profile.save()
-			registered = True
+			request.session['reg_user'] = user.id
+			return HttpResponseRedirect('/examples/')
 		else: 
 			print user_form.errors, profile_form.errors
 	else:
@@ -39,8 +45,36 @@ def register(request):
 		profile_form = UserProfileForm()
 
 	return render(request,'register.html',
-		{'user_form': user_form, 'profile_form': profile_form,'registered': registered})
+		{'user_form': user_form, 'profile_form': profile_form})
 
+def otp_examples (request):
+	registered = False
+	if request.method == 'POST':
+		example1 = request.POST['example1']
+		example2 = request.POST['example2']
+
+		test_user = User.objects.get(pk=request.session.get('reg_user',None))
+
+		temp1 = request.session.get('random_number1',None)
+		temp2 = request.session.get('random_number2',None)
+
+		expected_otp1 = get_otp(request.session.get('reg_user'),temp1)
+		expected_otp2 = get_otp(request.session.get('reg_user'),temp2)
+
+		if test_user and example1==expected_otp1 and example2==expected_otp2:
+			if test_user.is_active:
+				registered = True
+			else:
+				return HttpResponse("Your Bank account is disabled.")
+		else:
+			return HttpResponse("Invalid login details supplied.")
+
+	random_number1 = random.randint(100001,999999)
+	random_number2 = random.randint(100001,999999)
+	request.session['random_number1'] = random_number1
+	request.session['random_number2'] = random_number2
+	return render(request,'examples.html',
+			{'registered':registered,'random_number1':random_number1,'random_number2':random_number2})
 
 def user_login(request):
 	if request.method == 'POST':
@@ -50,31 +84,8 @@ def user_login(request):
 		test_user = authenticate(username=username, password=password)
 
 		temp = request.session.get('random_number',None)
-		digits = []			#digits in reverse order!
-		while temp:
-			digits.append(temp%10)
-			temp = temp/10
-		digits = digits[::-1]
-
-		bank_user = BankUser.objects.get(user = test_user)
-
-		func1 = bank_user.first_digit.replace(" ","")
-		func2 = bank_user.second_digit.replace(" ","")
-		func3 = bank_user.third_digit.replace(" ","")
-		func4 = bank_user.fourth_digit.replace(" ","")
-		func5 = bank_user.fifth_digit.replace(" ","")
-		func6 = bank_user.sixth_digit.replace(" ","")
-
-		otp1 = otp_extract (digits,func1,0)
-		otp2 = otp_extract (digits,func2,1)
-		otp3 = otp_extract (digits,func3,2)
-		otp4 = otp_extract (digits,func4,3)
-		otp5 = otp_extract (digits,func5,4)
-		otp6 = otp_extract (digits,func6,5)
-
-		expected_otp = str(otp1)+str(otp2)+str(otp3)+str(otp4)+str(otp5)+str(otp6)
-		print expected_otp
-
+		expected_otp = get_otp(test_user.id,temp)
+		
 		if test_user and expected_otp==otp_code:
 			if test_user.is_active:
 				login(request, test_user)
@@ -90,6 +101,38 @@ def user_login(request):
 
 		return render(request,'login.html',{'random_number':random_number})
 
+def otp_help (request):
+	return render(request,'otp_help.html')
+
+#HELPER FUNCTIONS
+def get_otp (user_id,num):
+	test_user = User.objects.get(pk=user_id)
+	bank_user = BankUser.objects.get(user = test_user)
+
+	temp = num
+	digits = []			#digits in reverse order!
+	while temp:
+		digits.append(temp%10)
+		temp = temp/10
+	digits = digits[::-1]
+
+	func1 = bank_user.first_digit.replace(" ","")
+	func2 = bank_user.second_digit.replace(" ","")
+	func3 = bank_user.third_digit.replace(" ","")
+	func4 = bank_user.fourth_digit.replace(" ","")
+	func5 = bank_user.fifth_digit.replace(" ","")
+	func6 = bank_user.sixth_digit.replace(" ","")
+
+	otp1 = otp_extract (digits,func1,0)
+	otp2 = otp_extract (digits,func2,1)
+	otp3 = otp_extract (digits,func3,2)
+	otp4 = otp_extract (digits,func4,3)
+	otp5 = otp_extract (digits,func5,4)
+	otp6 = otp_extract (digits,func6,5)
+
+	expected_otp = str(otp1)+str(otp2)+str(otp3)+str(otp4)+str(otp5)+str(otp6)
+	print expected_otp
+	return expected_otp
 
 def otp_extract (digits,func,index):
 	if func=='':
@@ -135,6 +178,32 @@ def sub_func (digits,operand):
 		num = digits[4]
 	elif digit == 'f':
 		num = digits[5]
+	elif digit == 'g':
+		num = datetime.datetime.now().day
+		if len(str(num)) == 1:
+			num = 0
+		else:
+			num = num/10
+	elif digit == 'h':
+		num = datetime.datetime.now().day
+		if len(str(num)) != 1:
+			num = num % 10
+	elif digit == 'i':
+		num = datetime.datetime.now().month
+		if len(str(num)) == 1:
+			num = 0
+		else:
+			num = num/10
+	elif digit == 'j':
+		num = datetime.datetime.now().month
+		if len(str(num)) != 1:
+			num = num % 10
+	elif digit == 'k':
+		num = min(digits)
+	elif digit == 'l':
+		temp_digits = set(digits)
+		temp_digits.remove(min(temp_digits))
+		num = min(temp_digits)
 
 	modifier = operand[1:operand_size:]
 
@@ -146,19 +215,15 @@ def sub_func (digits,operand):
 		num = (9-num)
 	elif modifier == '^2':
 		num = (num*num)%10
-	elif modifier == '-^2':
-		num = (10-num) % 10
-		num = (num*num)%10
-	elif modifier == '~^2':
-		num = (9-num)
-		num = (num*num)%10
+	# elif modifier == '-^2':
+	# 	num = (10-num) % 10
+	# 	num = (num*num)%10
+	# elif modifier == '~^2':
+	# 	num = (9-num)
+	# 	num = (num*num)%10
 
 	return num
 
-@login_required
-def user_logout(request):
-	logout(request)
-	return HttpResponseRedirect('/')
 
 
 
