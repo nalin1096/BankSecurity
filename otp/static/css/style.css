@@ -7,8 +7,8 @@ body{
 }
 
 form{
-    width: 320px;
-    margin:50px auto;
-    border:1px solid #ccc;
-    padding:15px;
+    width: 1200px;
+    margin:5px auto;
+    border:2px solid #ccc;
+    padding:30px;
 }

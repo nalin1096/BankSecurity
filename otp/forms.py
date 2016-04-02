@@ -7,19 +7,19 @@ from .models import BankUser
 class UserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())
 
-    layout = Layout (
-    	Fieldset (
-    		'Personal Information',
-    		Row ('first_name','last_name'),
-    		'email'
-    	),
-    	'username',
-    	'password'
-    )
+    # layout = Layout (
+    # 	Fieldset (
+    # 		'Personal Information',
+    # 		Row ('first_name','last_name'),
+    # 		'email'
+    # 	),
+    # 	'username',
+    # 	'password'
+    # )
 
     class Meta:
         model = User
-        fields = ('first_name','last_name','username', 'email', 'password')
+        fields = ('first_name','last_name','email','username', 'password')
 
 
 class UserProfileForm(forms.ModelForm):
@@ -90,13 +90,6 @@ class UserProfileForm(forms.ModelForm):
 	f3 = forms.ChoiceField(choices=operator, required=False, label = "Operator")
 	f4 = forms.ChoiceField(choices=functions, required=False, label = "Operand 2")
 	f5 = forms.ChoiceField(choices=modifier, required=False, label = "Modifier")
-
-	exp1 = forms.CharField(required=False, label = "Expression 1")
-	exp2 = forms.CharField(required=False, label = "Expression 2")
-	exp3 = forms.CharField(required=False, label = "Expression 3")
-	exp4 = forms.CharField(required=False, label = "Expression 4")
-	exp5 = forms.CharField(required=False, label = "Expression 5")
-	exp6 = forms.CharField(required=False, label = "Expression 6")
 
 
 	def save (self, commit=True):

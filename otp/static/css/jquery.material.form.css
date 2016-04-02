@@ -300,10 +300,10 @@
     background:#fff;
     top:0;
     left:0;width: 100%;
-    position: absolute;
+    position: relative;
     opacity: 0;
     visibility: hidden;
-    z-index: 2
+    z-index: 2;
 }
 .material .material-select ul li label{
     color:gray

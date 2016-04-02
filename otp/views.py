@@ -47,6 +47,7 @@ def register(request):
 	return render(request,'register.html',
 		{'user_form': user_form, 'profile_form': profile_form})
 
+
 def otp_examples (request):
 	registered = False
 	if request.method == 'POST':
@@ -54,6 +55,7 @@ def otp_examples (request):
 		example2 = request.POST['example2']
 
 		test_user = User.objects.get(pk=request.session.get('reg_user',None))
+		bank_user = BankUser.objects.get(user = test_user)
 
 		temp1 = request.session.get('random_number1',None)
 		temp2 = request.session.get('random_number2',None)
@@ -69,12 +71,22 @@ def otp_examples (request):
 		else:
 			return HttpResponse("Invalid login details supplied.")
 
+	test_user = User.objects.get(pk=request.session.get('reg_user',None))
+	bank_user = BankUser.objects.get(user = test_user)
+	first_digit = bank_user.first_digit;
+	second_digit = bank_user.second_digit;
+	third_digit = bank_user.third_digit;
+	fourth_digit = bank_user.fourth_digit;
+	fifth_digit = bank_user.fifth_digit;
+	sixth_digit = bank_user.sixth_digit;
 	random_number1 = random.randint(100001,999999)
 	random_number2 = random.randint(100001,999999)
 	request.session['random_number1'] = random_number1
 	request.session['random_number2'] = random_number2
 	return render(request,'examples.html',
-			{'registered':registered,'random_number1':random_number1,'random_number2':random_number2})
+			{'registered':registered,'random_number1':random_number1,'random_number2':random_number2,
+			'first_digit' : first_digit, 'second_digit':second_digit, 'third_digit':third_digit,
+			'fourth_digit':fourth_digit, 'fifth_digit':fifth_digit, 'sixth_digit':sixth_digit})
 
 def user_login(request):
 	if request.method == 'POST':
@@ -223,8 +235,6 @@ def sub_func (digits,operand):
 	# 	num = (num*num)%10
 
 	return num
-
-
 
 
 
