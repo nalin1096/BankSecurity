@@ -8,6 +8,7 @@
     <!-- <link rel="stylesheet" type="text/css" href="{% static 'css/material-font.css' %}"> -->
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" type = "text/css"/>
     <link href="{% static 'css/landing-page.css' %}" rel="stylesheet" type = "text/css"/>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
 </head>
 
 <style>
@@ -61,6 +62,24 @@
             </div>
 
             <div class="fieldWrapper">
+                {{ profile_form.address.errors }}
+                <label for="{{ profile_form.address.id_for_label }}">Address</label>
+                {{profile_form.address}}
+            </div>
+
+            <div class="fieldWrapper">
+                {{ profile_form.phone_number.errors }}
+                <label for="{{ profile_form.phone_number.id_for_label }}">Phone Number</label>
+                {{profile_form.phone_number}}
+            </div>
+
+            <div class="fieldWrapper">
+                {{ profile_form.dob.errors }}
+                <label for="{{ profile_form.dob.id_for_label }}">Date of Birth</label>
+                {{profile_form.dob}}
+            </div>
+
+            <div class="fieldWrapper">
                 {{ user_form.username.errors }}
                 <label for="{{ user_form.username.id_for_label }}">Username</label>
                 {{user_form.username}}
@@ -96,7 +115,7 @@
             <div class="row">
                 <div class="col-md-2">
                     <center><br>
-                        Function 1
+                        Transformation 1
                     </center>
                 </div>
                 {{profile_form.non_field_errors}}
@@ -181,7 +200,7 @@
             <div class="row">
                 <div class="col-md-2">
                     <center>
-                        Function 2
+                        Transformation 2
                     </center>
                 </div>
                 <div class="fieldWrapper">
@@ -265,7 +284,7 @@
             <div class="row">
                 <div class="col-md-2">
                     <center>
-                        Function 3
+                        Transformation 3
                     </center>
                 </div>
 
@@ -350,7 +369,7 @@
             <div class="row">
                 <div class="col-md-2">
                     <center>
-                        Function 4
+                        Transformation 4
                     </center>
                 </div>
 
@@ -435,7 +454,7 @@
             <div class="row">
                 <div class="col-md-2">
                     <center>
-                        Function 5
+                        Transformation 5
                     </center>
                 </div>
 
@@ -520,7 +539,7 @@
             <div class="row">
                 <div class="col-md-2">
                     <center>
-                        Function 6
+                        Transformation 6
                     </center>
                 </div>
 
@@ -618,6 +637,14 @@
         }); // Apply validator with no error messages but classes only
     });
 </script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+  
+  <script>
+  $(document).ready(function() {
+    $("#id_dob").datepicker();
+  });
+  </script>
 
 
 
@@ -802,8 +829,9 @@
 
     $("#id_a1").change(function() {
 
-        val11 = $("#id_a1").val();
+        val11 = $("#id_a1 option:selected").text();
         $("#exp1").html(val11.concat(val12," ",val13," ",val14,val15));
+
 
         if (val11=='a') {
             ex11 = digits[0].toString();
@@ -901,6 +929,59 @@
                 ex11 = ((parseInt(aux11) * parseInt(aux11))%10).toString();
             }
         }
+        else if (val11 == 'd1'){
+            var today = new Date();
+            ex11 = today.getDate();
+            if (ex11.toString().length == 1) {
+                ex11 = "0";
+                aux11 = ex11;
+            }
+            else {
+                ex11 = (Math.floor(num/10)).toString();
+                aux11 = ex11;
+            }
+            if(val12==' ') {
+                ex11 = aux11;
+            }
+            else if (val12=='-') {
+                ex11 = ((10-parseInt(aux11))%10).toString(); 
+            }
+            else if (val12=='~') {
+                ex11 = (9-parseInt(aux11)).toString();
+            }
+            else if (val12=='^2') {
+                ex11 = ((parseInt(aux11) * parseInt(aux11))%10).toString();
+            }
+        }
+        else if (val11 == 'd2') {
+            var today = new Date();
+            ex11 = today.getDate();
+            console.log(ex11);
+            if (ex11.toString().length != 1) {
+                ex11 = (ex11 % 10).toString();
+                aux11 = ex11;
+            }
+            else {
+                ex11 = ex11.toString();
+                aux11 = ex11;
+            }
+        }
+        // elif digit == 'i':
+        //     num = datetime.datetime.now().month
+        //     if len(str(num)) == 1:
+        //         num = 0
+        //     else:
+        //         num = num/10
+        // elif digit == 'j':
+        //     num = datetime.datetime.now().month
+        //     if len(str(num)) != 1:
+        //         num = num % 10
+        // elif digit == 'k':
+        //     num = min(digits)
+        // elif digit == 'l':
+        //     temp_digits = set(digits)
+        //     temp_digits.remove(min(temp_digits))
+        //     num = min(temp_digits)
 
         if (val13=='') {
             ex13 = "";

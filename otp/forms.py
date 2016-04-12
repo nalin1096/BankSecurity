@@ -7,16 +7,6 @@ from .models import BankUser
 class UserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())
 
-    # layout = Layout (
-    # 	Fieldset (
-    # 		'Personal Information',
-    # 		Row ('first_name','last_name'),
-    # 		'email'
-    # 	),
-    # 	'username',
-    # 	'password'
-    # )
-
     class Meta:
         model = User
         fields = ('first_name','last_name','email','username', 'password')
@@ -25,7 +15,7 @@ class UserForm(forms.ModelForm):
 class UserProfileForm(forms.ModelForm):
 	class Meta:
 		model = BankUser
-		exclude = ('user','first_digit','second_digit','third_digit','fourth_digit','fifth_digit','sixth_digit')
+		exclude = ('user','first_digit','second_digit','third_digit','fourth_digit','fifth_digit','sixth_digit','account_number','ifsc_code','amount')
 	functions = (
 		('',''),
 		('a','a'),
@@ -46,8 +36,6 @@ class UserProfileForm(forms.ModelForm):
 		('-','-'),
 		('~','~'),
 		('^2','^2'),
-		# ('-^2','-^2'),
-		# ('~^2','~^2'),
 	)
 	operator = (
 		('',''),
@@ -132,64 +120,7 @@ class UserProfileForm(forms.ModelForm):
 
 		return super(UserProfileForm, self).save(commit=commit)
 
-	# layout = Layout(
-	# 		Fieldset ('OTP Functions',
-	# 			Fieldset (
-	# 				'First Digit',
-	# 				Row(('a1'),
-	# 				('a2'),
-	# 				('a3'),
-	# 				('a4'),
-	# 				('a5'),
-	# 				('exp1'))
-	# 			),
-	# 			Fieldset (
-	# 				'Second Digit',
-	# 				Row('b1',
-	# 				'b2',
-	# 				'b3',
-	# 				'b4',
-	# 				'b5',
-	# 				'exp2')
-	# 			),
-	# 			Fieldset (
-	# 				'Third Digit',
-	# 				Row('c1',
-	# 				'c2',
-	# 				'c3',
-	# 				'c4',
-	# 				'c5',
-	# 				'exp3')
-	# 			),
-	# 			Fieldset (
-	# 				'Fourth Digit',
-	# 				Row('d1',
-	# 				'd2',
-	# 				'd3',
-	# 				'd4',
-	# 				'd5',
-	# 				'exp4')
-	# 			),
-	# 			Fieldset (
-	# 				'Fifth Digit',
-	# 				Row('e1',
-	# 				'e2',
-	# 				'e3',
-	# 				'e4',
-	# 				'e5',
-	# 				'exp5')
-	# 			),
-	# 			Fieldset (
-	# 				'Sixth Digit',
-	# 				Row('f1',
-	# 				'f2',
-	# 				'f3',
-	# 				'f4',
-	# 				'f5',
-	# 				'exp6')
-	# 			)
-	# 		)
-	# 	)
+
 
 
 

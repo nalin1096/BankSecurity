@@ -7,11 +7,45 @@ from .models import BankUser
 from django.contrib.auth.models import User
 import random, re
 import datetime
+from django.core.mail import EmailMessage
 
 # Create your views here.
 
 def index (request):
 	return render (request,'index.html')
+
+def about(request):
+	return render (request,'about.html')
+
+def forgot_password(request):
+	valid = False
+	if request.method == 'POST':
+		email = request.POST['email']
+		if len(User.objects.filter(email=email)) != 0:
+			valid=True
+			message = 'Please click on the following link to reset your password' + '\n\n' + 'http://192.168.55.22:8000/reset_password'+'\n\nSent from\nPseudo-Online Bank'
+			email = EmailMessage('[Pseudo-Online Bank] Reset Password Link',message,to=[email])
+			email.send()
+		else:
+			return HttpResponse("Invalid email id.")
+
+	return render (request,'forgot_password.html',{'valid':valid})
+
+def reset_password(request):
+	correct_password = True
+	if request.method == 'POST':
+		username = request.POST['username']
+		password1 = request.POST['new_password1']
+		password2 = request.POST['new_password2']
+		if password1==password2:
+			correct_password=True
+			temp = User.objects.get(username=username)
+			temp.set_password(password1)
+			temp.save()
+			return HttpResponseRedirect("/")
+		else:
+			correct_password = False
+	return render(request,'reset_password.html',{'correct_password':correct_password})
 
 @login_required
 def user_logout(request):
@@ -35,6 +69,21 @@ def register(request):
 			profile.fourth_digit = data.get('d1') + data.get('d2') + data.get('d3') + data.get('d4') + data.get('d5')
 			profile.fifth_digit = data.get('e1') + data.get('e2') + data.get('e3') + data.get('e4') + data.get('e5')
 			profile.sixth_digit = data.get('f1') + data.get('f2') + data.get('f3') + data.get('f4') + data.get('f5')
+			profile.address = data.get('address')
+			profile.phone_number = data.get('phone_number')
+			profile.dob = data.get('dob')
+			if user.id==2:
+				profile.account_number=str(1000000000000001)
+			else:
+				temp = User.objects.get(pk=user.id-1)
+				temp_account = BankUser.objects.get(user=temp)
+				temp_account_number = int(temp_account.account_number)
+				profile.account_number=str(temp_account_number+1)
+
+			profile.amount = 1000
+
+			random_number = random.randint(0,9)
+			profile.ifsc_code = get_ifsc(random_number)
 			profile.save()
 			request.session['reg_user'] = user.id
 			return HttpResponseRedirect('/examples/')
@@ -66,6 +115,9 @@ def otp_examples (request):
 		if test_user and example1==expected_otp1 and example2==expected_otp2:
 			if test_user.is_active:
 				registered = True
+				message = 'Congratulations!'+'\n\n'+'Your new account has been created. Your account details are as follows:\n\n\tUsername: '+test_user.username+'\n\tAccount Number: '+bank_user.account_number+'\n\tIFSC Code: '+bank_user.ifsc_code+'\n\tOTP Functions: \n\t\tFirst Digit: '+bank_user.first_digit+'\n\t\tSecond Digit: '+bank_user.second_digit+'\n\t\tThird Digit: '+bank_user.third_digit+'\n\t\tFourth Digit: '+bank_user.fourth_digit+'\n\t\tFifth Digit: '+bank_user.fifth_digit+'\n\t\tSixth Digit: '+bank_user.sixth_digit+'\n\nSent from\nPseudo-Online Bank'
+				email = EmailMessage('[Pseudo-Online Bank] New Account Created',message,to=[test_user.email])
+				email.send()
 			else:
 				return HttpResponse("Your Bank account is disabled.")
 		else:
@@ -92,26 +144,26 @@ def user_login(request):
 	if request.method == 'POST':
 		username = request.POST['username']
 		password = request.POST['password']
-		otp_code = request.POST['user_otp']
+		# otp_code = request.POST['user_otp']
 		test_user = authenticate(username=username, password=password)
 
-		temp = request.session.get('random_number',None)
-		expected_otp = get_otp(test_user.id,temp)
+		# temp = request.session.get('random_number',None)
+		# expected_otp = get_otp(test_user.id,temp)
 		
-		if test_user and expected_otp==otp_code:
+		if test_user:						#and expected_otp==otp_code
 			if test_user.is_active:
 				login(request, test_user)
-				return HttpResponseRedirect('/')
+				return HttpResponseRedirect('/home/')
 			else:
 				return HttpResponse("Your Bank account is disabled.")
 		else:
 			print "Invalid login details: {0}, {1}".format(username, password)
 			return HttpResponse("Invalid login details supplied.")
 	else:
-		random_number = random.randint(100001,999999)
-		request.session['random_number'] = random_number
+		# random_number = random.randint(100001,999999)
+		# request.session['random_number'] = random_number
 
-		return render(request,'login.html',{'random_number':random_number})
+		return render(request,'login.html')				#,{'random_number':random_number}
 
 def otp_help (request):
 	return render(request,'otp_help.html')
@@ -227,14 +279,24 @@ def sub_func (digits,operand):
 		num = (9-num)
 	elif modifier == '^2':
 		num = (num*num)%10
-	# elif modifier == '-^2':
-	# 	num = (10-num) % 10
-	# 	num = (num*num)%10
-	# elif modifier == '~^2':
-	# 	num = (9-num)
-	# 	num = (num*num)%10
 
 	return num
+
+def get_ifsc(num):
+	ifsc_list = [
+		'ABCD0000001',
+		'ABCD0000002',
+		'ABCD0000003',
+		'XYZW0000001',
+		'XYZW0000002',
+		'XYZW0000003',
+		'QWERTY00001',
+		'QWERTY00002',
+		'QWERTY00003',
+		'IIITD000001'
+	]
+
+	return ifsc_list[num]
 
 
 

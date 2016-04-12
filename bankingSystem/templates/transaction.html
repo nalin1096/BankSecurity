@@ -1,0 +1,220 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html class="no-js">
+    <head>
+        <!-- Basic Page Needs
+        ================================================== -->
+        <meta charset="utf-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>Transactions</title>
+        <meta name="description" content="">
+        <meta name="keywords" content="">
+        <meta name="author" content="">
+        <!-- Mobile Specific Metas
+        ================================================== -->
+        <meta name="format-detection" content="telephone=no">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <!-- Template CSS Files
+        ================================================== -->
+        <!-- Twitter Bootstrs CSS -->
+        <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+        <!-- Ionicons Fonts Css -->
+        <link rel="stylesheet" href="{% static 'css/ionicons.min.css' %}">
+        <!-- animate css -->
+        <link rel="stylesheet" href="{% static 'css/animate.css' %}">
+        <!-- Hero area slider css-->
+        <link rel="stylesheet" href="{% static 'css/slider.css' %}">
+        <!-- owl craousel css -->
+        <link rel="stylesheet" href="{% static 'css/owl.carousel.css' %}">
+        <link rel="stylesheet" href="{% static 'css/owl.theme.css' %}">
+        <link rel="stylesheet" href="{% static 'css/jquery.fancybox.css' %}">
+        <!-- template main css file -->
+        <link rel="stylesheet" href="{% static 'css/main.css' %}">
+        <!-- responsive css -->
+        <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
+        
+        <!-- Template Javascript Files
+        ================================================== -->
+        <!-- modernizr js -->
+        <script src="{% static 'js/vendor/modernizr-2.6.2.min.js' %}"></script>
+        <!-- jquery -->
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+        <!-- owl carouserl js -->
+        <script src="{% static 'js/owl.carousel.min.js' %}"></script>
+        <!-- bootstrap js -->
+
+        <script src="{% static 'js/bootstrap.min.js' %}"></script>
+        <!-- wow js -->
+        <script src="{% static 'js/wow.min.js' %}"></script>
+        <!-- slider js -->
+        <script src="{% static 'js/slider.js' %}"></script>
+        <script src="{% static 'js/jquery.fancybox.js' %}"></script>
+        <!-- template main js -->
+        <script src="{% static 'js/main.js' %}"></script>
+    </head>
+
+    <style>
+            .logo-class {
+                vertical-align: middle;
+                margin-top:0px; /* need this to clear the default margin */
+                margin-bottom:0px;
+            }
+        </style>
+    <body>
+        <!--
+        ==================================================
+        Header Section Start
+        ================================================== -->
+        <header id="top-bar" class="navbar-fixed-top animated-header">
+            <div class="container">
+                <div class="navbar-header">
+                    <!-- responsive nav button -->
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    </button>
+                    <!-- /responsive nav button -->
+                    
+                    <!-- logo -->
+                    <!-- <div class="navbar-brand"> -->
+                        <a href="view_profile.html" >
+                            <h1 class="logo-class">PSEUDO BANKING</h1>
+                        </a>
+                    <!-- </div> -->
+                    <!-- /logo -->
+                </div>
+                <!-- main menu -->
+                <nav class="collapse navbar-collapse navbar-right" role="navigation">
+                    <div class="main-menu">
+                        <ul class="nav navbar-nav navbar-right">
+                            <li>
+                                <a href="/home" >Profile</a>
+                            </li>
+                            <li><a href="/transfer">Make Transaction</a></li>
+                            <li><form action="/logout" method="get">
+                            <input  type="submit" id="contact-submit" class="btn btn-default btn-send" value="LOGOUT" style="margin-top: 7px;"></li> 
+                            </form>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+                <!-- /main nav -->
+            </div>
+        </header>
+
+        <!-- 
+        ================================================== 
+            Global Page Section Start
+        ================================================== -->
+        <section class="global-page-header">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="block">
+                            <h2>Make Transaction</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>   
+        </section><!--/#page-header-->
+
+
+        <!-- 
+        ================================================== 
+            Contact Section Start
+        ================================================== -->
+        <section id="contact-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3">
+                    </div>
+                    <div class="col-md-6">
+                        <div class="block">
+                            <p class="subtitle-des wow fadeInDown" data-wow-duration="500ms" data-wow-delay=".4s">
+                                Provide valid Account number and IFSC code to which the transaction has to be made. You cannot transfer more than your balance amount.
+                            </p>
+                            <div class="form-group wow fadeInDown" data-wow-duration="500ms" data-wow-delay=".4s">
+                            <center><h3>Current Balance: Rs. {{balance}}</h3></center>
+                            </div>
+                            <div class="contact-form">
+                                <form action="/transfer/" id="transfer_form" method="post" >{% csrf_token %}
+                        
+                                    <div class="form-group wow fadeInDown" data-wow-duration="500ms" data-wow-delay=".6s">
+                                        <input type="text" placeholder="IFSC Code" class="form-control" name="ifsc">
+                                    </div>
+                                    {% if ifsc_exists %}
+                                    
+                                        <div class="form-group wow fadeInDown" data-wow-duration="500ms" data-wow-delay=".8s">
+                                            <input type="text" placeholder="Account Number" class="form-control" name="account" >
+                                        </div>
+                                        {% if user_exists %}
+                                    
+                                            <div class="form-group wow fadeInDown" data-wow-duration="500ms" data-wow-delay=".9s">
+                                                <input type="text" placeholder="Amount" class="form-control" name="amount">
+                                            </div>
+                                            {% if balance_exists %}
+                                                <center>
+                                                <div id="submit" class="wow fadeInDown" data-wow-duration="500ms" data-wow-delay="1s">
+                                                    <input type="submit" id="contact-submit" class="btn btn-default btn-send" value="TRANSFER">
+                                                </div>   
+                                                </center>
+                                            {% else %}
+                                                <center>
+                                                <div id="submit" class="wow fadeInDown" data-wow-duration="500ms" data-wow-delay="1s">
+                                                    <span style="color:red">NOT ENOUGH MONEY IN YOUR ACCOUNT!</span><br><br>
+                                                    <input type="submit" id="contact-submit" class="btn btn-default btn-send" value="TRANSFER">
+                                                </div>   
+                                                </center>
+                                            {% endif %}
+                                        {% else %}
+                                            <div class="form-group wow fadeInDown" data-wow-duration="500ms" data-wow-delay=".9s">
+                                                <span style="color:red">ACCOUNT NUMBER DOES NOT EXIST</span>
+                                                <input type="text" placeholder="Amount" class="form-control" name="amount">
+                                            </div>
+                                            <center>
+                                                <div id="submit" class="wow fadeInDown" data-wow-duration="500ms" data-wow-delay="1s">
+                                                    <input type="submit" id="contact-submit" class="btn btn-default btn-send" value="TRANSFER">
+                                                </div>   
+                                            </center>
+                                        {% endif %}
+                                    {% else %}
+                                        <div class="form-group wow fadeInDown" data-wow-duration="500ms" data-wow-delay=".8s">
+                                            <span style="color:red">IFSC CODE DOES NOT EXIST</span>
+                                            <input type="text" placeholder="Account Number" class="form-control" name="account" >
+                                        </div>
+                                        <div class="form-group wow fadeInDown" data-wow-duration="500ms" data-wow-delay=".9s">
+                                            <input type="text" placeholder="Amount" class="form-control" name="amount">
+                                        </div>
+                                        <center>
+                                            <div id="submit" class="wow fadeInDown" data-wow-duration="500ms" data-wow-delay="1s">
+                                                <input type="submit" id="contact-submit" class="btn btn-default btn-send" value="TRANSFER">
+                                            </div>   
+                                        </center>
+                                    {% endif %}                   
+                                    
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- 
+        ================================================== 
+            Footer Section Start
+        ================================================== -->
+        <center>
+            <footer id="footer">
+                <div class="container">
+                        <p class="copyright">Copyright: <span>2016</span> . Design and Developed by devAlpha</p>
+                </div>
+            </footer> <!-- /#footer -->
+            </center>
+    
+    </body>
+</html>
