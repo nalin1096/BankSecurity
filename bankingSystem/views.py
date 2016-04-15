@@ -43,7 +43,7 @@ def summary(request):
 	test_user = User.objects.get(pk=request.user.id)
 	bank_user = BankUser.objects.get(user = test_user)
 	username = bank_user.user.username
-	entry = Transaction.objects.filter(primary_account=bank_user.account_number)
+	entry = Transaction.objects.filter(primary_account=bank_user.account_number).order_by('-time')
 	return render(request,'account_summary.html',{'entry':entry,'username':username})
 
 @login_required
@@ -71,27 +71,19 @@ def transfer(request):
 		if sender.amount < amount:
 			balance_exists = False
 			return render(request,'transaction.html',{'balance':balance,'user_exists':user_exists,'ifsc_exists':ifsc_exists,'balance_exists':balance_exists})
-		
-		# sender.amount = sender.amount - amount
-		# sender.save()
-		# receiver = BankUser.objects.get(account_number=account)
-		# receiver.amount = receiver.amount + amount
-		# receiver.save()
 
-		# transaction_entry = Transaction(primary_account=str(sender.account_number),secondary_account=account,amount=amount,transfer_type='Db',time=datetime.now(),balance_remaining=sender.amount)
-		# transaction_entry.save()
-		# transaction_entry = Transaction(primary_account=account,secondary_account=str(sender.account_number),amount=amount,transfer_type='Cr',time=datetime.now(),balance_remaining=receiver.amount)
-		# transaction_entry.save()
+		flag = True
+		while flag:
+			random_number = random.randint(100001,999999)
+			temp = random_number
+			digits = []			#digits in reverse order!
+			while temp:
+				digits.append(temp%10)
+				temp = temp/10
+			digits = digits[::-1]
+			if len(set(digits))!=5:
+				flag = False
 
-		# messageToReciever = 'Congratulations!'+'\n\n'+'You have received Rs.'+ str(amount) +' from '+ str(sender.user.first_name) + ' '+  str(sender.user.last_name)+'.'+'\n\n'+'Sent from\nPseudo-Online Bank'
-		# email = EmailMessage('[Pseudo-Online Bank] Money Received',messageToReciever,to=[receiver.user.email])
-		# email.send()
-
-		# messageToSender = 'Greetings!'+'\n\n'+'This is to confirm that you have just transferred Rs.'+ str(amount) + ' into the account of ' + str(receiver.user.first_name)+ ' ' + str(receiver.user.last_name) +'.'+'\n\n'+'Sent from\nPseudo-Online Bank' 
-		# email = EmailMessage('[Pseudo-Online Bank] Money Transferred',messageToSender,to=[sender.user.email])
-		# email.send()
-
-		random_number = random.randint(100001,999999)
 		request.session['random_number'] = random_number
 		request.session['receiver_acc'] = account
 		request.session['amount'] = amount
@@ -114,6 +106,9 @@ def transfer_confirm(request):
 		temp = request.session.get('random_number',None)
 		account = request.session.get('receiver_acc',None)
 		amount = request.session.get('amount',None)
+		request.session['receiver_acc'] = account
+		request.session['amount'] = amount
+
 		expected_otp = get_otp(test_user.id,temp)
 
 		if otp==expected_otp:
@@ -137,12 +132,19 @@ def transfer_confirm(request):
 			email = EmailMessage('[Pseudo-Online Bank] Money Transferred',messageToSender,to=[sender.user.email])
 			email.send()
 
-			return HttpResponseRedirect('/home/')
+			return HttpResponseRedirect('/transaction_success/')
 		else:
 			flag = False
 			return render (request,'transfer_confirm.html',{'flag':flag})
 	return render (request,'transfer_confirm.html',{'flag':flag})
 
+@login_required
+def transaction_success(request):
+	account = request.session.get('receiver_acc',None)
+	amount = request.session.get('amount',None)
+	receiver = BankUser.objects.get(account_number=account)
+	name = receiver.user.first_name + ' '+receiver.user.last_name
+	return render(request,'transaction_success.html',{'amount':amount,'name':name})
 
 
 #HELPER FUNCTIONS

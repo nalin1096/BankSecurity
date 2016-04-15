@@ -56,9 +56,9 @@ def register(request):
 	if request.method == 'POST':
 		user_form = UserForm(data=request.POST)
 		profile_form = UserProfileForm(data=request.POST)
-		if user_form.is_valid() and profile_form.is_valid():
+		if user_form.is_valid() and profile_form.is_valid() and user_form.cleaned_data.get('password1')==user_form.cleaned_data.get('password2'):
 			user = user_form.save()
-			user.set_password(user.password)
+			user.set_password(user.password1)
 			user.save()
 			profile = profile_form.save(commit=False)
 			profile.user = user
@@ -98,7 +98,6 @@ def register(request):
 
 
 def otp_examples (request):
-	registered = False
 	if request.method == 'POST':
 		example1 = request.POST['example1']
 		example2 = request.POST['example2']
@@ -114,10 +113,10 @@ def otp_examples (request):
 
 		if test_user and example1==expected_otp1 and example2==expected_otp2:
 			if test_user.is_active:
-				registered = True
 				message = 'Congratulations!'+'\n\n'+'Your new account has been created. Your account details are as follows:\n\n\tUsername: '+test_user.username+'\n\tAccount Number: '+bank_user.account_number+'\n\tIFSC Code: '+bank_user.ifsc_code+'\n\tOTP Functions: \n\t\tFirst Digit: '+bank_user.first_digit+'\n\t\tSecond Digit: '+bank_user.second_digit+'\n\t\tThird Digit: '+bank_user.third_digit+'\n\t\tFourth Digit: '+bank_user.fourth_digit+'\n\t\tFifth Digit: '+bank_user.fifth_digit+'\n\t\tSixth Digit: '+bank_user.sixth_digit+'\n\nSent from\nPseudo-Online Bank'
 				email = EmailMessage('[Pseudo-Online Bank] New Account Created',message,to=[test_user.email])
 				email.send()
+				return HttpResponseRedirect('/register_success')
 			else:
 				return HttpResponse("Your Bank account is disabled.")
 		else:
@@ -136,11 +135,15 @@ def otp_examples (request):
 	request.session['random_number1'] = random_number1
 	request.session['random_number2'] = random_number2
 	return render(request,'examples.html',
-			{'registered':registered,'random_number1':random_number1,'random_number2':random_number2,
+			{'random_number1':random_number1,'random_number2':random_number2,
 			'first_digit' : first_digit, 'second_digit':second_digit, 'third_digit':third_digit,
 			'fourth_digit':fourth_digit, 'fifth_digit':fifth_digit, 'sixth_digit':sixth_digit})
 
+def register_success(request):
+	return render(request,'register_success.html')
+
 def user_login(request):
+	valid = True
 	if request.method == 'POST':
 		username = request.POST['username']
 		password = request.POST['password']
@@ -157,13 +160,10 @@ def user_login(request):
 			else:
 				return HttpResponse("Your Bank account is disabled.")
 		else:
-			print "Invalid login details: {0}, {1}".format(username, password)
-			return HttpResponse("Invalid login details supplied.")
-	else:
-		# random_number = random.randint(100001,999999)
-		# request.session['random_number'] = random_number
-
-		return render(request,'login.html')				#,{'random_number':random_number}
+			# print "Invalid login details: {0}, {1}".format(username, password)
+			# return HttpResponse("Invalid login details supplied.")
+			valid = False
+	return render(request,'login.html',{'valid':valid})
 
 def otp_help (request):
 	return render(request,'otp_help.html')

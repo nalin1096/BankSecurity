@@ -35,7 +35,8 @@
 
 <body>
     <!-- <div class="container"> -->
-        <center><h3>REGISTER</h3></center><br><br>
+        <center><h3>REGISTER</h3>
+        <a href="/" id="sone">Go To Homepage</a></center><br><br>
         
         <form id = "user_form" method="post" action="/register/"> {% csrf_token %}
             {{ user_form.non_field_errors }}
@@ -86,9 +87,14 @@
             </div>
 
             <div class="fieldWrapper">
-                {{ user_form.password.errors }}
-                <label for="{{ user_form.password.id_for_label }}">Password</label>
-                {{user_form.password}}
+                {{ user_form.password1.errors }}
+                <label for="{{ user_form.password1.id_for_label }}">Password</label>
+                {{user_form.password1}}
+            </div>
+             <div class="fieldWrapper">
+                {{ user_form.password2.errors }}
+                <label for="{{ user_form.password2.id_for_label }}">Confirm Password</label>
+                {{user_form.password2}}
             </div>
             </form>
             <h3> Transformation </h3>
@@ -96,17 +102,20 @@
             <center><h3 id="test_otp"></h3></center><br><br>
             <center>
             <div class="row">
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <a href="#" id="sone">Sample 1</a>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <a href="#" id="stwo">Sample 2</a>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <a href="#" id="sthree">Sample 3</a>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <a href="#" id="sfour">Sample 4</a>
+                </div>
+                <div class="col-md-2">
+                    <a href="#" id="sfive">Reset</a>
                 </div>
             </div>
             </center>
@@ -803,8 +812,46 @@
         $("#id_f5").val('~').change();
     });
 
+    $("#sfive").click(function(){
+        $("#id_a1").val('').change();
+        $("#id_a2").val(' ').change();
+        $("#id_a3").val('').change();
+        $("#id_a4").val('').change();
+        $("#id_a5").val(' ').change();
+
+        $("#id_b1").val('').change();
+        $("#id_b2").val(' ').change();
+        $("#id_b3").val('').change();
+        $("#id_b4").val('').change();
+        $("#id_b5").val(' ').change();
+
+        $("#id_c1").val('').change();
+        $("#id_c2").val(' ').change();
+        $("#id_c3").val('').change();
+        $("#id_c4").val('').change();
+        $("#id_c5").val(' ').change();
+
+        $("#id_d1").val('').change();
+        $("#id_d2").val(' ').change();
+        $("#id_d3").val('').change();
+        $("#id_d4").val('').change();
+        $("#id_d5").val(' ').change();
+
+        $("#id_e1").val('').change();
+        $("#id_e2").val(' ').change();
+        $("#id_e3").val('').change();
+        $("#id_e4").val('').change();
+        $("#id_e5").val(' ').change();
+
+        $("#id_f1").val('').change();
+        $("#id_f2").val(' ').change();
+        $("#id_f3").val('').change();
+        $("#id_f4").val('').change();
+        $("#id_f5").val(' ').change();
+    });
+
     var num = 100000 + Math.floor(Math.random() * (999999 - 100000 + 1));
-    test_otp_str = "TEST OTP: "
+    test_otp_str = "EXAMPLE OTP: "
     $("#test_otp").html(test_otp_str.concat(num));
 
     var temp = num
@@ -937,7 +984,7 @@
                 aux11 = ex11;
             }
             else {
-                ex11 = (Math.floor(num/10)).toString();
+                ex11 = (Math.floor(ex11/10)).toString();
                 aux11 = ex11;
             }
             if(val12==' ') {
@@ -956,7 +1003,6 @@
         else if (val11 == 'd2') {
             var today = new Date();
             ex11 = today.getDate();
-            console.log(ex11);
             if (ex11.toString().length != 1) {
                 ex11 = (ex11 % 10).toString();
                 aux11 = ex11;
@@ -965,24 +1011,103 @@
                 ex11 = ex11.toString();
                 aux11 = ex11;
             }
+            if(val12==' ') {
+                ex11 = aux11;
+            }
+            else if (val12=='-') {
+                ex11 = ((10-parseInt(aux11))%10).toString(); 
+            }
+            else if (val12=='~') {
+                ex11 = (9-parseInt(aux11)).toString();
+            }
+            else if (val12=='^2') {
+                ex11 = ((parseInt(aux11) * parseInt(aux11))%10).toString();
+            }
         }
-        // elif digit == 'i':
-        //     num = datetime.datetime.now().month
-        //     if len(str(num)) == 1:
-        //         num = 0
-        //     else:
-        //         num = num/10
-        // elif digit == 'j':
-        //     num = datetime.datetime.now().month
-        //     if len(str(num)) != 1:
-        //         num = num % 10
-        // elif digit == 'k':
-        //     num = min(digits)
-        // elif digit == 'l':
-        //     temp_digits = set(digits)
-        //     temp_digits.remove(min(temp_digits))
-        //     num = min(temp_digits)
-
+        else if (val11 == 'm1'){
+            var today = new Date();
+            ex11 = today.getMonth();
+            if (ex11.toString().length == 1) {
+                ex11 = "0";
+                aux11 = ex11;
+            }
+            else {
+                ex11 = (Math.floor(ex11/10)).toString();
+                aux11 = ex11;
+            }
+            if(val12==' ') {
+                ex11 = aux11;
+            }
+            else if (val12=='-') {
+                ex11 = ((10-parseInt(aux11))%10).toString(); 
+            }
+            else if (val12=='~') {
+                ex11 = (9-parseInt(aux11)).toString();
+            }
+            else if (val12=='^2') {
+                ex11 = ((parseInt(aux11) * parseInt(aux11))%10).toString();
+            }
+        }
+        else if (val11 == 'm2') {
+            var today = new Date();
+            ex11 = today.getMonth() + 1;
+            if (ex11.toString().length != 1) {
+                ex11 = (ex11 % 10).toString();
+                aux11 = ex11;
+            }
+            else {
+                ex11 = ex11.toString();
+                aux11 = ex11;
+            }
+            if(val12==' ') {
+                ex11 = aux11;
+            }
+            else if (val12=='-') {
+                ex11 = ((10-parseInt(aux11))%10).toString(); 
+            }
+            else if (val12=='~') {
+                ex11 = (9-parseInt(aux11)).toString();
+            }
+            else if (val12=='^2') {
+                ex11 = ((parseInt(aux11) * parseInt(aux11))%10).toString();
+            }
+        }
+        else if (val11 == 'min1') {
+            ex11 = (Math.min.apply(Math,digits)).toString();
+            aux11 = ex11
+            if(val12==' ') {
+                ex11 = aux11;
+            }
+            else if (val12=='-') {
+                ex11 = ((10-parseInt(aux11))%10).toString(); 
+            }
+            else if (val12=='~') {
+                ex11 = (9-parseInt(aux11)).toString();
+            }
+            else if (val12=='^2') {
+                ex11 = ((parseInt(aux11) * parseInt(aux11))%10).toString();
+            }
+        }
+        else if (val11 == 'min2') {
+            ex11 = Math.min.apply(Math,digits);
+            temp_arr = digits.filter(function(i) {
+                                        return i != ex11
+                                    });
+            ex11 = (Math.min.apply(Math,temp_arr)).toString();
+            aux11 = ex11
+            if(val12==' ') {
+                ex11 = aux11;
+            }
+            else if (val12=='-') {
+                ex11 = ((10-parseInt(aux11))%10).toString(); 
+            }
+            else if (val12=='~') {
+                ex11 = (9-parseInt(aux11)).toString();
+            }
+            else if (val12=='^2') {
+                ex11 = ((parseInt(aux11) * parseInt(aux11))%10).toString();
+            }
+        }
         if (val13=='') {
             ex13 = "";
         }
@@ -1048,7 +1173,7 @@
     });
     $("#id_a4").change(function() {
 
-        val14 = $("#id_a4").val();
+        val14 = $("#id_a4 option:selected").text();
         $("#exp1").html(val11.concat(val12," ",val13," ",val14,val15));
 
         if (val14=='a') {
@@ -1147,6 +1272,138 @@
                 ex12 = ((parseInt(aux12) * parseInt(aux12))%10).toString();
             }
         }
+        else if (val14 == 'd1'){
+            var today = new Date();
+            ex12 = today.getDate();
+            if (ex12.toString().length == 1) {
+                ex12 = "0";
+                aux12 = ex12;
+            }
+            else {
+                ex12 = (Math.floor(ex12/10)).toString();
+                aux12 = ex12;
+            }
+            if(val15==' ') {
+                ex12 = aux12;
+            }
+            else if (val15=='-') {
+                ex12 = ((10-parseInt(aux12))%10).toString(); 
+            }
+            else if (val15=='~') {
+                ex12 = (9-parseInt(aux12)).toString();
+            }
+            else if (val15=='^2') {
+                ex12 = ((parseInt(aux12) * parseInt(aux12))%10).toString();
+            }
+        }
+        else if (val14 == 'd2') {
+            var today = new Date();
+            ex12 = today.getDate();
+            if (ex12.toString().length != 1) {
+                ex12 = (ex12 % 10).toString();
+                aux12 = ex12;
+            }
+            else {
+                ex12 = ex12.toString();
+                aux12 = ex12;
+            }
+            if(val15==' ') {
+                ex12 = aux12;
+            }
+            else if (val15=='-') {
+                ex12 = ((10-parseInt(aux12))%10).toString(); 
+            }
+            else if (val15=='~') {
+                ex12 = (9-parseInt(aux12)).toString();
+            }
+            else if (val15=='^2') {
+                ex12 = ((parseInt(aux12) * parseInt(aux12))%10).toString();
+            }
+        }
+        else if (val14 == 'm1'){
+            var today = new Date();
+            ex12 = today.getMonth();
+            if (ex12.toString().length == 1) {
+                ex12 = "0";
+                aux12 = ex12;
+            }
+            else {
+                ex12 = (Math.floor(ex12/10)).toString();
+                aux12 = ex12;
+            }
+            if(val15==' ') {
+                ex12 = aux12;
+            }
+            else if (val15=='-') {
+                ex12 = ((10-parseInt(aux12))%10).toString(); 
+            }
+            else if (val15=='~') {
+                ex12 = (9-parseInt(aux12)).toString();
+            }
+            else if (val15=='^2') {
+                ex12 = ((parseInt(aux12) * parseInt(aux12))%10).toString();
+            }
+        }
+        else if (val14 == 'm2') {
+            var today = new Date();
+            ex12 = today.getMonth() + 1;
+            if (ex12.toString().length != 1) {
+                ex12 = (ex12 % 10).toString();
+                aux12 = ex12;
+            }
+            else {
+                ex12 = ex12.toString();
+                aux12 = ex12;
+            }
+            if(val15==' ') {
+                ex12 = aux12;
+            }
+            else if (val15=='-') {
+                ex12 = ((10-parseInt(aux12))%10).toString(); 
+            }
+            else if (val15=='~') {
+                ex12 = (9-parseInt(aux12)).toString();
+            }
+            else if (val15=='^2') {
+                ex12 = ((parseInt(aux12) * parseInt(aux12))%10).toString();
+            }
+        }
+        else if (val14 == 'min1') {
+            ex12 = (Math.min.apply(Math,digits)).toString();
+            aux12 = ex12
+            if(val15==' ') {
+                ex12 = aux12;
+            }
+            else if (val15=='-') {
+                ex12 = ((10-parseInt(aux12))%10).toString(); 
+            }
+            else if (val15=='~') {
+                ex12 = (9-parseInt(aux12)).toString();
+            }
+            else if (val15=='^2') {
+                ex12 = ((parseInt(aux12) * parseInt(aux12))%10).toString();
+            }
+        }
+        else if (val14 == 'min2') {
+            ex12 = Math.min.apply(Math,digits);
+            temp_arr = digits.filter(function(i) {
+                                        return i != ex12
+                                    });
+            ex12 = (Math.min.apply(Math,temp_arr)).toString();
+            aux12 = ex12
+            if(val15==' ') {
+                ex12 = aux12;
+            }
+            else if (val15=='-') {
+                ex12 = ((10-parseInt(aux12))%10).toString(); 
+            }
+            else if (val15=='~') {
+                ex12 = (9-parseInt(aux12)).toString();
+            }
+            else if (val15=='^2') {
+                ex12 = ((parseInt(aux12) * parseInt(aux12))%10).toString();
+            }
+        }
 
         if (val13=='') {
             ex13 = "";
@@ -1206,7 +1463,7 @@
 
     $("#id_b1").change(function() {
 
-        val21 = $("#id_b1").val();
+        val21 = $("#id_b1 option:selected").text();
         $("#exp2").html(val21.concat(val22," ",val23," ",val24,val25));
 
         if (val21=='a') {
@@ -1305,6 +1562,138 @@
                 ex21 = ((parseInt(aux21) * parseInt(aux21))%10).toString();
             }
         }
+        else if (val21 == 'd1'){
+            var today = new Date();
+            ex21 = today.getDate();
+            if (ex21.toString().length == 1) {
+                ex21 = "0";
+                aux21 = ex21;
+            }
+            else {
+                ex21 = (Math.floor(ex21/10)).toString();
+                aux21 = ex21;
+            }
+            if(val22==' ') {
+                ex21 = aux21;
+            }
+            else if (val22=='-') {
+                ex21 = ((10-parseInt(aux21))%10).toString(); 
+            }
+            else if (val22=='~') {
+                ex21 = (9-parseInt(aux21)).toString();
+            }
+            else if (val22=='^2') {
+                ex21 = ((parseInt(aux21) * parseInt(aux21))%10).toString();
+            }
+        }
+        else if (val21 == 'd2') {
+            var today = new Date();
+            ex21 = today.getDate();
+            if (ex21.toString().length != 1) {
+                ex21 = (ex21 % 10).toString();
+                aux21 = ex21;
+            }
+            else {
+                ex21 = ex21.toString();
+                aux21 = ex21;
+            }
+            if(val22==' ') {
+                ex21 = aux21;
+            }
+            else if (val22=='-') {
+                ex21 = ((10-parseInt(aux21))%10).toString(); 
+            }
+            else if (val22=='~') {
+                ex21 = (9-parseInt(aux21)).toString();
+            }
+            else if (val22=='^2') {
+                ex21 = ((parseInt(aux21) * parseInt(aux21))%10).toString();
+            }
+        }
+        else if (val21 == 'm1'){
+            var today = new Date();
+            ex21 = today.getMonth();
+            if (ex21.toString().length == 1) {
+                ex21 = "0";
+                aux21 = ex21;
+            }
+            else {
+                ex21 = (Math.floor(ex21/10)).toString();
+                aux21 = ex21;
+            }
+            if(val22==' ') {
+                ex21 = aux21;
+            }
+            else if (val22=='-') {
+                ex21 = ((10-parseInt(aux21))%10).toString(); 
+            }
+            else if (val22=='~') {
+                ex21 = (9-parseInt(aux21)).toString();
+            }
+            else if (val22=='^2') {
+                ex21 = ((parseInt(aux21) * parseInt(aux21))%10).toString();
+            }
+        }
+        else if (val21 == 'm2') {
+            var today = new Date();
+            ex21 = today.getMonth() + 1;
+            if (ex21.toString().length != 1) {
+                ex21 = (ex21 % 10).toString();
+                aux21 = ex21;
+            }
+            else {
+                ex21 = ex21.toString();
+                aux21 = ex21;
+            }
+            if(val22==' ') {
+                ex21 = aux21;
+            }
+            else if (val22=='-') {
+                ex21 = ((10-parseInt(aux21))%10).toString(); 
+            }
+            else if (val22=='~') {
+                ex21 = (9-parseInt(aux21)).toString();
+            }
+            else if (val22=='^2') {
+                ex21 = ((parseInt(aux21) * parseInt(aux21))%10).toString();
+            }
+        }
+        else if (val21 == 'min1') {
+            ex21 = (Math.min.apply(Math,digits)).toString();
+            aux21 = ex21
+            if(val22==' ') {
+                ex21 = aux21;
+            }
+            else if (val22=='-') {
+                ex21 = ((10-parseInt(aux21))%10).toString(); 
+            }
+            else if (val22=='~') {
+                ex21 = (9-parseInt(aux21)).toString();
+            }
+            else if (val22=='^2') {
+                ex21 = ((parseInt(aux21) * parseInt(aux21))%10).toString();
+            }
+        }
+        else if (val21 == 'min2') {
+            ex21 = Math.min.apply(Math,digits);
+            temp_arr = digits.filter(function(i) {
+                                        return i != ex21
+                                    });
+            ex21 = (Math.min.apply(Math,temp_arr)).toString();
+            aux21 = ex21
+            if(val22==' ') {
+                ex21 = aux21;
+            }
+            else if (val22=='-') {
+                ex21 = ((10-parseInt(aux21))%10).toString(); 
+            }
+            else if (val22=='~') {
+                ex21 = (9-parseInt(aux21)).toString();
+            }
+            else if (val22=='^2') {
+                ex21 = ((parseInt(aux21) * parseInt(aux21))%10).toString();
+            }
+        }
 
         if (val23=='') {
             ex23 = "";
@@ -1371,7 +1760,7 @@
     });
     $("#id_b4").change(function() {
 
-        val24 = $("#id_b4").val();
+        val24 = $("#id_b4 option:selected").text();
         $("#exp2").html(val21.concat(val22," ",val23," ",val24,val25));
 
         if (val24=='a') {
@@ -1470,6 +1859,138 @@
                 ex22 = ((parseInt(aux22) * parseInt(aux22))%10).toString();
             }
         }
+        else if (val24 == 'd1'){
+            var today = new Date();
+            ex22 = today.getDate();
+            if (ex22.toString().length == 1) {
+                ex22 = "0";
+                aux22 = ex22;
+            }
+            else {
+                ex22 = (Math.floor(ex22/10)).toString();
+                aux22 = ex22;
+            }
+            if(val25==' ') {
+                ex22 = aux22;
+            }
+            else if (val25=='-') {
+                ex22 = ((10-parseInt(aux22))%10).toString(); 
+            }
+            else if (val25=='~') {
+                ex22 = (9-parseInt(aux22)).toString();
+            }
+            else if (val25=='^2') {
+                ex22 = ((parseInt(aux22) * parseInt(aux22))%10).toString();
+            }
+        }
+        else if (val24 == 'd2') {
+            var today = new Date();
+            ex22 = today.getDate();
+            if (ex22.toString().length != 1) {
+                ex22 = (ex22 % 10).toString();
+                aux22 = ex22;
+            }
+            else {
+                ex22 = ex22.toString();
+                aux22 = ex22;
+            }
+            if(val25==' ') {
+                ex22 = aux22;
+            }
+            else if (val25=='-') {
+                ex22 = ((10-parseInt(aux22))%10).toString(); 
+            }
+            else if (val25=='~') {
+                ex22 = (9-parseInt(aux22)).toString();
+            }
+            else if (val25=='^2') {
+                ex22 = ((parseInt(aux22) * parseInt(aux22))%10).toString();
+            }
+        }
+        else if (val24 == 'm1'){
+            var today = new Date();
+            ex22 = today.getMonth();
+            if (ex22.toString().length == 1) {
+                ex22 = "0";
+                aux22 = ex22;
+            }
+            else {
+                ex22 = (Math.floor(ex22/10)).toString();
+                aux22 = ex22;
+            }
+            if(val25==' ') {
+                ex22 = aux22;
+            }
+            else if (val25=='-') {
+                ex22 = ((10-parseInt(aux22))%10).toString(); 
+            }
+            else if (val25=='~') {
+                ex22 = (9-parseInt(aux22)).toString();
+            }
+            else if (val25=='^2') {
+                ex22 = ((parseInt(aux22) * parseInt(aux22))%10).toString();
+            }
+        }
+        else if (val24 == 'm2') {
+            var today = new Date();
+            ex22 = today.getMonth() + 1;
+            if (ex22.toString().length != 1) {
+                ex22 = (ex22 % 10).toString();
+                aux22 = ex22;
+            }
+            else {
+                ex22 = ex22.toString();
+                aux22 = ex22;
+            }
+            if(val25==' ') {
+                ex22 = aux22;
+            }
+            else if (val25=='-') {
+                ex22 = ((10-parseInt(aux22))%10).toString(); 
+            }
+            else if (val25=='~') {
+                ex22 = (9-parseInt(aux22)).toString();
+            }
+            else if (val25=='^2') {
+                ex22 = ((parseInt(aux22) * parseInt(aux22))%10).toString();
+            }
+        }
+        else if (val24 == 'min1') {
+            ex22 = (Math.min.apply(Math,digits)).toString();
+            aux22 = ex22
+            if(val25==' ') {
+                ex22 = aux22;
+            }
+            else if (val25=='-') {
+                ex22 = ((10-parseInt(aux22))%10).toString(); 
+            }
+            else if (val25=='~') {
+                ex22 = (9-parseInt(aux22)).toString();
+            }
+            else if (val25=='^2') {
+                ex22 = ((parseInt(aux22) * parseInt(aux22))%10).toString();
+            }
+        }
+        else if (val24 == 'min2') {
+            ex22 = Math.min.apply(Math,digits);
+            temp_arr = digits.filter(function(i) {
+                                        return i != ex22
+                                    });
+            ex22 = (Math.min.apply(Math,temp_arr)).toString();
+            aux22 = ex22
+            if(val25==' ') {
+                ex22 = aux22;
+            }
+            else if (val25=='-') {
+                ex22 = ((10-parseInt(aux22))%10).toString(); 
+            }
+            else if (val25=='~') {
+                ex22 = (9-parseInt(aux22)).toString();
+            }
+            else if (val25=='^2') {
+                ex22 = ((parseInt(aux22) * parseInt(aux22))%10).toString();
+            }
+        }
 
         if (val23=='') {
             ex23 = "";
@@ -1528,7 +2049,7 @@
     var aux32 = "";
     $("#id_c1").change(function() {
 
-        val31 = $("#id_c1").val();
+        val31 = $("#id_c1 option:selected").text();
         $("#exp3").html(val31.concat(val32," ",val33," ",val34,val35));
 
         if (val31=='a') {
@@ -1627,6 +2148,138 @@
                 ex31 = ((parseInt(aux31) * parseInt(aux31))%10).toString();
             }
         }
+        else if (val31 == 'd1'){
+            var today = new Date();
+            ex31 = today.getDate();
+            if (ex31.toString().length == 1) {
+                ex31 = "0";
+                aux31 = ex31;
+            }
+            else {
+                ex31 = (Math.floor(ex31/10)).toString();
+                aux31 = ex31;
+            }
+            if(val33==' ') {
+                ex31 = aux31;
+            }
+            else if (val33=='-') {
+                ex31 = ((10-parseInt(aux31))%10).toString(); 
+            }
+            else if (val33=='~') {
+                ex31 = (9-parseInt(aux31)).toString();
+            }
+            else if (val33=='^2') {
+                ex31 = ((parseInt(aux31) * parseInt(aux31))%10).toString();
+            }
+        }
+        else if (val31 == 'd2') {
+            var today = new Date();
+            ex31 = today.getDate();
+            if (ex31.toString().length != 1) {
+                ex31 = (ex31 % 10).toString();
+                aux31 = ex31;
+            }
+            else {
+                ex31 = ex31.toString();
+                aux31 = ex31;
+            }
+            if(val33==' ') {
+                ex31 = aux31;
+            }
+            else if (val33=='-') {
+                ex31 = ((10-parseInt(aux31))%10).toString(); 
+            }
+            else if (val33=='~') {
+                ex31 = (9-parseInt(aux31)).toString();
+            }
+            else if (val33=='^2') {
+                ex31 = ((parseInt(aux31) * parseInt(aux31))%10).toString();
+            }
+        }
+        else if (val31 == 'm1'){
+            var today = new Date();
+            ex31 = today.getMonth();
+            if (ex31.toString().length == 1) {
+                ex31 = "0";
+                aux31 = ex31;
+            }
+            else {
+                ex31 = (Math.floor(ex31/10)).toString();
+                aux31 = ex31;
+            }
+            if(val33==' ') {
+                ex31 = aux31;
+            }
+            else if (val33=='-') {
+                ex31 = ((10-parseInt(aux31))%10).toString(); 
+            }
+            else if (val33=='~') {
+                ex31 = (9-parseInt(aux31)).toString();
+            }
+            else if (val33=='^2') {
+                ex31 = ((parseInt(aux31) * parseInt(aux31))%10).toString();
+            }
+        }
+        else if (val31 == 'm2') {
+            var today = new Date();
+            ex31 = today.getMonth() + 1;
+            if (ex31.toString().length != 1) {
+                ex31 = (ex31 % 10).toString();
+                aux31 = ex31;
+            }
+            else {
+                ex31 = ex31.toString();
+                aux31 = ex31;
+            }
+            if(val33==' ') {
+                ex31 = aux31;
+            }
+            else if (val33=='-') {
+                ex31 = ((10-parseInt(aux31))%10).toString(); 
+            }
+            else if (val33=='~') {
+                ex31 = (9-parseInt(aux31)).toString();
+            }
+            else if (val33=='^2') {
+                ex31 = ((parseInt(aux31) * parseInt(aux31))%10).toString();
+            }
+        }
+        else if (val31 == 'min1') {
+            ex31 = (Math.min.apply(Math,digits)).toString();
+            aux31 = ex31
+            if(val33==' ') {
+                ex31 = aux31;
+            }
+            else if (val33=='-') {
+                ex31 = ((10-parseInt(aux31))%10).toString(); 
+            }
+            else if (val33=='~') {
+                ex31 = (9-parseInt(aux31)).toString();
+            }
+            else if (val33=='^2') {
+                ex31 = ((parseInt(aux31) * parseInt(aux31))%10).toString();
+            }
+        }
+        else if (val31 == 'min2') {
+            ex31 = Math.min.apply(Math,digits);
+            temp_arr = digits.filter(function(i) {
+                                        return i != ex31
+                                    });
+            ex31 = (Math.min.apply(Math,temp_arr)).toString();
+            aux31 = ex31
+            if(val33==' ') {
+                ex31 = aux31;
+            }
+            else if (val33=='-') {
+                ex31 = ((10-parseInt(aux31))%10).toString(); 
+            }
+            else if (val33=='~') {
+                ex31 = (9-parseInt(aux31)).toString();
+            }
+            else if (val33=='^2') {
+                ex31 = ((parseInt(aux31) * parseInt(aux31))%10).toString();
+            }
+        }
 
         if (val33=='') {
             ex33 = "";
@@ -1692,7 +2345,7 @@
     });
     $("#id_c4").change(function() {
 
-        val34 = $("#id_c4").val();
+        val34 = $("#id_c4 option:selected").text();
         $("#exp3").html(val31.concat(val32," ",val33," ",val34,val35));
 
         if (val34=='a') {
@@ -1791,6 +2444,138 @@
                 ex32 = ((parseInt(aux32) * parseInt(aux32))%10).toString();
             }
         }
+        else if (val34 == 'd1'){
+            var today = new Date();
+            ex32 = today.getDate();
+            if (ex32.toString().length == 1) {
+                ex32 = "0";
+                aux32 = ex32;
+            }
+            else {
+                ex32 = (Math.floor(ex32/10)).toString();
+                aux32 = ex32;
+            }
+            if(val35==' ') {
+                ex32 = aux32;
+            }
+            else if (val35=='-') {
+                ex32 = ((10-parseInt(aux32))%10).toString(); 
+            }
+            else if (val35=='~') {
+                ex32 = (9-parseInt(aux32)).toString();
+            }
+            else if (val35=='^2') {
+                ex32 = ((parseInt(aux32) * parseInt(aux32))%10).toString();
+            }
+        }
+        else if (val34 == 'd2') {
+            var today = new Date();
+            ex32 = today.getDate();
+            if (ex32.toString().length != 1) {
+                ex32 = (ex32 % 10).toString();
+                aux32 = ex32;
+            }
+            else {
+                ex32 = ex32.toString();
+                aux32 = ex32;
+            }
+            if(val35==' ') {
+                ex32 = aux32;
+            }
+            else if (val35=='-') {
+                ex32 = ((10-parseInt(aux32))%10).toString(); 
+            }
+            else if (val35=='~') {
+                ex32 = (9-parseInt(aux32)).toString();
+            }
+            else if (val35=='^2') {
+                ex32 = ((parseInt(aux32) * parseInt(aux32))%10).toString();
+            }
+        }
+        else if (val34 == 'm1'){
+            var today = new Date();
+            ex32 = today.getMonth();
+            if (ex32.toString().length == 1) {
+                ex32 = "0";
+                aux32 = ex32;
+            }
+            else {
+                ex32 = (Math.floor(ex32/10)).toString();
+                aux32 = ex32;
+            }
+            if(val35==' ') {
+                ex32 = aux32;
+            }
+            else if (val35=='-') {
+                ex32 = ((10-parseInt(aux32))%10).toString(); 
+            }
+            else if (val35=='~') {
+                ex32 = (9-parseInt(aux32)).toString();
+            }
+            else if (val35=='^2') {
+                ex32 = ((parseInt(aux32) * parseInt(aux32))%10).toString();
+            }
+        }
+        else if (val34 == 'm2') {
+            var today = new Date();
+            ex32 = today.getMonth() + 1;
+            if (ex32.toString().length != 1) {
+                ex32 = (ex32 % 10).toString();
+                aux32 = ex32;
+            }
+            else {
+                ex32 = ex32.toString();
+                aux32 = ex32;
+            }
+            if(val35==' ') {
+                ex32 = aux32;
+            }
+            else if (val35=='-') {
+                ex32 = ((10-parseInt(aux32))%10).toString(); 
+            }
+            else if (val35=='~') {
+                ex32 = (9-parseInt(aux32)).toString();
+            }
+            else if (val35=='^2') {
+                ex32 = ((parseInt(aux32) * parseInt(aux32))%10).toString();
+            }
+        }
+        else if (val34 == 'min1') {
+            ex32 = (Math.min.apply(Math,digits)).toString();
+            aux32 = ex32
+            if(val35==' ') {
+                ex32 = aux32;
+            }
+            else if (val35=='-') {
+                ex32 = ((10-parseInt(aux32))%10).toString(); 
+            }
+            else if (val35=='~') {
+                ex32 = (9-parseInt(aux32)).toString();
+            }
+            else if (val35=='^2') {
+                ex32 = ((parseInt(aux32) * parseInt(aux32))%10).toString();
+            }
+        }
+        else if (val34 == 'min2') {
+            ex32 = Math.min.apply(Math,digits);
+            temp_arr = digits.filter(function(i) {
+                                        return i != ex32
+                                    });
+            ex32 = (Math.min.apply(Math,temp_arr)).toString();
+            aux32 = ex32
+            if(val35==' ') {
+                ex32 = aux32;
+            }
+            else if (val35=='-') {
+                ex32 = ((10-parseInt(aux32))%10).toString(); 
+            }
+            else if (val35=='~') {
+                ex32 = (9-parseInt(aux32)).toString();
+            }
+            else if (val35=='^2') {
+                ex32 = ((parseInt(aux32) * parseInt(aux32))%10).toString();
+            }
+        }
 
         if (val33=='') {
             ex33 = "";
@@ -1850,7 +2635,7 @@
 
     $("#id_d1").change(function() {
 
-        val41 = $("#id_d1").val();
+        val41 = $("#id_d1 option:selected").text();
         $("#exp4").html(val41.concat(val42," ",val43," ",val44,val45));
 
         if (val41=='a') {
@@ -1949,6 +2734,138 @@
                 ex41 = ((parseInt(aux41) * parseInt(aux41))%10).toString();
             }
         }
+        else if (val41 == 'd1'){
+            var today = new Date();
+            ex41 = today.getDate();
+            if (ex41.toString().length == 1) {
+                ex41 = "0";
+                aux41 = ex41;
+            }
+            else {
+                ex41 = (Math.floor(ex41/10)).toString();
+                aux41 = ex41;
+            }
+            if(val42==' ') {
+                ex41 = aux41;
+            }
+            else if (val42=='-') {
+                ex41 = ((10-parseInt(aux41))%10).toString(); 
+            }
+            else if (val42=='~') {
+                ex41 = (9-parseInt(aux41)).toString();
+            }
+            else if (val42=='^2') {
+                ex41 = ((parseInt(aux41) * parseInt(aux41))%10).toString();
+            }
+        }
+        else if (val41 == 'd2') {
+            var today = new Date();
+            ex41 = today.getDate();
+            if (ex41.toString().length != 1) {
+                ex41 = (ex41 % 10).toString();
+                aux41 = ex41;
+            }
+            else {
+                ex41 = ex41.toString();
+                aux41 = ex41;
+            }
+            if(val42==' ') {
+                ex41 = aux41;
+            }
+            else if (val42=='-') {
+                ex41 = ((10-parseInt(aux41))%10).toString(); 
+            }
+            else if (val42=='~') {
+                ex41 = (9-parseInt(aux41)).toString();
+            }
+            else if (val42=='^2') {
+                ex41 = ((parseInt(aux41) * parseInt(aux41))%10).toString();
+            }
+        }
+        else if (val41 == 'm1'){
+            var today = new Date();
+            ex41 = today.getMonth();
+            if (ex41.toString().length == 1) {
+                ex41 = "0";
+                aux41 = ex41;
+            }
+            else {
+                ex41 = (Math.floor(ex41/10)).toString();
+                aux41 = ex41;
+            }
+            if(val42==' ') {
+                ex41 = aux41;
+            }
+            else if (val42=='-') {
+                ex41 = ((10-parseInt(aux41))%10).toString(); 
+            }
+            else if (val42=='~') {
+                ex41 = (9-parseInt(aux41)).toString();
+            }
+            else if (val42=='^2') {
+                ex41 = ((parseInt(aux41) * parseInt(aux41))%10).toString();
+            }
+        }
+        else if (val41 == 'm2') {
+            var today = new Date();
+            ex41 = today.getMonth() + 1;
+            if (ex41.toString().length != 1) {
+                ex41 = (ex41 % 10).toString();
+                aux41 = ex41;
+            }
+            else {
+                ex41 = ex41.toString();
+                aux41 = ex41;
+            }
+            if(val42==' ') {
+                ex41 = aux41;
+            }
+            else if (val42=='-') {
+                ex41 = ((10-parseInt(aux41))%10).toString(); 
+            }
+            else if (val42=='~') {
+                ex41 = (9-parseInt(aux41)).toString();
+            }
+            else if (val42=='^2') {
+                ex41 = ((parseInt(aux41) * parseInt(aux41))%10).toString();
+            }
+        }
+        else if (val41 == 'min1') {
+            ex41 = (Math.min.apply(Math,digits)).toString();
+            aux41 = ex41
+            if(val42==' ') {
+                ex41 = aux41;
+            }
+            else if (val42=='-') {
+                ex41 = ((10-parseInt(aux41))%10).toString(); 
+            }
+            else if (val42=='~') {
+                ex41 = (9-parseInt(aux41)).toString();
+            }
+            else if (val42=='^2') {
+                ex41 = ((parseInt(aux41) * parseInt(aux41))%10).toString();
+            }
+        }
+        else if (val41 == 'min2') {
+            ex41 = Math.min.apply(Math,digits);
+            temp_arr = digits.filter(function(i) {
+                                        return i != ex41
+                                    });
+            ex41 = (Math.min.apply(Math,temp_arr)).toString();
+            aux41 = ex41
+            if(val42==' ') {
+                ex41 = aux41;
+            }
+            else if (val42=='-') {
+                ex41 = ((10-parseInt(aux41))%10).toString(); 
+            }
+            else if (val42=='~') {
+                ex41 = (9-parseInt(aux41)).toString();
+            }
+            else if (val42=='^2') {
+                ex41 = ((parseInt(aux41) * parseInt(aux41))%10).toString();
+            }
+        }
 
         if (val43=='') {
             ex43 = "";
@@ -2014,7 +2931,7 @@
     });
     $("#id_d4").change(function() {
 
-        val44 = $("#id_d4").val();
+        val44 = $("#id_d4 option:selected").text();
         $("#exp4").html(val41.concat(val42," ",val43," ",val44,val45));
 
         if (val44=='a') {
@@ -2113,6 +3030,138 @@
                 ex42 = ((parseInt(aux42) * parseInt(aux42))%10).toString();
             }
         }
+        else if (val44 == 'd1'){
+            var today = new Date();
+            ex42 = today.getDate();
+            if (ex42.toString().length == 1) {
+                ex42 = "0";
+                aux42 = ex42;
+            }
+            else {
+                ex42 = (Math.floor(ex42/10)).toString();
+                aux42 = ex42;
+            }
+            if(val45==' ') {
+                ex42 = aux42;
+            }
+            else if (val45=='-') {
+                ex42 = ((10-parseInt(aux42))%10).toString(); 
+            }
+            else if (val45=='~') {
+                ex42 = (9-parseInt(aux42)).toString();
+            }
+            else if (val45=='^2') {
+                ex42 = ((parseInt(aux42) * parseInt(aux42))%10).toString();
+            }
+        }
+        else if (val44 == 'd2') {
+            var today = new Date();
+            ex42 = today.getDate();
+            if (ex42.toString().length != 1) {
+                ex42 = (ex42 % 10).toString();
+                aux42 = ex42;
+            }
+            else {
+                ex42 = ex42.toString();
+                aux42 = ex42;
+            }
+            if(val45==' ') {
+                ex42 = aux42;
+            }
+            else if (val45=='-') {
+                ex42 = ((10-parseInt(aux42))%10).toString(); 
+            }
+            else if (val45=='~') {
+                ex42 = (9-parseInt(aux42)).toString();
+            }
+            else if (val45=='^2') {
+                ex42 = ((parseInt(aux42) * parseInt(aux42))%10).toString();
+            }
+        }
+        else if (val44 == 'm1'){
+            var today = new Date();
+            ex42 = today.getMonth();
+            if (ex42.toString().length == 1) {
+                ex42 = "0";
+                aux42 = ex42;
+            }
+            else {
+                ex42 = (Math.floor(ex42/10)).toString();
+                aux42 = ex42;
+            }
+            if(val45==' ') {
+                ex42 = aux42;
+            }
+            else if (val45=='-') {
+                ex42 = ((10-parseInt(aux42))%10).toString(); 
+            }
+            else if (val45=='~') {
+                ex42 = (9-parseInt(aux42)).toString();
+            }
+            else if (val45=='^2') {
+                ex42 = ((parseInt(aux42) * parseInt(aux42))%10).toString();
+            }
+        }
+        else if (val44 == 'm2') {
+            var today = new Date();
+            ex42 = today.getMonth() + 1;
+            if (ex42.toString().length != 1) {
+                ex42 = (ex42 % 10).toString();
+                aux42 = ex42;
+            }
+            else {
+                ex42 = ex42.toString();
+                aux42 = ex42;
+            }
+            if(val45==' ') {
+                ex42 = aux42;
+            }
+            else if (val45=='-') {
+                ex42 = ((10-parseInt(aux42))%10).toString(); 
+            }
+            else if (val45=='~') {
+                ex42 = (9-parseInt(aux42)).toString();
+            }
+            else if (val45=='^2') {
+                ex42 = ((parseInt(aux42) * parseInt(aux42))%10).toString();
+            }
+        }
+        else if (val44 == 'min1') {
+            ex42 = (Math.min.apply(Math,digits)).toString();
+            aux42 = ex42
+            if(val45==' ') {
+                ex42 = aux42;
+            }
+            else if (val45=='-') {
+                ex42 = ((10-parseInt(aux42))%10).toString(); 
+            }
+            else if (val45=='~') {
+                ex42 = (9-parseInt(aux42)).toString();
+            }
+            else if (val45=='^2') {
+                ex42 = ((parseInt(aux42) * parseInt(aux42))%10).toString();
+            }
+        }
+        else if (val44 == 'min2') {
+            ex42 = Math.min.apply(Math,digits);
+            temp_arr = digits.filter(function(i) {
+                                        return i != ex42
+                                    });
+            ex42 = (Math.min.apply(Math,temp_arr)).toString();
+            aux42 = ex42
+            if(val45==' ') {
+                ex42 = aux42;
+            }
+            else if (val45=='-') {
+                ex42 = ((10-parseInt(aux42))%10).toString(); 
+            }
+            else if (val45=='~') {
+                ex42 = (9-parseInt(aux42)).toString();
+            }
+            else if (val45=='^2') {
+                ex42 = ((parseInt(aux42) * parseInt(aux42))%10).toString();
+            }
+        }
 
         if (val43=='') {
             ex43 = "";
@@ -2171,7 +3220,7 @@
     var aux52 = "";
     $("#id_e1").change(function() {
 
-        val51 = $("#id_e1").val();
+        val51 = $("#id_e1 option:selected").text();
         $("#exp5").html(val51.concat(val52," ",val53," ",val54,val55));
 
         if (val51=='a') {
@@ -2270,6 +3319,138 @@
                 ex51 = ((parseInt(aux51) * parseInt(aux51))%10).toString();
             }
         }
+        else if (val51 == 'd1'){
+            var today = new Date();
+            ex51 = today.getDate();
+            if (ex51.toString().length == 1) {
+                ex51 = "0";
+                aux51 = ex51;
+            }
+            else {
+                ex51 = (Math.floor(ex51/10)).toString();
+                aux51 = ex51;
+            }
+            if(val52==' ') {
+                ex51 = aux51;
+            }
+            else if (val52=='-') {
+                ex51 = ((10-parseInt(aux51))%10).toString(); 
+            }
+            else if (val52=='~') {
+                ex51 = (9-parseInt(aux51)).toString();
+            }
+            else if (val52=='^2') {
+                ex51 = ((parseInt(aux51) * parseInt(aux51))%10).toString();
+            }
+        }
+        else if (val51 == 'd2') {
+            var today = new Date();
+            ex51 = today.getDate();
+            if (ex51.toString().length != 1) {
+                ex51 = (ex51 % 10).toString();
+                aux51 = ex51;
+            }
+            else {
+                ex51 = ex51.toString();
+                aux51 = ex51;
+            }
+            if(val52==' ') {
+                ex51 = aux51;
+            }
+            else if (val52=='-') {
+                ex51 = ((10-parseInt(aux51))%10).toString(); 
+            }
+            else if (val52=='~') {
+                ex51 = (9-parseInt(aux51)).toString();
+            }
+            else if (val52=='^2') {
+                ex51 = ((parseInt(aux51) * parseInt(aux51))%10).toString();
+            }
+        }
+        else if (val51 == 'm1'){
+            var today = new Date();
+            ex51 = today.getMonth();
+            if (ex51.toString().length == 1) {
+                ex51 = "0";
+                aux51 = ex51;
+            }
+            else {
+                ex51 = (Math.floor(ex51/10)).toString();
+                aux51 = ex51;
+            }
+            if(val52==' ') {
+                ex51 = aux51;
+            }
+            else if (val52=='-') {
+                ex51 = ((10-parseInt(aux51))%10).toString(); 
+            }
+            else if (val52=='~') {
+                ex51 = (9-parseInt(aux51)).toString();
+            }
+            else if (val52=='^2') {
+                ex51 = ((parseInt(aux51) * parseInt(aux51))%10).toString();
+            }
+        }
+        else if (val51 == 'm2') {
+            var today = new Date();
+            ex51 = today.getMonth() + 1;
+            if (ex51.toString().length != 1) {
+                ex51 = (ex51 % 10).toString();
+                aux51 = ex51;
+            }
+            else {
+                ex51 = ex51.toString();
+                aux51 = ex51;
+            }
+            if(val52==' ') {
+                ex51 = aux51;
+            }
+            else if (val52=='-') {
+                ex51 = ((10-parseInt(aux51))%10).toString(); 
+            }
+            else if (val52=='~') {
+                ex51 = (9-parseInt(aux51)).toString();
+            }
+            else if (val52=='^2') {
+                ex51 = ((parseInt(aux51) * parseInt(aux51))%10).toString();
+            }
+        }
+        else if (val51 == 'min1') {
+            ex51 = (Math.min.apply(Math,digits)).toString();
+            aux51 = ex51
+            if(val52==' ') {
+                ex51 = aux51;
+            }
+            else if (val52=='-') {
+                ex51 = ((10-parseInt(aux51))%10).toString(); 
+            }
+            else if (val52=='~') {
+                ex51 = (9-parseInt(aux51)).toString();
+            }
+            else if (val52=='^2') {
+                ex51 = ((parseInt(aux51) * parseInt(aux51))%10).toString();
+            }
+        }
+        else if (val51 == 'min2') {
+            ex51 = Math.min.apply(Math,digits);
+            temp_arr = digits.filter(function(i) {
+                                        return i != ex51
+                                    });
+            ex51 = (Math.min.apply(Math,temp_arr)).toString();
+            aux51 = ex51
+            if(val52==' ') {
+                ex51 = aux51;
+            }
+            else if (val52=='-') {
+                ex51 = ((10-parseInt(aux51))%10).toString(); 
+            }
+            else if (val52=='~') {
+                ex51 = (9-parseInt(aux51)).toString();
+            }
+            else if (val52=='^2') {
+                ex51 = ((parseInt(aux51) * parseInt(aux51))%10).toString();
+            }
+        }
 
         if (val53=='') {
             ex53 = "";
@@ -2335,7 +3516,7 @@
     });
     $("#id_e4").change(function() {
 
-        val54 = $("#id_e4").val();
+        val54 = $("#id_e4 option:selected").text();
         $("#exp5").html(val51.concat(val52," ",val53," ",val54,val55));
 
         if (val54=='a') {
@@ -2434,6 +3615,138 @@
                 ex52 = ((parseInt(aux52) * parseInt(aux52))%10).toString();
             }
         }
+        else if (val54 == 'd1'){
+            var today = new Date();
+            ex52 = today.getDate();
+            if (ex52.toString().length == 1) {
+                ex52 = "0";
+                aux52 = ex52;
+            }
+            else {
+                ex52 = (Math.floor(ex52/10)).toString();
+                aux52 = ex52;
+            }
+            if(val55==' ') {
+                ex52 = aux52;
+            }
+            else if (val55=='-') {
+                ex52 = ((10-parseInt(aux52))%10).toString(); 
+            }
+            else if (val55=='~') {
+                ex52 = (9-parseInt(aux52)).toString();
+            }
+            else if (val55=='^2') {
+                ex52 = ((parseInt(aux52) * parseInt(aux52))%10).toString();
+            }
+        }
+        else if (val54 == 'd2') {
+            var today = new Date();
+            ex52 = today.getDate();
+            if (ex52.toString().length != 1) {
+                ex52 = (ex52 % 10).toString();
+                aux52 = ex52;
+            }
+            else {
+                ex52 = ex52.toString();
+                aux52 = ex52;
+            }
+            if(val55==' ') {
+                ex52 = aux52;
+            }
+            else if (val55=='-') {
+                ex52 = ((10-parseInt(aux52))%10).toString(); 
+            }
+            else if (val55=='~') {
+                ex52 = (9-parseInt(aux52)).toString();
+            }
+            else if (val55=='^2') {
+                ex52 = ((parseInt(aux52) * parseInt(aux52))%10).toString();
+            }
+        }
+        else if (val54 == 'm1'){
+            var today = new Date();
+            ex52 = today.getMonth();
+            if (ex52.toString().length == 1) {
+                ex52 = "0";
+                aux52 = ex52;
+            }
+            else {
+                ex52 = (Math.floor(ex52/10)).toString();
+                aux52 = ex52;
+            }
+            if(val55==' ') {
+                ex52 = aux52;
+            }
+            else if (val55=='-') {
+                ex52 = ((10-parseInt(aux52))%10).toString(); 
+            }
+            else if (val55=='~') {
+                ex52 = (9-parseInt(aux52)).toString();
+            }
+            else if (val55=='^2') {
+                ex52 = ((parseInt(aux52) * parseInt(aux52))%10).toString();
+            }
+        }
+        else if (val54 == 'm2') {
+            var today = new Date();
+            ex52 = today.getMonth() + 1;
+            if (ex52.toString().length != 1) {
+                ex52 = (ex52 % 10).toString();
+                aux52 = ex52;
+            }
+            else {
+                ex52 = ex52.toString();
+                aux52 = ex52;
+            }
+            if(val55==' ') {
+                ex52 = aux52;
+            }
+            else if (val55=='-') {
+                ex52 = ((10-parseInt(aux52))%10).toString(); 
+            }
+            else if (val55=='~') {
+                ex52 = (9-parseInt(aux52)).toString();
+            }
+            else if (val55=='^2') {
+                ex52 = ((parseInt(aux52) * parseInt(aux52))%10).toString();
+            }
+        }
+        else if (val54 == 'min1') {
+            ex52 = (Math.min.apply(Math,digits)).toString();
+            aux52 = ex52
+            if(val55==' ') {
+                ex52 = aux52;
+            }
+            else if (val55=='-') {
+                ex52 = ((10-parseInt(aux52))%10).toString(); 
+            }
+            else if (val55=='~') {
+                ex52 = (9-parseInt(aux52)).toString();
+            }
+            else if (val55=='^2') {
+                ex52 = ((parseInt(aux52) * parseInt(aux52))%10).toString();
+            }
+        }
+        else if (val54 == 'min2') {
+            ex52 = Math.min.apply(Math,digits);
+            temp_arr = digits.filter(function(i) {
+                                        return i != ex52
+                                    });
+            ex52 = (Math.min.apply(Math,temp_arr)).toString();
+            aux52 = ex52
+            if(val55==' ') {
+                ex52 = aux52;
+            }
+            else if (val55=='-') {
+                ex52 = ((10-parseInt(aux52))%10).toString(); 
+            }
+            else if (val55=='~') {
+                ex52 = (9-parseInt(aux52)).toString();
+            }
+            else if (val55=='^2') {
+                ex52 = ((parseInt(aux52) * parseInt(aux52))%10).toString();
+            }
+        }
 
         if (val53=='') {
             ex53 = "";
@@ -2493,7 +3806,7 @@
     var aux62 = "";
     $("#id_f1").change(function() {
 
-        val61 = $("#id_f1").val();
+        val61 = $("#id_f1 option:selected").text();
         $("#exp6").html(val61.concat(val62," ",val63," ",val64,val65));
 
         if (val61=='a') {
@@ -2592,6 +3905,138 @@
                 ex61 = ((parseInt(aux61) * parseInt(aux61))%10).toString();
             }
         }
+        else if (val61 == 'd1'){
+            var today = new Date();
+            ex61 = today.getDate();
+            if (ex61.toString().length == 1) {
+                ex61 = "0";
+                aux61 = ex61;
+            }
+            else {
+                ex61 = (Math.floor(ex61/10)).toString();
+                aux61 = ex61;
+            }
+            if(val62==' ') {
+                ex61 = aux61;
+            }
+            else if (val62=='-') {
+                ex61 = ((10-parseInt(aux61))%10).toString(); 
+            }
+            else if (val62=='~') {
+                ex61 = (9-parseInt(aux61)).toString();
+            }
+            else if (val62=='^2') {
+                ex61 = ((parseInt(aux61) * parseInt(aux61))%10).toString();
+            }
+        }
+        else if (val61 == 'd2') {
+            var today = new Date();
+            ex61 = today.getDate();
+            if (ex61.toString().length != 1) {
+                ex61 = (ex61 % 10).toString();
+                aux61 = ex61;
+            }
+            else {
+                ex61 = ex61.toString();
+                aux61 = ex61;
+            }
+            if(val62==' ') {
+                ex61 = aux61;
+            }
+            else if (val62=='-') {
+                ex61 = ((10-parseInt(aux61))%10).toString(); 
+            }
+            else if (val62=='~') {
+                ex61 = (9-parseInt(aux61)).toString();
+            }
+            else if (val62=='^2') {
+                ex61 = ((parseInt(aux61) * parseInt(aux61))%10).toString();
+            }
+        }
+        else if (val61 == 'm1'){
+            var today = new Date();
+            ex61 = today.getMonth();
+            if (ex61.toString().length == 1) {
+                ex61 = "0";
+                aux61 = ex61;
+            }
+            else {
+                ex61 = (Math.floor(ex61/10)).toString();
+                aux61 = ex61;
+            }
+            if(val62==' ') {
+                ex61 = aux61;
+            }
+            else if (val62=='-') {
+                ex61 = ((10-parseInt(aux61))%10).toString(); 
+            }
+            else if (val62=='~') {
+                ex61 = (9-parseInt(aux61)).toString();
+            }
+            else if (val62=='^2') {
+                ex61 = ((parseInt(aux61) * parseInt(aux61))%10).toString();
+            }
+        }
+        else if (val61 == 'm2') {
+            var today = new Date();
+            ex61 = today.getMonth() + 1;
+            if (ex61.toString().length != 1) {
+                ex61 = (ex61 % 10).toString();
+                aux61 = ex61;
+            }
+            else {
+                ex61 = ex61.toString();
+                aux61 = ex61;
+            }
+            if(val62==' ') {
+                ex61 = aux61;
+            }
+            else if (val62=='-') {
+                ex61 = ((10-parseInt(aux61))%10).toString(); 
+            }
+            else if (val62=='~') {
+                ex61 = (9-parseInt(aux61)).toString();
+            }
+            else if (val62=='^2') {
+                ex61 = ((parseInt(aux61) * parseInt(aux61))%10).toString();
+            }
+        }
+        else if (val61 == 'min1') {
+            ex61 = (Math.min.apply(Math,digits)).toString();
+            aux61 = ex61
+            if(val62==' ') {
+                ex61 = aux61;
+            }
+            else if (val62=='-') {
+                ex61 = ((10-parseInt(aux61))%10).toString(); 
+            }
+            else if (val62=='~') {
+                ex61 = (9-parseInt(aux61)).toString();
+            }
+            else if (val62=='^2') {
+                ex61 = ((parseInt(aux61) * parseInt(aux61))%10).toString();
+            }
+        }
+        else if (val61 == 'min2') {
+            ex61 = Math.min.apply(Math,digits);
+            temp_arr = digits.filter(function(i) {
+                                        return i != ex61
+                                    });
+            ex61 = (Math.min.apply(Math,temp_arr)).toString();
+            aux61 = ex61
+            if(val62==' ') {
+                ex61 = aux61;
+            }
+            else if (val62=='-') {
+                ex61 = ((10-parseInt(aux61))%10).toString(); 
+            }
+            else if (val62=='~') {
+                ex61 = (9-parseInt(aux61)).toString();
+            }
+            else if (val62=='^2') {
+                ex61 = ((parseInt(aux61) * parseInt(aux61))%10).toString();
+            }
+        }
 
         if (val63=='') {
             ex63 = "";
@@ -2646,10 +4091,10 @@
             ex63 = "";
         }
         else if (val63=='+') {
-            ex63 = ((parseInt(ex61) + parseInt(ex61))%10).toString();
+            ex63 = ((parseInt(ex61) + parseInt(ex62))%10).toString();
         }
         else if (val63=='*') {
-            ex63 = ((parseInt(ex61) * parseInt(ex61))%10).toString();
+            ex63 = ((parseInt(ex61) * parseInt(ex62))%10).toString();
         }
 
         $("#exam6").html(ex61.concat(" ",val63," ",ex62," = ",ex63));
@@ -2657,7 +4102,7 @@
     });
     $("#id_f4").change(function() {
 
-        val64 = $("#id_f4").val();
+        val64 = $("#id_f4 option:selected").text();
         $("#exp6").html(val61.concat(val62," ",val63," ",val64,val65));
 
         if (val64=='a') {
@@ -2743,6 +4188,138 @@
         else if (val64=='f') {
             ex62 = digits[5].toString();
             aux62 = ex62;
+            if(val65==' ') {
+                ex62 = aux62;
+            }
+            else if (val65=='-') {
+                ex62 = ((10-parseInt(aux62))%10).toString(); 
+            }
+            else if (val65=='~') {
+                ex62 = (9-parseInt(aux62)).toString();
+            }
+            else if (val65=='^2') {
+                ex62 = ((parseInt(aux62) * parseInt(aux62))%10).toString();
+            }
+        }
+        else if (val64 == 'd1'){
+            var today = new Date();
+            ex62 = today.getDate();
+            if (ex62.toString().length == 1) {
+                ex62 = "0";
+                aux62 = ex62;
+            }
+            else {
+                ex62 = (Math.floor(ex62/10)).toString();
+                aux62 = ex62;
+            }
+            if(val65==' ') {
+                ex62 = aux62;
+            }
+            else if (val65=='-') {
+                ex62 = ((10-parseInt(aux62))%10).toString(); 
+            }
+            else if (val65=='~') {
+                ex62 = (9-parseInt(aux62)).toString();
+            }
+            else if (val65=='^2') {
+                ex62 = ((parseInt(aux62) * parseInt(aux62))%10).toString();
+            }
+        }
+        else if (val64 == 'd2') {
+            var today = new Date();
+            ex62 = today.getDate();
+            if (ex62.toString().length != 1) {
+                ex62 = (ex62 % 10).toString();
+                aux62 = ex62;
+            }
+            else {
+                ex62 = ex62.toString();
+                aux62 = ex62;
+            }
+            if(val65==' ') {
+                ex62 = aux62;
+            }
+            else if (val65=='-') {
+                ex62 = ((10-parseInt(aux62))%10).toString(); 
+            }
+            else if (val65=='~') {
+                ex62 = (9-parseInt(aux62)).toString();
+            }
+            else if (val65=='^2') {
+                ex62 = ((parseInt(aux62) * parseInt(aux62))%10).toString();
+            }
+        }
+        else if (val64 == 'm1'){
+            var today = new Date();
+            ex62 = today.getMonth();
+            if (ex62.toString().length == 1) {
+                ex62 = "0";
+                aux62 = ex62;
+            }
+            else {
+                ex62 = (Math.floor(ex62/10)).toString();
+                aux62 = ex62;
+            }
+            if(val65==' ') {
+                ex62 = aux62;
+            }
+            else if (val65=='-') {
+                ex62 = ((10-parseInt(aux62))%10).toString(); 
+            }
+            else if (val65=='~') {
+                ex62 = (9-parseInt(aux62)).toString();
+            }
+            else if (val65=='^2') {
+                ex62 = ((parseInt(aux62) * parseInt(aux62))%10).toString();
+            }
+        }
+        else if (val64 == 'm2') {
+            var today = new Date();
+            ex62 = today.getMonth() + 1;
+            if (ex62.toString().length != 1) {
+                ex62 = (ex62 % 10).toString();
+                aux62 = ex62;
+            }
+            else {
+                ex62 = ex62.toString();
+                aux62 = ex62;
+            }
+            if(val65==' ') {
+                ex62 = aux62;
+            }
+            else if (val65=='-') {
+                ex62 = ((10-parseInt(aux62))%10).toString(); 
+            }
+            else if (val65=='~') {
+                ex62 = (9-parseInt(aux62)).toString();
+            }
+            else if (val65=='^2') {
+                ex62 = ((parseInt(aux62) * parseInt(aux62))%10).toString();
+            }
+        }
+        else if (val64 == 'min1') {
+            ex62 = (Math.min.apply(Math,digits)).toString();
+            aux62 = ex62
+            if(val65==' ') {
+                ex62 = aux62;
+            }
+            else if (val65=='-') {
+                ex62 = ((10-parseInt(aux62))%10).toString(); 
+            }
+            else if (val65=='~') {
+                ex62 = (9-parseInt(aux62)).toString();
+            }
+            else if (val65=='^2') {
+                ex62 = ((parseInt(aux62) * parseInt(aux62))%10).toString();
+            }
+        }
+        else if (val64 == 'min2') {
+            ex62 = Math.min.apply(Math,digits);
+            temp_arr = digits.filter(function(i) {
+                                        return i != ex62
+                                    });
+            ex62 = (Math.min.apply(Math,temp_arr)).toString();
+            aux62 = ex62
             if(val65==' ') {
                 ex62 = aux62;
             }

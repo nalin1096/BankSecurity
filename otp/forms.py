@@ -5,11 +5,12 @@ from material import *
 from .models import BankUser
 
 class UserForm(forms.ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput())
+    password1 = forms.CharField(widget=forms.PasswordInput())
+    password2 = forms.CharField(widget=forms.PasswordInput())
 
     class Meta:
         model = User
-        fields = ('first_name','last_name','email','username', 'password')
+        fields = ('first_name','last_name','email','username', 'password1','password2')
 
 
 class UserProfileForm(forms.ModelForm):

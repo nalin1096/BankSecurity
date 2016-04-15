@@ -6,7 +6,8 @@
         ================================================== -->
         <meta charset="utf-8">
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-        <title>Trasnfer Confirm</title>
+        <link rel="icon" type="image/png" href="images/favicon.png">
+        <title>Successful Transaction</title>
         <meta name="description" content="">
         <meta name="keywords" content="">
         <meta name="author" content="">
@@ -53,21 +54,20 @@
         <!-- template main js -->
         <script src="{% static 'js/main.js' %}"></script>
     </head>
-
     <style>
             .logo-class {
                 vertical-align: middle;
                 margin-top:0px; /* need this to clear the default margin */
                 margin-bottom:0px;
             }
-        </style>
+    </style>
     <body>
         <!--
         ==================================================
         Header Section Start
         ================================================== -->
         <header id="top-bar" class="navbar-fixed-top animated-header">
-            <div class="container">
+             <div class="container">
                 <div class="navbar-header">
                     <!-- responsive nav button -->
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -91,16 +91,13 @@
                     <div class="main-menu">
                         <ul class="nav navbar-nav navbar-right">
                             <li>
-                                <a href="/home" >Profile</a>
+                                <a href="/" >Home</a>
                             </li>
+                            <li><a href="/about">About</a></li>
                             <li>
-                                <a href="/summary" >Account Summary</a>
-                            </li>
-                            <li><a href="/transfer">Make Transaction</a></li>
-                            <li><form action="/logout" method="get">
-                            <input  type="submit" id="contact-submit" class="btn btn-default btn-send" value="LOGOUT" style="margin-top: 7px;"></li> 
+                            <form action="/login" method="get">
+                            <input  type="submit" id="contact-submit" class="btn btn-default btn-send" value="LOGIN" style="margin-top: 7px;"></li> 
                             </form>
-                            </li>
                         </ul>
                     </div>
                 </nav>
@@ -108,72 +105,32 @@
             </div>
         </header>
 
-        <!-- 
-        ================================================== 
-            Global Page Section Start
-        ================================================== -->
-        <section class="global-page-header">
+        <section class="moduler wrapper_404">
             <div class="container">
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="block">
-                            <h2>Confirmation</h2>
-                        </div>
-                    </div>
-                </div>
-            </div>   
-        </section><!--/#page-header-->
-
-
-        <!-- 
-        ================================================== 
-            Contact Section Start
-        ================================================== -->
-        <section id="contact-section">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-3">
-                    </div>
-                    <div class="col-md-6">
-                        <div class="block">
-                            <p class="subtitle-des wow fadeInDown" data-wow-duration="500ms" data-wow-delay=".5s">
-                                An email has been sent to your registered email containing an OTP. Please fill in the transformed OTP to confirm the transfer.
-                            </p>
-                            <div class="contact-form">
-                                <form action="/transfer_confirm/" id="transfer_confirm_form" method="post"> {% csrf_token %}
-                        
-                                    <div class="form-group wow fadeInDown" data-wow-duration="500ms" data-wow-delay=".6s">
-                                        <input type="text" placeholder="Transformed OTP" class="form-control" name="user_otp">
-                                    </div>
-                                    
-                                    <center>
-                                    <div id="submit" class="wow fadeInDown" data-wow-duration="500ms" data-wow-delay=".8s">
-                                        <input type="submit" id="contact-submit" class="btn btn-default btn-send" value="SUBMIT">
-                                    </div>   
-                                    </center> 
-                                    {% if flag %}
-                                    {% else %}
-                                        <center>
-                                            <div id="submit" class="wow fadeInDown" data-wow-duration="500ms" data-wow-delay="1s">
-                                                <span style="color:red">INCORRECT OTP!</span><br><br>
-                                            </div>   
-                                        </center>
-                                        <br>
-                                    {% endif %} 
-                                </form>
-                            </div>
+                        <div class="text-center">
+                            <h2 class="wow fadeInUp animated" data-wow-delay=".3s">Transaction Successful</h2>
+                            <p class="wow fadeInUp animated" data-wow-delay=".6s">You transferred Rs. {{amount}} to {{name}}</p>
+                            <a href="/home" class="btn btn-dafault btn-home wow fadeInUp animated" data-wow-delay=".9s">Go Home</a>
+                            
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
+            <!-- 
+        ================================================== 
+            Call To Action Section Start
+        ================================================== -->
+
 
         <!-- 
         ================================================== 
             Footer Section Start
         ================================================== -->
-        <center>
+                <center>
             <footer id="footer">
                 <div class="container">
                         <p class="copyright">Copyright: <span>2016</span> . Design and Developed by devAlpha</p>
@@ -183,5 +140,3 @@
     
     </body>
 </html>
-
-

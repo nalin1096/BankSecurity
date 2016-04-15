@@ -60,7 +60,7 @@
                 margin-top:0px; /* need this to clear the default margin */
                 margin-bottom:0px;
             }
-        </style>
+    </style>
     <body>
         <!--
         ==================================================
@@ -146,6 +146,13 @@
                                     <div class="form-group wow fadeInDown" data-wow-duration="500ms" data-wow-delay=".8s">
                                         <input type="password" placeholder="Password" class="form-control" name="password" >
                                     </div>
+                                    {% if not valid %}
+                                        <center>
+                                            <div id="submit" class="wow fadeInDown" data-wow-duration="500ms" data-wow-delay="1s">
+                                                <span style="color:red">INVALID LOGIN CREDENTIALS!</span><br><br>
+                                            </div>   
+                                        </center>
+                                    {% endif %}
                                     <!-- <div class="form-group wow fadeInDown" data-wow-duration="500ms" data-wow-delay="1s">
                                         <center><h3>Random OTP: {{ random_number }}</h3></center>
                                     </div>
@@ -163,7 +170,7 @@
                                     <br> 
                                     <center>
                                     <div class="form-group wow fadeInDown" data-wow-duration="500ms" data-wow-delay="1s">    
-                                        <a href="/forgot_password">Forgot Password?</a>            
+                                        <a href="/forgot_password/">Forgot Password?</a>            
                                     </div>
                                     </center>
                                 </form>
