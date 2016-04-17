@@ -80,7 +80,7 @@
                     
                     <!-- logo -->
                     <!-- <div class="navbar-brand"> -->
-                        <a href="/" >
+                        <a href="/home" >
                             <h1 class="logo-class">PSEUDO BANKING</h1>
                         </a>
                     <!-- </div> -->
@@ -143,7 +143,7 @@
                                 <form action="/transfer_confirm/" id="transfer_confirm_form" method="post"> {% csrf_token %}
                         
                                     <div class="form-group wow fadeInDown" data-wow-duration="500ms" data-wow-delay=".6s">
-                                        <input type="text" placeholder="Transformed OTP" class="form-control" name="user_otp">
+                                        <input type="text" placeholder="Transformed OTP" class="form-control" name="user_otp" id ="user_field">
                                     </div>
                                     
                                     <center>
@@ -180,6 +180,14 @@
                 </div>
             </footer> <!-- /#footer -->
         </center>
+
+        <script>
+        $(document).ready(function(){
+      $('#user_field').bind("cut copy paste",function(e) {
+          e.preventDefault();
+      });
+    });
+    </script>
     
     </body>
 </html>

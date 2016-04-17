@@ -3,11 +3,11 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from .forms import UserForm,UserProfileForm
-from .models import BankUser
+from .models import BankUser, RegisterLog, LoginLog
 from django.contrib.auth.models import User
-import random, re
-import datetime
+import random, re, datetime, time
 from django.core.mail import EmailMessage
+from datetime import datetime
 
 # Create your views here.
 
@@ -56,9 +56,13 @@ def register(request):
 	if request.method == 'POST':
 		user_form = UserForm(data=request.POST)
 		profile_form = UserProfileForm(data=request.POST)
+		print("POST entered")
+		page_attempts = request.session.get('attempts',None)
+		page_attempts = page_attempts + 1
+		request.session['attempts'] = page_attempts
 		if user_form.is_valid() and profile_form.is_valid() and user_form.cleaned_data.get('password1')==user_form.cleaned_data.get('password2'):
 			user = user_form.save()
-			user.set_password(user.password1)
+			user.set_password(user_form.cleaned_data.get('password1'))
 			user.save()
 			profile = profile_form.save(commit=False)
 			profile.user = user
@@ -79,17 +83,32 @@ def register(request):
 				temp_account = BankUser.objects.get(user=temp)
 				temp_account_number = int(temp_account.account_number)
 				profile.account_number=str(temp_account_number+1)
-
+			if 	int(profile.account_number)%2==1:
+				profile.BankUser_type = 1
+			else:
+				profile.BankUser_type = 2
 			profile.amount = 1000
 
 			random_number = random.randint(0,9)
 			profile.ifsc_code = get_ifsc(random_number)
 			profile.save()
 			request.session['reg_user'] = user.id
+			start_time = request.session.get('start_time',None)
+			print time.time()
+			print("elapsed time: %f seconds" % ((time.time() - start_time)))
+			elapsed_time = time.time() - start_time
+			RegisterLog_entry = RegisterLog(timestamp = datetime.now(), username = user.username, time = elapsed_time, attempts = page_attempts)
+			RegisterLog_entry.save()
+
 			return HttpResponseRedirect('/examples/')
 		else: 
 			print user_form.errors, profile_form.errors
 	else:
+		pageAttempts = 0
+		request.session['attempts'] = pageAttempts
+		print("GET entered")
+		start_time = time.time()
+		request.session['start_time'] = start_time
 		user_form = UserForm()
 		profile_form = UserProfileForm()
 
@@ -116,6 +135,8 @@ def otp_examples (request):
 				message = 'Congratulations!'+'\n\n'+'Your new account has been created. Your account details are as follows:\n\n\tUsername: '+test_user.username+'\n\tAccount Number: '+bank_user.account_number+'\n\tIFSC Code: '+bank_user.ifsc_code+'\n\tOTP Functions: \n\t\tFirst Digit: '+bank_user.first_digit+'\n\t\tSecond Digit: '+bank_user.second_digit+'\n\t\tThird Digit: '+bank_user.third_digit+'\n\t\tFourth Digit: '+bank_user.fourth_digit+'\n\t\tFifth Digit: '+bank_user.fifth_digit+'\n\t\tSixth Digit: '+bank_user.sixth_digit+'\n\nSent from\nPseudo-Online Bank'
 				email = EmailMessage('[Pseudo-Online Bank] New Account Created',message,to=[test_user.email])
 				email.send()
+				bank_user.number_of_logins = 0
+				bank_user.save()
 				return HttpResponseRedirect('/register_success')
 			else:
 				return HttpResponse("Your Bank account is disabled.")
@@ -145,6 +166,10 @@ def register_success(request):
 def user_login(request):
 	valid = True
 	if request.method == 'POST':
+		print("POST entered")
+		page_attempts = request.session.get('attempts',None)
+		page_attempts = page_attempts + 1
+		request.session['attempts'] = page_attempts
 		username = request.POST['username']
 		password = request.POST['password']
 		# otp_code = request.POST['user_otp']
@@ -156,6 +181,15 @@ def user_login(request):
 		if test_user:						#and expected_otp==otp_code
 			if test_user.is_active:
 				login(request, test_user)
+				bank_user = BankUser.objects.get(user = test_user)
+				bank_user.number_of_logins = bank_user.number_of_logins + 1
+				bank_user.save()
+				start_time = request.session.get('start_time',None)
+				print time.time()
+				print("elapsed time: %f seconds" % ((time.time() - start_time)))
+				elapsed_time = time.time() - start_time
+				LoginLog_entry = LoginLog(timestamp = datetime.now(), username = test_user.username, time = elapsed_time, attempts = page_attempts)
+				LoginLog_entry.save()
 				return HttpResponseRedirect('/home/')
 			else:
 				return HttpResponse("Your Bank account is disabled.")
@@ -163,6 +197,12 @@ def user_login(request):
 			# print "Invalid login details: {0}, {1}".format(username, password)
 			# return HttpResponse("Invalid login details supplied.")
 			valid = False
+	else:
+		pageAttempts = 0
+		request.session['attempts'] = pageAttempts
+		print("GET entered")
+		start_time = time.time()
+		request.session['start_time'] = start_time
 	return render(request,'login.html',{'valid':valid})
 
 def otp_help (request):

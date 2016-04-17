@@ -1,6 +1,8 @@
 from django.contrib import admin
-from .models import BankUser
+from .models import BankUser, RegisterLog, LoginLog, RegisterLogAdmin, LoginLogAdmin, BankUserAdmin
 
 # Register your models here.
 
-admin.site.register(BankUser)
+admin.site.register(BankUser,BankUserAdmin)
+admin.site.register(RegisterLog, RegisterLogAdmin)
+admin.site.register(LoginLog, LoginLogAdmin)

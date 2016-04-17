@@ -3,10 +3,10 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
 from otp.models import BankUser
 from django.contrib.auth.decorators import login_required
-from .models import Transaction
+from .models import Transaction, TransactionLog, TransactionConfirmLog
 from django.core.mail import EmailMessage
 from datetime import datetime
-import random
+import random, time
 
 # Create your views here.
 
@@ -55,6 +55,9 @@ def transfer(request):
 	bank_user = BankUser.objects.get(user = test_user)
 	balance = bank_user.amount
 	if request.method == 'POST':
+		page_attempts = request.session.get('attempts',None)
+		page_attempts = page_attempts + 1
+		request.session['attempts'] = page_attempts
 		ifsc = str(request.POST['ifsc'])
 		account = str(request.POST['account'])
 		amount = int(request.POST['amount'])
@@ -88,11 +91,24 @@ def transfer(request):
 		request.session['receiver_acc'] = account
 		request.session['amount'] = amount
 
+		start_time = request.session.get('start_time',None)
+		print time.time()
+		print("elapsed time: %f seconds" % ((time.time() - start_time)))
+		elapsed_time = time.time() - start_time
+		TransactionLog_entry = TransactionLog(timestamp = datetime.now(), username = sender.user.username, primary_account = sender.account_number, secondary_account = account, time = elapsed_time, attempts = page_attempts)
+		TransactionLog_entry.save()
+
 		message = 'Greetings!'+'\n\n'+'This is your randomly generated OTP: '+str(random_number)+'\n\n'+'Sent from\nPseudo-Online Bank'
 		email = EmailMessage('[Pseudo-Online Bank] Confirmation OTP',message,to=[sender.user.email])
 		email.send()
 
 		return HttpResponseRedirect('/transfer_confirm/')
+	else:
+		pageAttempts = 0
+		request.session['attempts'] = pageAttempts
+		print("GET entered")
+		start_time = time.time()
+		request.session['start_time'] = start_time
 	return render(request,'transaction.html',{'balance':balance,'user_exists':user_exists,'ifsc_exists':ifsc_exists,'balance_exists':balance_exists})
 
 @login_required
@@ -101,15 +117,20 @@ def transfer_confirm(request):
 	test_user = User.objects.get(pk=request.user.id)
 	bank_user = BankUser.objects.get(user = test_user)
 	if request.method == 'POST':
+		page_attempts = request.session.get('attempts',None)
+		page_attempts = page_attempts + 1
+		request.session['attempts'] = page_attempts
 		otp = request.POST['user_otp']
-
 		temp = request.session.get('random_number',None)
 		account = request.session.get('receiver_acc',None)
 		amount = request.session.get('amount',None)
 		request.session['receiver_acc'] = account
 		request.session['amount'] = amount
 
-		expected_otp = get_otp(test_user.id,temp)
+		if bank_user.BankUser_type == 1:
+			expected_otp = get_otp(test_user.id,temp)
+		else:
+			expected_otp = str(temp)
 
 		if otp==expected_otp:
 			sender = BankUser.objects.get(user = request.user)
@@ -124,6 +145,13 @@ def transfer_confirm(request):
 			transaction_entry = Transaction(primary_account=account,secondary_account=str(sender.account_number),amount=amount,transfer_type='Cr',time=datetime.now(),balance_remaining=receiver.amount)
 			transaction_entry.save()
 
+			start_time = request.session.get('start_time',None)
+			print time.time()
+			print("elapsed time: %f seconds" % ((time.time() - start_time)))
+			elapsed_time = time.time() - start_time
+			TransactionConfirmLog_entry = TransactionConfirmLog(timestamp = datetime.now(), username = sender.user.username, primary_account = sender.account_number, secondary_account = account, time = elapsed_time, attempts = page_attempts)
+			TransactionConfirmLog_entry.save()
+
 			messageToReciever = 'Congratulations!'+'\n\n'+'You have received Rs.'+ str(amount) +' from '+ str(sender.user.first_name) + ' '+  str(sender.user.last_name)+'.'+'\n\n'+'Sent from\nPseudo-Online Bank'
 			email = EmailMessage('[Pseudo-Online Bank] Money Received',messageToReciever,to=[receiver.user.email])
 			email.send()
@@ -136,6 +164,13 @@ def transfer_confirm(request):
 		else:
 			flag = False
 			return render (request,'transfer_confirm.html',{'flag':flag})
+	else:
+		pageAttempts = 0
+		request.session['attempts'] = pageAttempts
+		print("GET entered")
+		start_time = time.time()
+		request.session['start_time'] = start_time
+
 	return render (request,'transfer_confirm.html',{'flag':flag})
 
 @login_required
