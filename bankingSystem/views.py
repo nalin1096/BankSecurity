@@ -163,7 +163,12 @@ def transfer_confirm(request):
 			return HttpResponseRedirect('/transaction_success/')
 		else:
 			flag = False
-			return render (request,'transfer_confirm.html',{'flag':flag})
+			if bank_user.BankUser_type == 1:
+				msg = "An email has been sent to your registered email containing an OTP. Please fill in the transformed OTP to confirm the transfer."
+			else:
+				msg = "An email has been sent to your registered email containing an OTP. Please fill in the OTP as it is to confirm the transfer."
+
+			return render (request,'transfer_confirm.html',{'flag':flag,'msg':msg})
 	else:
 		pageAttempts = 0
 		request.session['attempts'] = pageAttempts
@@ -171,7 +176,12 @@ def transfer_confirm(request):
 		start_time = time.time()
 		request.session['start_time'] = start_time
 
-	return render (request,'transfer_confirm.html',{'flag':flag})
+	if bank_user.BankUser_type == 1:
+		msg = "An email has been sent to your registered email containing an OTP. Please fill in the transformed OTP to confirm the transfer."
+	else:
+		msg = "An email has been sent to your registered email containing an OTP. Please fill in the OTP as it is to confirm the transfer."
+
+	return render (request,'transfer_confirm.html',{'flag':flag,'msg':msg})
 
 @login_required
 def transaction_success(request):

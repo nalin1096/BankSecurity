@@ -629,6 +629,10 @@
                 </div>
             </div>
             <br><br>
+            <center>
+                <h4 id="result"></h4>
+            </center>
+            <br><br>
     		<center><button type="submit" name="_submit" class="btn">Submit</button></center>
     	</form>
     <!-- </div> -->
@@ -848,6 +852,14 @@
         $("#id_f3").val('').change();
         $("#id_f4").val('').change();
         $("#id_f5").val(' ').change();
+
+        $("#exam1").html("");
+        $("#exam2").html("");
+        $("#exam3").html("");
+        $("#exam4").html("");
+        $("#exam5").html("");
+        $("#exam6").html("");
+        $("#result").html(result_str.concat(digits[0],digits[1],digits[2],digits[3],digits[4],digits[5]));
     });
 
     var num = 100000 + Math.floor(Math.random() * (999999 - 100000 + 1));
@@ -862,6 +874,9 @@
         temp = Math.floor(temp/10);
     }
     digits = digits.reverse();
+
+    result_str = "EVALUATED OTP: "
+    $("#result").html(result_str.concat(digits[0],digits[1],digits[2],digits[3],digits[4],digits[5]));
     
     var val11 = "";
     var val12 = "";
@@ -870,7 +885,7 @@
     var val15 = "";
     var ex11 = "";
     var ex12 = "";
-    var ex13 = "";
+    var ex13 = digits[0].toString();
     var aux11 = "";
     var aux12 = "";
 
@@ -1119,6 +1134,7 @@
         }
 
         $("#exam1").html(ex11.concat(" ",val13," ",ex12," = ",ex13));
+        $("#result").html(result_str.concat(ex13,ex23,ex33,ex43,ex53,ex63));
 
     });
     $("#id_a2").change(function() {
@@ -1151,6 +1167,7 @@
 
 
         $("#exam1").html(ex11.concat(" ",val13," ",ex12," = ",ex13));
+        $("#result").html(result_str.concat(ex13,ex23,ex33,ex43,ex53,ex63));
 
     });
     $("#id_a3").change(function() {
@@ -1169,6 +1186,7 @@
         }
 
         $("#exam1").html(ex11.concat(" ",val13," ",ex12," = ",ex13));
+        $("#result").html(result_str.concat(ex13,ex23,ex33,ex43,ex53,ex63));
 
     });
     $("#id_a4").change(function() {
@@ -1416,6 +1434,7 @@
         }
 
         $("#exam1").html(ex11.concat(" ",val13," ",ex12," = ",ex13));
+        $("#result").html(result_str.concat(ex13,ex23,ex33,ex43,ex53,ex63));
 
     });
     $("#id_a5").change(function() {
@@ -1447,6 +1466,7 @@
         }
 
         $("#exam1").html(ex11.concat(" ",val13," ",ex12," = ",ex13));
+        $("#result").html(result_str.concat(ex13,ex23,ex33,ex43,ex53,ex63));
 
     });
 
@@ -1457,7 +1477,7 @@
     var val25 = "";
     var ex21 = "";
     var ex22 = "";
-    var ex23 = "";
+    var ex23 = digits[1].toString();
     var aux21 = "";
     var aux22 = "";
 
@@ -1706,6 +1726,7 @@
         }
 
         $("#exam2").html(ex21.concat(" ",val23," ",ex22," = ",ex23));
+        $("#result").html(result_str.concat(ex13,ex23,ex33,ex43,ex53,ex63));
 
     });
     $("#id_b2").change(function() {
@@ -1737,6 +1758,7 @@
         }
 
         $("#exam2").html(ex21.concat(" ",val23," ",ex22," = ",ex23));
+        $("#result").html(result_str.concat(ex13,ex23,ex33,ex43,ex53,ex63));
 
     });
     $("#id_b3").change(function() {
@@ -1756,6 +1778,7 @@
         }
 
         $("#exam2").html(ex21.concat(" ",val23," ",ex22," = ",ex23));
+        $("#result").html(result_str.concat(ex13,ex23,ex33,ex43,ex53,ex63));
 
     });
     $("#id_b4").change(function() {
@@ -2003,6 +2026,7 @@
         }
 
         $("#exam2").html(ex21.concat(" ",val23," ",ex22," = ",ex23));
+        $("#result").html(result_str.concat(ex13,ex23,ex33,ex43,ex53,ex63));
 
     });
     $("#id_b5").change(function() {
@@ -2034,6 +2058,7 @@
         }
 
         $("#exam2").html(ex21.concat(" ",val23," ",ex22," = ",ex23));
+        $("#result").html(result_str.concat(ex13,ex23,ex33,ex43,ex53,ex63));
 
     });
 
@@ -2044,7 +2069,7 @@
     var val35 = "";
     var ex31 = "";
     var ex32 = "";
-    var ex33 = "";
+    var ex33 = digits[2].toString();
     var aux31 = "";
     var aux32 = "";
     $("#id_c1").change(function() {
@@ -2292,6 +2317,7 @@
         }
 
         $("#exam3").html(ex31.concat(" ",val33," ",ex32," = ",ex33));
+        $("#result").html(result_str.concat(ex13,ex23,ex33,ex43,ex53,ex63));
 
     });
     $("#id_c2").change(function() {
@@ -2323,6 +2349,7 @@
         }
 
         $("#exam3").html(ex31.concat(" ",val33," ",ex32," = ",ex33));
+        $("#result").html(result_str.concat(ex13,ex23,ex33,ex43,ex53,ex63));
 
     });
     $("#id_c3").change(function() {
@@ -2341,6 +2368,7 @@
         }
 
         $("#exam3").html(ex31.concat(" ",val33," ",ex32," = ",ex33));
+        $("#result").html(result_str.concat(ex13,ex23,ex33,ex43,ex53,ex63));
 
     });
     $("#id_c4").change(function() {
@@ -2588,6 +2616,7 @@
         }
 
         $("#exam3").html(ex31.concat(" ",val33," ",ex32," = ",ex33));
+        $("#result").html(result_str.concat(ex13,ex23,ex33,ex43,ex53,ex63));
 
     });
     $("#id_c5").change(function() {
@@ -2619,6 +2648,7 @@
         }
 
         $("#exam3").html(ex31.concat(" ",val33," ",ex32," = ",ex33));
+        $("#result").html(result_str.concat(ex13,ex23,ex33,ex43,ex53,ex63));
 
     });
 
@@ -2629,7 +2659,7 @@
     var val45 = "";
     var ex41 = "";
     var ex42 = "";
-    var ex43 = "";
+    var ex43 = digits[3].toString();
     var aux41 = "";
     var aux42 = "";
 
@@ -2878,6 +2908,7 @@
         }
 
         $("#exam4").html(ex41.concat(" ",val43," ",ex42," = ",ex43));
+        $("#result").html(result_str.concat(ex13,ex23,ex33,ex43,ex53,ex63));
 
     });
     $("#id_d2").change(function() {
@@ -2909,6 +2940,7 @@
         }
 
         $("#exam4").html(ex41.concat(" ",val43," ",ex42," = ",ex43));
+        $("#result").html(result_str.concat(ex13,ex23,ex33,ex43,ex53,ex63));
 
     });
     $("#id_d3").change(function() {
@@ -2927,6 +2959,7 @@
         }
 
         $("#exam4").html(ex41.concat(" ",val43," ",ex42," = ",ex43));
+        $("#result").html(result_str.concat(ex13,ex23,ex33,ex43,ex53,ex63));
 
     });
     $("#id_d4").change(function() {
@@ -3174,6 +3207,7 @@
         }
 
         $("#exam4").html(ex41.concat(" ",val43," ",ex42," = ",ex43));
+        $("#result").html(result_str.concat(ex13,ex23,ex33,ex43,ex53,ex63));
 
     });
     $("#id_d5").change(function() {
@@ -3205,6 +3239,7 @@
         }
 
         $("#exam4").html(ex41.concat(" ",val43," ",ex42," = ",ex43));
+        $("#result").html(result_str.concat(ex13,ex23,ex33,ex43,ex53,ex63));
 
     });
 
@@ -3215,7 +3250,7 @@
     var val55 = "";
     var ex51 = "";
     var ex52 = "";
-    var ex53 = "";
+    var ex53 = digits[4].toString();
     var aux51 = "";
     var aux52 = "";
     $("#id_e1").change(function() {
@@ -3463,6 +3498,7 @@
         }
 
         $("#exam5").html(ex51.concat(" ",val53," ",ex52," = ",ex53));
+        $("#result").html(result_str.concat(ex13,ex23,ex33,ex43,ex53,ex63));
 
     });
     $("#id_e2").change(function() {
@@ -3494,6 +3530,7 @@
         }
 
         $("#exam5").html(ex51.concat(" ",val53," ",ex52," = ",ex53));
+        $("#result").html(result_str.concat(ex13,ex23,ex33,ex43,ex53,ex63));
 
     });
     $("#id_e3").change(function() {
@@ -3512,6 +3549,7 @@
         }
 
         $("#exam5").html(ex51.concat(" ",val53," ",ex52," = ",ex53));
+        $("#result").html(result_str.concat(ex13,ex23,ex33,ex43,ex53,ex63));
 
     });
     $("#id_e4").change(function() {
@@ -3759,6 +3797,7 @@
         }
 
         $("#exam5").html(ex51.concat(" ",val53," ",ex52," = ",ex53));
+        $("#result").html(result_str.concat(ex13,ex23,ex33,ex43,ex53,ex63));
 
     });
 
@@ -3791,6 +3830,7 @@
         }
 
         $("#exam5").html(ex51.concat(" ",val53," ",ex52," = ",ex53));
+        $("#result").html(result_str.concat(ex13,ex23,ex33,ex43,ex53,ex63));
 
     });
 
@@ -3801,7 +3841,7 @@
     var val65 = "";
     var ex61 = "";
     var ex62 = "";
-    var ex63 = "";
+    var ex63 = digits[5].toString();
     var aux61 = "";
     var aux62 = "";
     $("#id_f1").change(function() {
@@ -4049,6 +4089,7 @@
         }
 
         $("#exam6").html(ex61.concat(" ",val63," ",ex62," = ",ex63));
+        $("#result").html(result_str.concat(ex13,ex23,ex33,ex43,ex53,ex63));
 
     });
     $("#id_f2").change(function() {
@@ -4080,6 +4121,7 @@
         }
 
         $("#exam6").html(ex61.concat(" ",val63," ",ex62," = ",ex63));
+        $("#result").html(result_str.concat(ex13,ex23,ex33,ex43,ex53,ex63));
 
     });
     $("#id_f3").change(function() {
@@ -4098,6 +4140,7 @@
         }
 
         $("#exam6").html(ex61.concat(" ",val63," ",ex62," = ",ex63));
+        $("#result").html(result_str.concat(ex13,ex23,ex33,ex43,ex53,ex63));
 
     });
     $("#id_f4").change(function() {
@@ -4345,6 +4388,7 @@
         }
 
         $("#exam6").html(ex61.concat(" ",val63," ",ex62," = ",ex63));
+        $("#result").html(result_str.concat(ex13,ex23,ex33,ex43,ex53,ex63));
 
     });
     $("#id_f5").change(function() {
@@ -4376,6 +4420,7 @@
         }
 
         $("#exam6").html(ex61.concat(" ",val63," ",ex62," = ",ex63));
+        $("#result").html(result_str.concat(ex13,ex23,ex33,ex43,ex53,ex63));
 
     });
 
