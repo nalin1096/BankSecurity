@@ -23,8 +23,8 @@ def forgot_password(request):
 		email = request.POST['email']
 		if len(User.objects.filter(email=email)) != 0:
 			valid=True
-			message = 'Please click on the following link to reset your password' + '\n\n' + 'http://192.168.55.22:8000/reset_password'+'\n\nSent from\nPseudo-Online Bank'
-			email = EmailMessage('[Pseudo-Online Bank] Reset Password Link',message,to=[email])
+			message = 'Please click on the following link to reset your password' + '\n\n' + 'http://192.168.55.22:8000/reset_password'+'\n\nSent from\nVirtual Net-Bank'
+			email = EmailMessage('[Virtual Net-Banking] Reset Password Link',message,to=[email])
 			email.send()
 		else:
 			return HttpResponse("Invalid email id.")
@@ -60,6 +60,7 @@ def register(request):
 		page_attempts = request.session.get('attempts',None)
 		page_attempts = page_attempts + 1
 		request.session['attempts'] = page_attempts
+
 		if user_form.is_valid() and profile_form.is_valid() and user_form.cleaned_data.get('password1')==user_form.cleaned_data.get('password2'):
 			user = user_form.save()
 			user.set_password(user_form.cleaned_data.get('password1'))
@@ -82,15 +83,16 @@ def register(request):
 				temp = User.objects.get(pk=user.id-1)
 				temp_account = BankUser.objects.get(user=temp)
 				temp_account_number = int(temp_account.account_number)
-				profile.account_number=str(temp_account_number+1)
-			if 	int(profile.account_number)%2==1:
+				random_number = random.randint(1,15)
+				profile.account_number=str(temp_account_number+random_number)
+			if 	int(user.id)%2==1:
 				profile.BankUser_type = 1
+				profile.ifsc_code = get_ifsc(0)
 			else:
 				profile.BankUser_type = 2
-			profile.amount = 1000
+				profile.ifsc_code = get_ifsc(1)
+			profile.amount = 15000
 
-			random_number = random.randint(0,9)
-			profile.ifsc_code = get_ifsc(random_number)
 			profile.save()
 			request.session['reg_user'] = user.id
 			start_time = request.session.get('start_time',None)
@@ -132,8 +134,8 @@ def otp_examples (request):
 
 		if test_user and example1==expected_otp1 and example2==expected_otp2:
 			if test_user.is_active:
-				message = 'Congratulations!'+'\n\n'+'Your new account has been created. Your account details are as follows:\n\n\tUsername: '+test_user.username+'\n\tAccount Number: '+bank_user.account_number+'\n\tIFSC Code: '+bank_user.ifsc_code+'\n\tOTP Functions: \n\t\tFirst Digit: '+bank_user.first_digit+'\n\t\tSecond Digit: '+bank_user.second_digit+'\n\t\tThird Digit: '+bank_user.third_digit+'\n\t\tFourth Digit: '+bank_user.fourth_digit+'\n\t\tFifth Digit: '+bank_user.fifth_digit+'\n\t\tSixth Digit: '+bank_user.sixth_digit+'\n\nSent from\nPseudo-Online Bank'
-				email = EmailMessage('[Pseudo-Online Bank] New Account Created',message,to=[test_user.email])
+				message = 'Congratulations!'+'\n\n'+'Your new account has been created. Your account details are as follows:\n\n\tUsername: '+test_user.username+'\n\tAccount Number: '+bank_user.account_number+'\n\tIFSC Code: '+bank_user.ifsc_code+'\n\tOTP Functions: \n\t\tFirst Digit: '+bank_user.first_digit+'\n\t\tSecond Digit: '+bank_user.second_digit+'\n\t\tThird Digit: '+bank_user.third_digit+'\n\t\tFourth Digit: '+bank_user.fourth_digit+'\n\t\tFifth Digit: '+bank_user.fifth_digit+'\n\t\tSixth Digit: '+bank_user.sixth_digit+'\n\nSent from\nVirtual Net-Bank'
+				email = EmailMessage('[Virtual Net-Banking] New Account Created',message,to=[test_user.email])
 				email.send()
 				bank_user.number_of_logins = 0
 				bank_user.save()
@@ -186,7 +188,7 @@ def user_login(request):
 				bank_user.save()
 				start_time = request.session.get('start_time',None)
 				print time.time()
-				print("elapsed time: %f seconds" % ((time.time() - start_time)))
+				#print("elapsed time: %f seconds" % ((time.time() - start_time)))
 				elapsed_time = time.time() - start_time
 				LoginLog_entry = LoginLog(timestamp = datetime.now(), username = test_user.username, time = elapsed_time, attempts = page_attempts)
 				LoginLog_entry.save()
@@ -246,12 +248,18 @@ def otp_extract (digits,func,index):
 	operand2 = ''
 	operator = ''
 	flag = 0
+	ctr = 0
 	for i in range(0,func_size):
 		if func[i] != '+' and func[i] != '*':
 			operand1 = operand1 + func[i]
+			ctr = ctr + 1
 		else:
 			flag = i
 			break
+
+	if ctr >= func_size:
+		sub1 = sub_func(digits,operand1)
+		return sub1
 	
 	operator = func[flag]
 	
@@ -313,7 +321,7 @@ def sub_func (digits,operand):
 
 	if modifier == '':
 		num = num
-	elif modifier == '-':
+	elif modifier == '\'':
 		num = (10-num) % 10
 	elif modifier == '~':
 		num = (9-num)
@@ -324,16 +332,8 @@ def sub_func (digits,operand):
 
 def get_ifsc(num):
 	ifsc_list = [
-		'ABCD0000001',
-		'ABCD0000002',
-		'ABCD0000003',
-		'XYZW0000001',
-		'XYZW0000002',
-		'XYZW0000003',
-		'QWERTY00001',
-		'QWERTY00002',
-		'QWERTY00003',
-		'IIITD000001'
+		'VNB001',
+		'VNB002'
 	]
 
 	return ifsc_list[num]

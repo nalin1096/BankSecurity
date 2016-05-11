@@ -29,14 +29,13 @@ def home(request):
 	sixth_digit = bank_user.sixth_digit
 	address = bank_user.address
 	phone_number = bank_user.phone_number
-	dob = bank_user.dob
 	# sent_transaction_entries = Transaction.objects.filter(sender=account_number) 	
 	# received_transaction_entries = Transaction.objects.filter(receiver=account_number) 	
 	return render(request,'view_profile.html',
 		{'username':username,'account_number':account_number,'amount':amount,'ifsc':ifsc, 'first_name':first_name,
 		'last_name':last_name,'email':email,'first_digit':first_digit,'second_digit':second_digit,
 		'third_digit':third_digit,'fourth_digit':fourth_digit,'fifth_digit':fifth_digit,'sixth_digit':sixth_digit,
-		'address':address,'phone_number':phone_number,'dob':dob})
+		'address':address,'phone_number':phone_number})
 
 @login_required
 def summary(request):
@@ -98,8 +97,8 @@ def transfer(request):
 		TransactionLog_entry = TransactionLog(timestamp = datetime.now(), username = sender.user.username, primary_account = sender.account_number, secondary_account = account, time = elapsed_time, attempts = page_attempts)
 		TransactionLog_entry.save()
 
-		message = 'Greetings!'+'\n\n'+'This is your randomly generated OTP: '+str(random_number)+'\n\n'+'Sent from\nPseudo-Online Bank'
-		email = EmailMessage('[Pseudo-Online Bank] Confirmation OTP',message,to=[sender.user.email])
+		message = 'Greetings!'+'\n\n'+'This is your randomly generated OTP: '+str(random_number)+'\n\n'+'Sent from\nVirtual Net-Bank'
+		email = EmailMessage('[Virtual Net-Banking] Confirmation OTP',message,to=[sender.user.email])
 		email.send()
 
 		return HttpResponseRedirect('/transfer_confirm/')
@@ -111,23 +110,42 @@ def transfer(request):
 		request.session['start_time'] = start_time
 	return render(request,'transaction.html',{'balance':balance,'user_exists':user_exists,'ifsc_exists':ifsc_exists,'balance_exists':balance_exists})
 
+# @login_required
+# def transfer_inter (request):
+# 	test_user = User.objects.get(pk=request.user.id)
+# 	bank_user = BankUser.objects.get(user = test_user)
+
+# 	account = request.session.get('receiver_acc',None)
+# 	amount = request.session.get('amount',None)
+
+# 	request.session['receiver_acc'] = account
+# 	request.session['amount'] = amount
+
+# 	receiver = BankUser.objects.get(account_number=account)
+# 	name = receiver.user.first_name + ' '+receiver.user.last_name
+# 	return render (request,'transfer_inter.html',{'amount':amount,'name':name})
+
+
+
 @login_required
 def transfer_confirm(request):
 	flag = True
 	test_user = User.objects.get(pk=request.user.id)
 	bank_user = BankUser.objects.get(user = test_user)
+	account = request.session.get('receiver_acc',None)
+	amount = request.session.get('amount',None)
+	receiver = BankUser.objects.get(account_number=account)
+	ifsc = receiver.ifsc_code
 	if request.method == 'POST':
 		page_attempts = request.session.get('attempts',None)
 		page_attempts = page_attempts + 1
 		request.session['attempts'] = page_attempts
 		otp = request.POST['user_otp']
 		temp = request.session.get('random_number',None)
-		account = request.session.get('receiver_acc',None)
-		amount = request.session.get('amount',None)
 		request.session['receiver_acc'] = account
 		request.session['amount'] = amount
 
-		if bank_user.BankUser_type == 1:
+		if bank_user.BankUser_type%2 == 1:
 			expected_otp = get_otp(test_user.id,temp)
 		else:
 			expected_otp = str(temp)
@@ -152,23 +170,23 @@ def transfer_confirm(request):
 			TransactionConfirmLog_entry = TransactionConfirmLog(timestamp = datetime.now(), username = sender.user.username, primary_account = sender.account_number, secondary_account = account, time = elapsed_time, attempts = page_attempts)
 			TransactionConfirmLog_entry.save()
 
-			messageToReciever = 'Congratulations!'+'\n\n'+'You have received Rs.'+ str(amount) +' from '+ str(sender.user.first_name) + ' '+  str(sender.user.last_name)+'.'+'\n\n'+'Sent from\nPseudo-Online Bank'
-			email = EmailMessage('[Pseudo-Online Bank] Money Received',messageToReciever,to=[receiver.user.email])
+			messageToReciever = 'Congratulations!'+'\n\n'+'You have received Rs.'+ str(amount) +' from '+ str(sender.user.first_name) + ' '+  str(sender.user.last_name)+'.'+'\n\n'+'Sent from\nVirtual Net-Bank'
+			email = EmailMessage('[Virtual Net-Banking] Money Received',messageToReciever,to=[receiver.user.email])
 			email.send()
 
-			messageToSender = 'Greetings!'+'\n\n'+'This is to confirm that you have just transferred Rs.'+ str(amount) + ' into the account of ' + str(receiver.user.first_name)+ ' ' + str(receiver.user.last_name) +'.'+'\n\n'+'Sent from\nPseudo-Online Bank' 
-			email = EmailMessage('[Pseudo-Online Bank] Money Transferred',messageToSender,to=[sender.user.email])
+			messageToSender = 'Greetings!'+'\n\n'+'This is to confirm that you have just transferred Rs.'+ str(amount) + ' into the account of ' + str(receiver.user.first_name)+ ' ' + str(receiver.user.last_name) +'.'+'\n\n'+'Sent from\nVirtual Net-Bank' 
+			email = EmailMessage('[Virtual Net-Banking] Money Transferred',messageToSender,to=[sender.user.email])
 			email.send()
 
 			return HttpResponseRedirect('/transaction_success/')
 		else:
 			flag = False
-			if bank_user.BankUser_type == 1:
-				msg = "An email has been sent to your registered email containing an OTP. Please fill in the transformed OTP to confirm the transfer."
+			if bank_user.BankUser_type%2 == 1:
+				msg = "An email has been sent to your registered email containing an OTP. Please provide the transformed OTP to confirm the transfer."
 			else:
-				msg = "An email has been sent to your registered email containing an OTP. Please fill in the OTP as it is to confirm the transfer."
+				msg = "An email has been sent to your registered email containing an OTP. Please provide the OTP AS IT IS to confirm the transfer."
 
-			return render (request,'transfer_confirm.html',{'flag':flag,'msg':msg})
+			return render (request,'transfer_confirm.html',{'flag':flag,'amount':amount, 'account':account, 'ifsc':ifsc, 'msg':msg})
 	else:
 		pageAttempts = 0
 		request.session['attempts'] = pageAttempts
@@ -176,12 +194,12 @@ def transfer_confirm(request):
 		start_time = time.time()
 		request.session['start_time'] = start_time
 
-	if bank_user.BankUser_type == 1:
+	if bank_user.BankUser_type%2 == 1:
 		msg = "An email has been sent to your registered email containing an OTP. Please fill in the transformed OTP to confirm the transfer."
 	else:
 		msg = "An email has been sent to your registered email containing an OTP. Please fill in the OTP as it is to confirm the transfer."
 
-	return render (request,'transfer_confirm.html',{'flag':flag,'msg':msg})
+	return render (request,'transfer_confirm.html',{'flag':flag,'amount':amount, 'account':account, 'ifsc':ifsc, 'msg':msg})
 
 @login_required
 def transaction_success(request):
@@ -230,12 +248,18 @@ def otp_extract (digits,func,index):
 	operand2 = ''
 	operator = ''
 	flag = 0
+	ctr = 0
 	for i in range(0,func_size):
 		if func[i] != '+' and func[i] != '*':
 			operand1 = operand1 + func[i]
+			ctr = ctr + 1
 		else:
 			flag = i
 			break
+
+	if ctr >= func_size:
+		sub1 = sub_func(digits,operand1)
+		return sub1
 	
 	operator = func[flag]
 	
@@ -297,7 +321,7 @@ def sub_func (digits,operand):
 
 	if modifier == '':
 		num = num
-	elif modifier == '-':
+	elif modifier == '\'':
 		num = (10-num) % 10
 	elif modifier == '~':
 		num = (9-num)

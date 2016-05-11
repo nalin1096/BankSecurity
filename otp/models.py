@@ -16,9 +16,8 @@ class BankUser (models.Model):
 	account_number = models.CharField(max_length=16,null=True,blank=True,unique=True)
 	ifsc_code = models.CharField(max_length=11,null=True,blank=True)
 	amount = models.IntegerField(null=True,blank=True)
-	address = models.TextField(max_length=100,null=True,blank=True)
+	address = models.CharField(max_length=100,null=True,blank=True)
 	phone_number = models.CharField(max_length=10,null=True,blank=True)
-	dob = models.DateField(null=True,blank=True)
 	BankUser_type = models.IntegerField(null=True,blank=True)
 	number_of_logins = models.IntegerField(null=True,blank=True,default=0)
 

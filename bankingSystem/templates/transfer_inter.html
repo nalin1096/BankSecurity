@@ -6,7 +6,8 @@
         ================================================== -->
         <meta charset="utf-8">
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-        <title>Forgot Password</title>
+        <link rel="icon" type="image/png" href="images/favicon.png">
+        <title>Transaction initiated</title>
         <meta name="description" content="">
         <meta name="keywords" content="">
         <meta name="author" content="">
@@ -53,21 +54,20 @@
         <!-- template main js -->
         <script src="{% static 'js/main.js' %}"></script>
     </head>
-
     <style>
             .logo-class {
                 vertical-align: middle;
                 margin-top:0px; /* need this to clear the default margin */
                 margin-bottom:0px;
             }
-        </style>
+    </style>
     <body>
         <!--
         ==================================================
         Header Section Start
         ================================================== -->
         <header id="top-bar" class="navbar-fixed-top animated-header">
-            <div class="container">
+             <div class="container">
                 <div class="navbar-header">
                     <!-- responsive nav button -->
                     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -80,7 +80,7 @@
                     
                     <!-- logo -->
                     <!-- <div class="navbar-brand"> -->
-                        <a href="/" >
+                        <a href="/home" >
                             <h1 class="logo-class">VIRTUAL NET-BANKING</h1>
                         </a>
                     <!-- </div> -->
@@ -91,13 +91,16 @@
                     <div class="main-menu">
                         <ul class="nav navbar-nav navbar-right">
                             <li>
-                                <a href="/" >Home</a>
+                                <a href="/home" >Profile</a>
                             </li>
-                            <li><a href="/about">About</a></li>
                             <li>
-                            <form action="/login" method="get">
-                            <input  type="submit" id="contact-submit" class="btn btn-default btn-send" value="LOGIN" style="margin-top: 7px;"></li> 
+                                <a href="/summary" >Account Summary</a>
+                            </li>
+                            <li><a href="/transfer">Make Transaction</a></li>
+                            <li><form action="/logout" method="get">
+                            <input  type="submit" id="contact-submit" class="btn btn-default btn-send" value="LOGOUT" style="margin-top: 7px;"></li> 
                             </form>
+                            </li>
                         </ul>
                     </div>
                 </nav>
@@ -105,70 +108,40 @@
             </div>
         </header>
 
-        <!-- 
-        ================================================== 
-            Global Page Section Start
-        ================================================== -->
-        <section class="global-page-header">
+        <section class="moduler wrapper_404">
             <div class="container">
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="block">
-                            <h2>Forgot Password</h2>
-                        </div>
-                    </div>
-                </div>
-            </div>   
-        </section><!--/#page-header-->
-
-
-        <!-- 
-        ================================================== 
-            Contact Section Start
-        ================================================== -->
-        <section id="contact-section">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-3">
-                    </div>
-                    <div class="col-md-6">
-                        <div class="block">
-                            <p class="subtitle-des wow fadeInDown" data-wow-duration="500ms" data-wow-delay=".5s">
-                                A password reset link will be sent to your registered email id. Please enter your registered email id below for verification.
-                            </p>
-                            <div class="contact-form">
-                                <form action="/forgot_password/" id="forgot_password_form" method="post"> {% csrf_token %}
-                        
-                                    <div class="form-group wow fadeInDown" data-wow-duration="500ms" data-wow-delay=".4s">
-                                        <input type="email" placeholder="Email" class="form-control" name="email">
-                                    </div>
-                                    
-                                    <center>
-                                    <div id="submit" class="wow fadeInDown" data-wow-duration="500ms" data-wow-delay=".6s">
-                                        <input type="submit" id="contact-submit" class="btn btn-default btn-send" value="SUBMIT">
-                                    </div>   
-                                    </center> 
-                                    {% if valid %}
-                                        <center>
-                                            <div id="submit" class="wow fadeInDown" data-wow-duration="500ms" data-wow-delay=".6s">
-                                            <h4> A reset Link has been sent to your email ID </h4>
-                                            </div>   
-                                        </center> 
-                                    {% endif %}
-                                </form>
-                            </div>
+                        <div class="text-center">
+                            <h2 class="wow fadeInUp animated" data-wow-delay=".3s">Transaction Initiated</h2>
+                            <p class="wow fadeInUp animated" data-wow-delay=".6s">You have requested a transfer of Rs.{{amount}} to {{name}}. Are you sure you want to continue?</p>
+                            <br><br><br>
+                            <div class="row">
+                            <div class="col-md-4"></div>
+                            <div class="col-md-2"><center>
+                                <a href="/transfer_confirm" class="btn btn-dafault btn-home wow fadeInUp animated" data-wow-delay=".9s">OK</a>
+                            </center></div>
+                            <div class="col-md-2"><center>
+                                <a href="/home" class="btn btn-dafault btn-home wow fadeInUp animated" data-wow-delay=".9s">Cancel</a>
+                            </center></div>
+                            
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
+            <!-- 
+        ================================================== 
+            Call To Action Section Start
+        ================================================== -->
+
 
         <!-- 
         ================================================== 
             Footer Section Start
         ================================================== -->
-        <center>
+                <center>
             <footer id="footer">
                 <div class="container">
                         <p class="copyright">Copyright: <span>2016</span> . Design and Developed by devAlpha</p>
@@ -178,5 +151,3 @@
     
     </body>
 </html>
-
-

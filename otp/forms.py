@@ -34,7 +34,7 @@ class UserProfileForm(forms.ModelForm):
 	)
 	modifier = (
 		(' ',' '),
-		('-','-'),
+		('\'','\''),
 		('~','~'),
 		('^2','^2'),
 	)

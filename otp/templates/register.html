@@ -23,14 +23,17 @@
         box-sizing: border-box;
     }  
     input[type=button], input[type=submit], input[type=reset] {
-    background-color: #4CAF50;
-    border: none;
-    color: white;
-    padding: 16px 32px;
-    text-decoration: none;
-    margin: 4px 2px;
-    cursor: pointer;
-} 
+        background-color: #4CAF50;
+        border: none;
+        color: white;
+        padding: 16px 32px;
+        text-decoration: none;
+        margin: 4px 2px;
+        cursor: pointer;
+    } 
+    .error-css {
+        color: red;
+    }
 </style>
 
 <body>
@@ -40,10 +43,11 @@
         
         <form id = "user_form" method="post" action="/register/"> {% csrf_token %}
             {{ user_form.non_field_errors }}
+            
             <div class="row">
                 <div class="fieldWrapper">
                 <div class="col-md-6">
-                    {{ user_form.first_name.errors }}
+                    <div class="error-css">{{ user_form.first_name.errors }}</div>
                     <label for="{{ user_form.first_name.id_for_label }}">First Name</label>
                     {{user_form.first_name}}
                 </div>
@@ -51,55 +55,92 @@
 
                 <div class="fieldWrapper">
                 <div class="col-md-6">
-                    {{ user_form.last_name.errors }}
+                    <div class="error-css">{{ user_form.last_name.errors }}</div>
                     <label for="{{ user_form.last_name.id_for_label }}">Last Name</label>
                     {{user_form.last_name}}
                 </div>
-            </div>
-            <div class="fieldWrapper">
-                {{ user_form.email.errors }}
-                <label for="{{ user_form.email.id_for_label }}">Email</label>
-                {{user_form.email}}
+                </div>
             </div>
 
-            <div class="fieldWrapper">
-                {{ profile_form.address.errors }}
-                <label for="{{ profile_form.address.id_for_label }}">Address</label>
-                {{profile_form.address}}
+            <div class="row">
+                <div class="fieldWrapper">
+                <div class = "col-md-6" >
+                    <div class="error-css">{{ user_form.email.errors }}</div>
+                    <label for="{{ user_form.email.id_for_label }}">Email Address</label>
+                    {{user_form.email}}
+                </div>
+                </div>
+             
+                 <div class="fieldWrapper">
+                 <div class="col-md-6">
+                    <div class="error-css">{{ profile_form.phone_number.errors }}</div>
+                    <label for="{{ profile_form.phone_number.id_for_label }}">Phone Number</label>
+                    {{profile_form.phone_number}}
+                </div>
+                </div>
             </div>
 
-            <div class="fieldWrapper">
-                {{ profile_form.phone_number.errors }}
-                <label for="{{ profile_form.phone_number.id_for_label }}">Phone Number</label>
-                {{profile_form.phone_number}}
+            <div class="row">
+                <div class="fieldWrapper">
+                <div class="col-md-1"><center><br>
+                    <div class="error-css">{{ profile_form.address.errors }}</div>
+                    <label for="{{ profile_form.address.id_for_label }}">Address</label>
+                    </center></div>
+                    <div class="col-md-5">
+                    {{profile_form.address}}
+                    </div>
+                </div>
             </div>
 
-            <div class="fieldWrapper">
-                {{ profile_form.dob.errors }}
-                <label for="{{ profile_form.dob.id_for_label }}">Date of Birth</label>
-                {{profile_form.dob}}
-            </div>
 
             <div class="fieldWrapper">
-                {{ user_form.username.errors }}
-                <label for="{{ user_form.username.id_for_label }}">Username</label>
-                {{user_form.username}}
+                <div class="row">
+                <div class="col-md-1"><center><br>
+                    <label for="{{ user_form.username.id_for_label }}">Username</label>
+                    </center></div>
+                    <div class="col-md-5">
+                    {{user_form.username}}
+                    </div>
+                </div>
+                <div class="error-css">{{ user_form.username.errors }}</div>
+            </div>
+            <br>
+
+            <div class="row">
+                <div class="fieldWrapper">
+                <div class="col-md-6">
+                    <label for="{{ user_form.password1.id_for_label }}">Password</label>
+                    {{user_form.password1}}
+                    <div class="error-css">{{ user_form.password1.errors }}</div>
+                </div>
+                </div>
+            
+                <div class="fieldWrapper">
+                <div class="col-md-6">
+                    <label for="{{ user_form.password2.id_for_label }}">Confirm Password</label>
+                    {{user_form.password2}}
+                    <div class="error-css">{{ user_form.password2.errors }}</div>
+                </div>
+                </div>
             </div>
 
-            <div class="fieldWrapper">
-                {{ user_form.password1.errors }}
-                <label for="{{ user_form.password1.id_for_label }}">Password</label>
-                {{user_form.password1}}
-            </div>
-             <div class="fieldWrapper">
-                {{ user_form.password2.errors }}
-                <label for="{{ user_form.password2.id_for_label }}">Confirm Password</label>
-                {{user_form.password2}}
-            </div>
-            </form>
             <h3> Transformation </h3>
-             <a href="\otp_help\">Need Help?</a>
-            <center><h3 id="test_otp"></h3></center><br><br>
+            <br>
+            <p>Kindly specify your transformation, T(x, date) element-wise for the given 6-digits input OTP, x (=abcdef) provided by the bank and the current date (=d1d2m1m2).  The transformation comprises 6 mappings (T1, T2, T3, T4, T5, T6), each corresponding to an element of the transformed OTP that is to be provided by you for authentication/transaction confirmation.
+            </p>
+            <a href="\otp_help\">Need Help?</a>
+            <div class="row">
+                <div class="col-md-6">
+                    <center><h3 id="test_otp"></h3></center>
+                </div>
+                <div class="col-md-6">
+                    <center>
+                        <h3 id="result"></h3>
+                    </center>
+                </div>
+            </div><br><br>
+
+
             <center>
             <div class="row">
                 <div class="col-md-2">
@@ -115,90 +156,73 @@
                     <a href="#" id="sfour">Sample 4</a>
                 </div>
                 <div class="col-md-2">
-                    <a href="#" id="sfive">Reset</a>
+                    <a href="#" id="sfive">Sample 5</a>
+                </div>
+                <div class="col-md-2">
+                    <a href="#" id="ssix">Reset</a>
                 </div>
             </div>
             </center>
             <br>
 
             <div class="row">
-                <div class="col-md-2">
+                <div class="col-md-1">
                     <center><br>
-                        Transformation 1
+                        T1
                     </center>
                 </div>
                 {{profile_form.non_field_errors}}
                 <div class="fieldWrapper">
-                <div class="col-md-1" id="me1">
+                <div class="col-md-2" id="me1"><center>
                     {{profile_form.a1.errors}}
-                    <label for="{{ profile_form.a1.id_for_label }}">Operand 1</label>
+                    <label for="{{ profile_form.a1.id_for_label }}">Operand 1</label><br>
                     {{profile_form.a1}}
-                    <!-- <select id="id_a1" name="id_a1" placeholder=" ">
-                        {% for id, name in profile_form.fields.a1.choices %}
-                            <option value="{{ name }}">{{ name }}</option>
-                        {% endfor %}
-                    </select> -->
+                </center>
                 </div>
                 </div>
 
                 <div class="fieldWrapper">
-                <div class="col-md-1" id="me2">
+                <div class="col-md-1" id="me2"><center>
                     {{profile_form.a2.errors}}
-                    <label for="{{ profile_form.a2.id_for_label }}">Modifier 1</label>
+                    <label for="{{ profile_form.a2.id_for_label }}">Modifier 1</label><br>
                     {{profile_form.a2}}
-                    <!-- <select id="id_a2" name="id_a2" placeholder=" ">
-                        {% for id, name in profile_form.fields.a2.choices %}
-                            <option value="{{name}}">{{ name }}</option>
-                        {% endfor %}
-                    </select> -->
+                </center>
                 </div>
                 </div>
 
                  <div class="fieldWrapper">
-                 <div class="col-md-1">
+                 <div class="col-md-1"><center>
                     {{profile_form.a3.errors}}
-                    <label for="{{ profile_form.a3.id_for_label }}">Operator</label>
+                    <label for="{{ profile_form.a3.id_for_label }}">Operator</label><br>
                     {{profile_form.a3}}
-                    <!-- <select id="id_a3" name="id_a3" placeholder=" ">
-                        {% for id, name in profile_form.fields.a3.choices %}
-                            <option value="{{name}}">{{ name }}</option>
-                        {% endfor %}
-                    </select> -->
+                </center>
                 </div>
                 </div>
 
                 <div class="fieldWrapper">
-                <div class="col-md-1">
+                <div class="col-md-2"><center>
                     {{profile_form.a4.errors}}
-                    <label for="{{ profile_form.a4.id_for_label }}">Operand 2</label>
+                    <label for="{{ profile_form.a4.id_for_label }}">Operand 2</label><br>
                     {{profile_form.a4}}
-                    <!-- <select id="id_a4" name="id_a4" placeholder=" ">
-                        {% for id, name in profile_form.fields.a4.choices %}
-                            <option value="{{name}}">{{ name }}</option>
-                        {% endfor %}
-                    </select> -->
+                </center>
                 </div>
                 </div>
 
                 <div class="fieldWrapper">
-                <div class="col-md-1">
+                <div class="col-md-1"><center>
                     {{profile_form.a5.errors}}
-                    <label for="{{ profile_form.a5.id_for_label }}">Modifier 2</label>
+                    <label for="{{ profile_form.a5.id_for_label }}">Modifier 2</label><br>
                     {{profile_form.a5}}
-                    <!-- <select id="id_a5" name="id_a5" placeholder=" ">
-                        {% for id, name in profile_form.fields.a5.choices %}
-                            <option value="{{name}}">{{ name }}</option>
-                        {% endfor %}
-                    </select> -->
+                </center>
                 </div>
                 </div>
 
                 <div class="col-md-2">
-                <center><label>Evaluated Expression</label><br>
+                <center><label>Expression</label><br>
                     <div id="exp1"></div>
                 </center>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-1">
                 <center><label>Example</label><br>
                     <div id="exam1"></div>
                 </center>
@@ -207,73 +231,53 @@
             <br>
 
             <div class="row">
-                <div class="col-md-2">
+                <div class="col-md-1">
                     <center>
-                        Transformation 2
+                        T2
                     </center>
                 </div>
                 <div class="fieldWrapper">
-                <div class="col-md-1">
+                <div class="col-md-2"><center>
                     {{profile_form.b1.errors}}
                     <label for="{{ profile_form.b1.id_for_label }}"></label>
                     {{profile_form.b1}}
-                    <!-- <select id="id_b1" name="id_b1" placeholder=" ">
-                        {% for id, name in profile_form.fields.b1.choices %}
-                            <option value="{{name}}">{{ name }}</option>
-                        {% endfor %}
-                    </select> -->
+                </center>
                 </div>
                 </div>
 
                 <div class="fieldWrapper">
-                <div class="col-md-1">
+                <div class="col-md-1"><center>
                     {{profile_form.b2.errors}}
                     <label for="{{ profile_form.b2.id_for_label }}"></label>
                     {{profile_form.b2}}
-                    <!-- <select id="id_b2" name="id_b2" placeholder=" ">
-                        {% for id, name in profile_form.fields.b2.choices %}
-                            <option value="{{name}}">{{ name }}</option>
-                        {% endfor %}
-                    </select> -->
+                </center>
                 </div>
                 </div>
 
                 <div class="fieldWrapper">
-                <div class="col-md-1">
+                <div class="col-md-1"><center>
                     {{profile_form.b3.errors}}
                     <label for="{{ profile_form.b3.id_for_label }}"></label>
                     {{profile_form.b3}}
-                    <!-- <select id="id_b3" name="id_b3" placeholder=" ">
-                        {% for id, name in profile_form.fields.b3.choices %}
-                            <option value="{{name}}">{{ name }}</option>
-                        {% endfor %}
-                    </select> -->
+                </center>
                 </div>
                 </div>
 
                 <div class="fieldWrapper">
-                <div class="col-md-1">
+                <div class="col-md-2"><center>
                     {{profile_form.b4.errors}}
                     <label for="{{ profile_form.b4.id_for_label }}"></label>
                     {{profile_form.b4}}
-                    <!-- <select id="id_b4" name="id_b4" placeholder=" ">
-                        {% for id, name in profile_form.fields.b4.choices %}
-                            <option value="{{name}}">{{ name }}</option>
-                        {% endfor %}
-                    </select> -->
+                </center>
                 </div>
                 </div>
 
                 <div class="fieldWrapper">
-                <div class="col-md-1">
+                <div class="col-md-1"><center>
                     {{profile_form.b5.errors}}
                     <label for="{{ profile_form.b5.id_for_label }}"></label>
                     {{profile_form.b5}}
-                    <!-- <select id="id_b5" name="id_b5" placeholder=" ">
-                        {% for id, name in profile_form.fields.b5.choices %}
-                            <option value="{{name}}">{{ name }}</option>
-                        {% endfor %}
-                    </select> -->
+                </center>
                 </div>
                 </div>
 
@@ -282,7 +286,7 @@
                    <div id="exp2"></div>
                 </center>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-1">
                 <center>
                     <div id="exam2"></div>
                 </center>
@@ -291,74 +295,54 @@
             <br>
 
             <div class="row">
-                <div class="col-md-2">
+                <div class="col-md-1">
                     <center>
-                        Transformation 3
+                        T3
                     </center>
                 </div>
 
                 <div class="fieldWrapper">
-                <div class="col-md-1">
+                <div class="col-md-2"><center>
                     {{profile_form.c1.errors}}
                     <label for="{{ profile_form.c1.id_for_label }}"></label>
                     {{profile_form.c1}}
-                    <!-- <select id="id_c1" name="id_c1" placeholder=" ">
-                        {% for id, name in profile_form.fields.c1.choices %}
-                            <option value="{{name}}">{{ name }}</option>
-                        {% endfor %}
-                    </select> -->
+                    </center>
                 </div>
                 </div>
 
                 <div class="fieldWrapper">
-                <div class="col-md-1">
+                <div class="col-md-1"><center>
                     {{profile_form.c2.errors}}
                     <label for="{{ profile_form.c2.id_for_label }}"></label>
                     {{profile_form.c2}}
-                   <!--  <select id="id_c2" name="id_c2" placeholder=" ">
-                        {% for id, name in profile_form.fields.c2.choices %}
-                            <option value="{{name}}">{{ name }}</option>
-                        {% endfor %}
-                    </select> -->
+                    </center>
                 </div>
                 </div>
 
                 <div class="fieldWrapper">
-                 <div class="col-md-1">
+                 <div class="col-md-1"><center>
                     {{profile_form.c3.errors}}
                     <label for="{{ profile_form.c3.id_for_label }}"></label>
                     {{profile_form.c3}}
-                    <!-- <select id="id_c3" name="id_c3" placeholder=" ">
-                        {% for id, name in profile_form.fields.c3.choices %}
-                            <option value="{{name}}">{{ name }}</option>
-                        {% endfor %}
-                    </select> -->
+                    </center>
                 </div>
                 </div>
 
                 <div class="fieldWrapper">
-                <div class="col-md-1">
+                <div class="col-md-2"><center>
                     {{profile_form.c4.errors}}
                     <label for="{{ profile_form.c4.id_for_label }}"></label>
                     {{profile_form.c4}}
-                    <!-- <select id="id_c4" name="id_c4" placeholder=" ">
-                        {% for id, name in profile_form.fields.c4.choices %}
-                            <option value="{{name}}">{{ name }}</option>
-                        {% endfor %}
-                    </select> -->
+                    </center>
                 </div>
                 </div>
 
                 <div class="fieldWrapper">
-                <div class="col-md-1">
+                <div class="col-md-1"><center>
                     {{profile_form.c5.errors}}
                     <label for="{{ profile_form.c5.id_for_label }}"></label>
                     {{profile_form.c5}}
-                    <!-- <select id="id_c5" name="id_c5" placeholder=" ">
-                        {% for id, name in profile_form.fields.c5.choices %}
-                            <option value="{{name}}">{{ name }}</option>
-                        {% endfor %}
-                    </select> -->
+                    </center>
                 </div>
                 </div>
 
@@ -367,7 +351,7 @@
                     <div id="exp3"></div>
                 </center>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-1">
                 <center>
                     <div id="exam3"></div>
                 </center>
@@ -376,74 +360,54 @@
             <br>
 
             <div class="row">
-                <div class="col-md-2">
+                <div class="col-md-1">
                     <center>
-                        Transformation 4
+                        T4
                     </center>
                 </div>
 
                 <div class="fieldWrapper">
-                <div class="col-md-1">
+                <div class="col-md-2"><center>
                     {{profile_form.d1.errors}}
                     <label for="{{ profile_form.d1.id_for_label }}"></label>
                     {{profile_form.d1}}
-                    <!-- <select id="id_d1" name="id_d1" placeholder=" ">
-                        {% for id, name in profile_form.fields.d1.choices %}
-                            <option value="{{name}}">{{ name }}</option>
-                        {% endfor %}
-                    </select> -->
+                    </center>
                 </div>
                 </div>
 
                 <div class="fieldWrapper">
-                <div class="col-md-1">
+                <div class="col-md-1"><center>
                     {{profile_form.d2.errors}}
                     <label for="{{ profile_form.d2.id_for_label }}"></label>
                     {{profile_form.d2}}
-                    <!-- <select id="id_d2" name="id_d2" placeholder=" ">
-                        {% for id, name in profile_form.fields.d2.choices %}
-                            <option value="{{name}}">{{ name }}</option>
-                        {% endfor %}
-                    </select> -->
+                    </center>
                 </div>
                 </div>
 
                 <div class="fieldWrapper">
-                 <div class="col-md-1">
+                 <div class="col-md-1"><center>
                     {{profile_form.d3.errors}}
                     <label for="{{ profile_form.d3.id_for_label }}"></label>
                     {{profile_form.d3}}
-                    <!-- <select id="id_d3" name="id_d3" placeholder=" ">
-                        {% for id, name in profile_form.fields.d3.choices %}
-                            <option value="{{name}}">{{ name }}</option>
-                        {% endfor %}
-                    </select> -->
+                    </center>
                 </div>
                 </div>
 
                 <div class="fieldWrapper">
-                <div class="col-md-1">
+                <div class="col-md-2"><center>
                     {{profile_form.d4.errors}}
                     <label for="{{ profile_form.d4.id_for_label }}"></label>
                     {{profile_form.d4}}
-                    <!-- <select id="id_d4" name="id_d4" placeholder=" ">
-                        {% for id, name in profile_form.fields.d4.choices %}
-                            <option value="{{name}}">{{ name }}</option>
-                        {% endfor %}
-                    </select> -->
+                    </center>
                 </div>
                 </div>
 
                 <div class="fieldWrapper">
-                <div class="col-md-1">
+                <div class="col-md-1"><center>
                     {{profile_form.d5.errors}}
                     <label for="{{ profile_form.d5.id_for_label }}"></label>
                     {{profile_form.d5}}
-                    <!-- <select id="id_d5" name="id_d5" placeholder=" ">
-                        {% for id, name in profile_form.fields.d5.choices %}
-                            <option value="{{name}}">{{ name }}</option>
-                        {% endfor %}
-                    </select> -->
+                    </center>
                 </div>
                 </div>
 
@@ -452,7 +416,7 @@
                     <div id="exp4"></div>
                 </center>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-1">
                 <center>
                     <div id="exam4"></div>
                 </center>
@@ -461,74 +425,54 @@
             <br>
 
             <div class="row">
-                <div class="col-md-2">
+                <div class="col-md-1">
                     <center>
-                        Transformation 5
+                        T5
                     </center>
                 </div>
 
                 <div class="fieldWrapper">
-                <div class="col-md-1">
+                <div class="col-md-2"><center>
                     {{profile_form.e1.errors}}
                     <label for="{{ profile_form.e1.id_for_label }}"></label>
                     {{profile_form.e1}}
-                    <!-- <select id="id_e1" name="id_e1" placeholder=" ">
-                        {% for id, name in profile_form.fields.e1.choices %}
-                            <option value="{{name}}">{{ name }}</option>
-                        {% endfor %}
-                    </select> -->
+                    </center>
                 </div>
                 </div>
 
                 <div class="fieldWrapper">
-                <div class="col-md-1">
+                <div class="col-md-1"><center>
                     {{profile_form.e2.errors}}
                     <label for="{{ profile_form.e2.id_for_label }}"></label>
                     {{profile_form.e2}}
-                    <!-- <select id="id_e2" name="id_e2" placeholder=" ">
-                        {% for id, name in profile_form.fields.e2.choices %}
-                            <option value="{{name}}">{{ name }}</option>
-                        {% endfor %}
-                    </select> -->
+                    </center>
                 </div>
                 </div>
 
                 <div class="fieldWrapper">
-                 <div class="col-md-1">
+                 <div class="col-md-1"><center>
                     {{profile_form.e3.errors}}
                     <label for="{{ profile_form.e3.id_for_label }}"></label>
                     {{profile_form.e3}}
-                    <!-- <select id="id_e3" name="id_e3" placeholder=" ">
-                        {% for id, name in profile_form.fields.e3.choices %}
-                            <option value="{{name}}">{{ name }}</option>
-                        {% endfor %}
-                    </select> -->
+                    </center>
                 </div>
                 </div>
 
                 <div class="fieldWrapper">
-                <div class="col-md-1">
+                <div class="col-md-2"><center>
                     {{profile_form.e4.errors}}
                     <label for="{{ profile_form.e4.id_for_label }}"></label>
                     {{profile_form.e4}}
-                    <!-- <select id="id_e4" name="id_e4" placeholder=" ">
-                        {% for id, name in profile_form.fields.e4.choices %}
-                            <option value="{{name}}">{{ name }}</option>
-                        {% endfor %}
-                    </select> -->
+                    </center>
                 </div>
                 </div>
 
                 <div class="fieldWrapper">
-                <div class="col-md-1">
+                <div class="col-md-1"><center>
                     {{profile_form.e5.errors}}
                     <label for="{{ profile_form.e5.id_for_label }}"></label>
                     {{profile_form.e5}}
-                    <!-- <select id="id_e5" name="id_e5" placeholder=" ">
-                        {% for id, name in profile_form.fields.e5.choices %}
-                            <option value="{{name}}">{{ name }}</option>
-                        {% endfor %}
-                    </select> -->
+                    </center>
                 </div>
                 </div>
 
@@ -537,7 +481,7 @@
                     <div id="exp5"></div>
                 </center>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-1">
                 <center>
                     <div id="exam5"></div>
                 </center>
@@ -546,74 +490,54 @@
             <br>
 
             <div class="row">
-                <div class="col-md-2">
+                <div class="col-md-1">
                     <center>
-                        Transformation 6
+                        T6
                     </center>
                 </div>
 
                 <div class="fieldWrapper">
-                <div class="col-md-1">
+                <div class="col-md-2"><center>
                     {{profile_form.f1.errors}}
                     <label for="{{ profile_form.f1.id_for_label }}"></label>
                     {{profile_form.f1}}
-                    <!-- <select id="id_f1" name="id_f1" placeholder=" ">
-                        {% for id, name in profile_form.fields.f1.choices %}
-                            <option value="{{name}}">{{ name }}</option>
-                        {% endfor %}
-                    </select> -->
+                    </center>
                 </div>
                 </div>
 
                 <div class="fieldWrapper">
-                <div class="col-md-1">
+                <div class="col-md-1"><center>
                     {{profile_form.f2.errors}}
                     <label for="{{ profile_form.f2.id_for_label }}"></label>
                     {{profile_form.f2}}
-                    <!-- <select id="id_f2" name="id_f2" placeholder=" ">
-                        {% for id, name in profile_form.fields.f2.choices %}
-                            <option value="{{name}}">{{ name }}</option>
-                        {% endfor %}
-                    </select> -->
+                    </center>
                 </div>
                 </div>
 
                 <div class="fieldWrapper">
-                 <div class="col-md-1">
+                 <div class="col-md-1"><center>
                     {{profile_form.f3.errors}}
                     <label for="{{ profile_form.f3.id_for_label }}"></label>
                     {{profile_form.f3}}
-                    <!-- <select id="id_f3" name="id_f3" placeholder=" ">
-                        {% for id, name in profile_form.fields.f3.choices %}
-                            <option value="{{name}}">{{ name }}</option>
-                        {% endfor %}
-                    </select> -->
+                    </center>
                 </div>
                 </div>
 
                 <div class="fieldWrapper">
-                <div class="col-md-1">
+                <div class="col-md-2"><center>
                     {{profile_form.f4.errors}}
                     <label for="{{ profile_form.f4.id_for_label }}"></label>
                     {{profile_form.f4}}
-                    <!-- <select id="id_f4" name="id_f4" placeholder=" ">
-                        {% for id, name in profile_form.fields.f4.choices %}
-                            <option value="{{name}}">{{ name }}</option>
-                        {% endfor %}
-                    </select> -->
+                    </center>
                 </div>
                 </div>
 
                 <div class="fieldWrapper">
-                <div class="col-md-1">
+                <div class="col-md-1"><center>
                     {{profile_form.f5.errors}}
                     <label for="{{ profile_form.f5.id_for_label }}"></label>
                     {{profile_form.f5}}
-                    <!-- <select id="id_f5" name="id_f5" placeholder=" ">
-                        {% for id, name in profile_form.fields.f5.choices %}
-                            <option value="{{name}}">{{ name }}</option>
-                        {% endfor %}
-                    </select> -->
+                    </center>
                 </div>
                 </div>
 
@@ -622,16 +546,12 @@
                     <div id="exp6"></div>
                 </center>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-1">
                 <center>
                     <div id="exam6"></div>
                 </center>
                 </div>
             </div>
-            <br><br>
-            <center>
-                <h4 id="result"></h4>
-            </center>
             <br><br>
     		<center><button type="submit" name="_submit" class="btn">Submit</button></center>
     	</form>
@@ -665,16 +585,92 @@
 <script type="text/javascript">
 
     $("#sone").click(function(){
+        $("#id_a1").val('f').change();
+        $("#id_a2").val(' ').change();
+        $("#id_a3").val('').change();
+        $("#id_a4").val(' ').change();
+        $("#id_a5").val(' ').change();
+
+        $("#id_b1").val('e').change();
+        $("#id_b2").val(' ').change();
+        $("#id_b3").val('').change();
+        $("#id_b4").val(' ').change();
+        $("#id_b5").val(' ').change();
+
+        $("#id_c1").val('d').change();
+        $("#id_c2").val(' ').change();
+        $("#id_c3").val('').change();
+        $("#id_c4").val(' ').change();
+        $("#id_c5").val(' ').change();
+
+        $("#id_d1").val('c').change();
+        $("#id_d2").val(' ').change();
+        $("#id_d3").val('').change();
+        $("#id_d4").val(' ').change();
+        $("#id_d5").val(' ').change();
+
+        $("#id_e1").val('b').change();
+        $("#id_e2").val(' ').change();
+        $("#id_e3").val('').change();
+        $("#id_e4").val(' ').change();
+        $("#id_e5").val(' ').change();
+
+        $("#id_f1").val('a').change();
+        $("#id_f2").val(' ').change();
+        $("#id_f3").val('').change();
+        $("#id_f4").val(' ').change();
+        $("#id_f5").val(' ').change();
+    });
+
+    $("#stwo").click(function(){
+        $("#id_a1").val('a').change();
+        $("#id_a2").val('\'').change();
+        $("#id_a3").val('').change();
+        $("#id_a4").val(' ').change();
+        $("#id_a5").val(' ').change();
+
+        $("#id_b1").val('b').change();
+        $("#id_b2").val('~').change();
+        $("#id_b3").val('').change();
+        $("#id_b4").val(' ').change();
+        $("#id_b5").val(' ').change();
+
+        $("#id_c1").val('c').change();
+        $("#id_c2").val('\'').change();
+        $("#id_c3").val('').change();
+        $("#id_c4").val(' ').change();
+        $("#id_c5").val(' ').change();
+
+        $("#id_d1").val('d').change();
+        $("#id_d2").val('~').change();
+        $("#id_d3").val('').change();
+        $("#id_d4").val(' ').change();
+        $("#id_d5").val(' ').change();
+
+        $("#id_e1").val('e').change();
+        $("#id_e2").val('\'').change();
+        $("#id_e3").val('').change();
+        $("#id_e4").val(' ').change();
+        $("#id_e5").val(' ').change();
+
+        $("#id_f1").val('f').change();
+        $("#id_f2").val('~').change();
+        $("#id_f3").val('').change();
+        $("#id_f4").val(' ').change();
+        $("#id_f5").val(' ').change();
+    });
+
+    $("#sthree").click(function(){
         $("#id_a1").val('a').change();
         $("#id_a2").val(' ').change();
         $("#id_a3").val('+').change();
         $("#id_a4").val('b').change();
         $("#id_a5").val(' ').change();
 
-        $("#id_b1").val('b').change();
-        $("#id_b2").val(' ').change();
-        $("#id_b3").val('+').change();
-        $("#id_b4").val('c').change();
+        $("#id_b1").val('a').change();
+        $("#id_b2").val('\'').change();
+        $("#id_b3").val('*').change();
+        $("#id_b4").val('b').change();
         $("#id_b5").val(' ').change();
 
         $("#id_c1").val('c').change();
@@ -683,10 +679,10 @@
         $("#id_c4").val('d').change();
         $("#id_c5").val(' ').change();
 
-        $("#id_d1").val('d').change();
-        $("#id_d2").val(' ').change();
-        $("#id_d3").val('+').change();
-        $("#id_d4").val('e').change();
+        $("#id_d1").val('c').change();
+        $("#id_d2").val('\'').change();
+        $("#id_d3").val('*').change();
+        $("#id_d4").val('d').change();
         $("#id_d5").val(' ').change();
 
         $("#id_e1").val('e').change();
@@ -695,14 +691,52 @@
         $("#id_e4").val('f').change();
         $("#id_e5").val(' ').change();
 
-        $("#id_f1").val('f').change();
-        $("#id_f2").val(' ').change();
-        $("#id_f3").val('+').change();
-        $("#id_f4").val('a').change();
+        $("#id_f1").val('e').change();
+        $("#id_f2").val('\'').change();
+        $("#id_f3").val('*').change();
+        $("#id_f4").val('f').change();
         $("#id_f5").val(' ').change();
     });
 
-    $("#stwo").click(function(){
+     $("#sfour").click(function(){
+        $("#id_a1").val('a').change();
+        $("#id_a2").val(' ').change();
+        $("#id_a3").val('+').change();
+        $("#id_a4").val('c').change();
+        $("#id_a5").val(' ').change();
+
+        $("#id_b1").val('b').change();
+        $("#id_b2").val(' ').change();
+        $("#id_b3").val('+').change();
+        $("#id_b4").val('d').change();
+        $("#id_b5").val(' ').change();
+
+        $("#id_c1").val('c').change();
+        $("#id_c2").val(' ').change();
+        $("#id_c3").val('+').change();
+        $("#id_c4").val('e').change();
+        $("#id_c5").val(' ').change();
+
+        $("#id_d1").val('d').change();
+        $("#id_d2").val(' ').change();
+        $("#id_d3").val('+').change();
+        $("#id_d4").val('f').change();
+        $("#id_d5").val(' ').change();
+
+        $("#id_e1").val('e').change();
+        $("#id_e2").val(' ').change();
+        $("#id_e3").val('+').change();
+        $("#id_e4").val('a').change();
+        $("#id_e5").val(' ').change();
+
+        $("#id_f1").val('f').change();
+        $("#id_f2").val(' ').change();
+        $("#id_f3").val('+').change();
+        $("#id_f4").val('b').change();
+        $("#id_f5").val(' ').change();
+    });
+
+    $("#sfive").click(function(){
         $("#id_a1").val('a').change();
         $("#id_a2").val('^2').change();
         $("#id_a3").val('+').change();
@@ -740,83 +774,7 @@
         $("#id_f5").val('^2').change();
     });
 
-    $("#sthree").click(function(){
-        $("#id_a1").val('a').change();
-        $("#id_a2").val(' ').change();
-        $("#id_a3").val('+').change();
-        $("#id_a4").val('b').change();
-        $("#id_a5").val(' ').change();
-
-        $("#id_b1").val('c').change();
-        $("#id_b2").val(' ').change();
-        $("#id_b3").val('+').change();
-        $("#id_b4").val('d').change();
-        $("#id_b5").val(' ').change();
-
-        $("#id_c1").val('e').change();
-        $("#id_c2").val(' ').change();
-        $("#id_c3").val('+').change();
-        $("#id_c4").val('f').change();
-        $("#id_c5").val(' ').change();
-
-        $("#id_d1").val('a').change();
-        $("#id_d2").val('^2').change();
-        $("#id_d3").val('+').change();
-        $("#id_d4").val('b').change();
-        $("#id_d5").val('^2').change();
-
-        $("#id_e1").val('c').change();
-        $("#id_e2").val('^2').change();
-        $("#id_e3").val('+').change();
-        $("#id_e4").val('d').change();
-        $("#id_e5").val('^2').change();
-
-        $("#id_f1").val('e').change();
-        $("#id_f2").val('^2').change();
-        $("#id_f3").val('+').change();
-        $("#id_f4").val('f').change();
-        $("#id_f5").val('^2').change();
-    });
-
-     $("#sfour").click(function(){
-        $("#id_a1").val('a').change();
-        $("#id_a2").val('-').change();
-        $("#id_a3").val('+').change();
-        $("#id_a4").val('b').change();
-        $("#id_a5").val('-').change();
-
-        $("#id_b1").val('c').change();
-        $("#id_b2").val('-').change();
-        $("#id_b3").val('+').change();
-        $("#id_b4").val('d').change();
-        $("#id_b5").val('-').change();
-
-        $("#id_c1").val('e').change();
-        $("#id_c2").val('-').change();
-        $("#id_c3").val('+').change();
-        $("#id_c4").val('f').change();
-        $("#id_c5").val('-').change();
-
-        $("#id_d1").val('a').change();
-        $("#id_d2").val('~').change();
-        $("#id_d3").val('+').change();
-        $("#id_d4").val('b').change();
-        $("#id_d5").val('~').change();
-
-        $("#id_e1").val('c').change();
-        $("#id_e2").val('~').change();
-        $("#id_e3").val('+').change();
-        $("#id_e4").val('d').change();
-        $("#id_e5").val('~').change();
-
-        $("#id_f1").val('e').change();
-        $("#id_f2").val('~').change();
-        $("#id_f3").val('+').change();
-        $("#id_f4").val('f').change();
-        $("#id_f5").val('~').change();
-    });
-
-    $("#sfive").click(function(){
+    $("#ssix").click(function(){
         $("#id_a1").val('').change();
         $("#id_a2").val(' ').change();
         $("#id_a3").val('').change();
@@ -859,11 +817,19 @@
         $("#exam4").html("");
         $("#exam5").html("");
         $("#exam6").html("");
+
+        $("#exp1").html("");
+        $("#exp2").html("");
+        $("#exp3").html("");
+        $("#exp4").html("");
+        $("#exp5").html("");
+        $("#exp6").html("");
+
         $("#result").html(result_str.concat(digits[0],digits[1],digits[2],digits[3],digits[4],digits[5]));
     });
 
     var num = 100000 + Math.floor(Math.random() * (999999 - 100000 + 1));
-    test_otp_str = "EXAMPLE OTP: "
+    test_otp_str = "Input OTP: "
     $("#test_otp").html(test_otp_str.concat(num));
 
     var temp = num
@@ -875,7 +841,7 @@
     }
     digits = digits.reverse();
 
-    result_str = "EVALUATED OTP: "
+    result_str = "Transformed OTP: "
     $("#result").html(result_str.concat(digits[0],digits[1],digits[2],digits[3],digits[4],digits[5]));
     
     var val11 = "";
@@ -892,16 +858,17 @@
     $("#id_a1").change(function() {
 
         val11 = $("#id_a1 option:selected").text();
-        $("#exp1").html(val11.concat(val12," ",val13," ",val14,val15));
+        // $("#exp1").html(val11.concat(val12," ",val13," ",val14,val15));
+        $("#exp1").html("[[".concat(val11,val12,"]"," ",val13," ","[",val14,val15,"]]"));
 
 
         if (val11=='a') {
             ex11 = digits[0].toString();
             aux11 = ex11;
             if(val12==' ') {
-            ex11 = aux11;
+                ex11 = aux11;
             }
-            else if (val12=='-') {
+            else if (val12=='\'') {
                 ex11 = ((10-parseInt(aux11))%10).toString(); 
             }
             else if (val12=='~') {
@@ -917,7 +884,7 @@
             if(val12==' ') {
                 ex11 = aux11;
             }
-            else if (val12=='-') {
+            else if (val12=='\'') {
                 ex11 = ((10-parseInt(aux11))%10).toString(); 
             }
             else if (val12=='~') {
@@ -933,7 +900,7 @@
             if(val12==' ') {
                 ex11 = aux11;
             }
-            else if (val12=='-') {
+            else if (val12=='\'') {
                 ex11 = ((10-parseInt(aux11))%10).toString(); 
             }
             else if (val12=='~') {
@@ -949,7 +916,7 @@
             if(val12==' ') {
                 ex11 = aux11;
             }
-            else if (val12=='-') {
+            else if (val12=='\'') {
                 ex11 = ((10-parseInt(aux11))%10).toString(); 
             }
             else if (val12=='~') {
@@ -965,7 +932,7 @@
             if(val12==' ') {
                 ex11 = aux11;
             }
-            else if (val12=='-') {
+            else if (val12=='\'') {
                 ex11 = ((10-parseInt(aux11))%10).toString(); 
             }
             else if (val12=='~') {
@@ -981,7 +948,7 @@
             if(val12==' ') {
                 ex11 = aux11;
             }
-            else if (val12=='-') {
+            else if (val12=='\'') {
                 ex11 = ((10-parseInt(aux11))%10).toString(); 
             }
             else if (val12=='~') {
@@ -1005,7 +972,7 @@
             if(val12==' ') {
                 ex11 = aux11;
             }
-            else if (val12=='-') {
+            else if (val12=='\'') {
                 ex11 = ((10-parseInt(aux11))%10).toString(); 
             }
             else if (val12=='~') {
@@ -1029,7 +996,7 @@
             if(val12==' ') {
                 ex11 = aux11;
             }
-            else if (val12=='-') {
+            else if (val12=='\'') {
                 ex11 = ((10-parseInt(aux11))%10).toString(); 
             }
             else if (val12=='~') {
@@ -1053,7 +1020,7 @@
             if(val12==' ') {
                 ex11 = aux11;
             }
-            else if (val12=='-') {
+            else if (val12=='\'') {
                 ex11 = ((10-parseInt(aux11))%10).toString(); 
             }
             else if (val12=='~') {
@@ -1077,7 +1044,7 @@
             if(val12==' ') {
                 ex11 = aux11;
             }
-            else if (val12=='-') {
+            else if (val12=='\'') {
                 ex11 = ((10-parseInt(aux11))%10).toString(); 
             }
             else if (val12=='~') {
@@ -1093,7 +1060,7 @@
             if(val12==' ') {
                 ex11 = aux11;
             }
-            else if (val12=='-') {
+            else if (val12=='\'') {
                 ex11 = ((10-parseInt(aux11))%10).toString(); 
             }
             else if (val12=='~') {
@@ -1113,7 +1080,7 @@
             if(val12==' ') {
                 ex11 = aux11;
             }
-            else if (val12=='-') {
+            else if (val12=='\'') {
                 ex11 = ((10-parseInt(aux11))%10).toString(); 
             }
             else if (val12=='~') {
@@ -1124,7 +1091,7 @@
             }
         }
         if (val13=='') {
-            ex13 = "";
+            ex13 = ex11;
         }
         else if (val13=='+') {
             ex13 = ((parseInt(ex11) + parseInt(ex12))%10).toString();
@@ -1140,12 +1107,12 @@
     $("#id_a2").change(function() {
 
         val12 = $("#id_a2").val();
-        $("#exp1").html(val11.concat(val12," ",val13," ",val14,val15));
+         $("#exp1").html("[[".concat(val11,val12,"]"," ",val13," ","[",val14,val15,"]]"));
 
         if(val12==' ') {
             ex11 = aux11;
         }
-        else if (val12=='-') {
+        else if (val12=='\'') {
             ex11 = ((10-parseInt(aux11))%10).toString(); 
         }
         else if (val12=='~') {
@@ -1156,7 +1123,7 @@
         }
 
         if (val13=='') {
-            ex13 = "";
+            ex13 = ex11;
         }
         else if (val13=='+') {
             ex13 = ((parseInt(ex11) + parseInt(ex12))%10).toString();
@@ -1173,10 +1140,13 @@
     $("#id_a3").change(function() {
 
         val13 = $("#id_a3").val();
-        $("#exp1").html(val11.concat(val12," ",val13," ",val14,val15));
+        $("#exp1").html("[[".concat(val11,val12,"]"," ",val13," ","[",val14,val15,"]]"));
 
         if (val13=='') {
-            ex13 = "";
+            ex13 = ex11;
+            $("#id_a4").val('').change();
+            $("#id_a5").val(' ').change();
+            ex12 = "";
         }
         else if (val13=='+') {
             ex13 = ((parseInt(ex11) + parseInt(ex12))%10).toString();
@@ -1192,7 +1162,7 @@
     $("#id_a4").change(function() {
 
         val14 = $("#id_a4 option:selected").text();
-        $("#exp1").html(val11.concat(val12," ",val13," ",val14,val15));
+        $("#exp1").html("[[".concat(val11,val12,"]"," ",val13," ","[",val14,val15,"]]"));
 
         if (val14=='a') {
             ex12 = digits[0].toString();
@@ -1200,7 +1170,7 @@
             if(val15==' ') {
             ex12 = aux12;
             }
-            else if (val15=='-') {
+            else if (val15=='\'') {
                 ex12 = ((10-parseInt(aux12))%10).toString(); 
             }
             else if (val15=='~') {
@@ -1216,7 +1186,7 @@
             if(val15==' ') {
                 ex12 = aux12;
             }
-            else if (val15=='-') {
+            else if (val15=='\'') {
                 ex12 = ((10-parseInt(aux12))%10).toString(); 
             }
             else if (val15=='~') {
@@ -1232,7 +1202,7 @@
             if(val15==' ') {
                 ex12 = aux12;
             }
-            else if (val15=='-') {
+            else if (val15=='\'') {
                 ex12 = ((10-parseInt(aux12))%10).toString(); 
             }
             else if (val15=='~') {
@@ -1248,7 +1218,7 @@
             if(val15==' ') {
                 ex12 = aux12;
             }
-            else if (val15=='-') {
+            else if (val15=='\'') {
                 ex12 = ((10-parseInt(aux12))%10).toString(); 
             }
             else if (val15=='~') {
@@ -1264,7 +1234,7 @@
             if(val15==' ') {
                 ex12 = aux12;
             }
-            else if (val15=='-') {
+            else if (val15=='\'') {
                 ex12 = ((10-parseInt(aux12))%10).toString(); 
             }
             else if (val15=='~') {
@@ -1280,7 +1250,7 @@
             if(val15==' ') {
                 ex12 = aux12;
             }
-            else if (val15=='-') {
+            else if (val15=='\'') {
                 ex12 = ((10-parseInt(aux12))%10).toString(); 
             }
             else if (val15=='~') {
@@ -1304,7 +1274,7 @@
             if(val15==' ') {
                 ex12 = aux12;
             }
-            else if (val15=='-') {
+            else if (val15=='\'') {
                 ex12 = ((10-parseInt(aux12))%10).toString(); 
             }
             else if (val15=='~') {
@@ -1328,7 +1298,7 @@
             if(val15==' ') {
                 ex12 = aux12;
             }
-            else if (val15=='-') {
+            else if (val15=='\'') {
                 ex12 = ((10-parseInt(aux12))%10).toString(); 
             }
             else if (val15=='~') {
@@ -1352,7 +1322,7 @@
             if(val15==' ') {
                 ex12 = aux12;
             }
-            else if (val15=='-') {
+            else if (val15=='\'') {
                 ex12 = ((10-parseInt(aux12))%10).toString(); 
             }
             else if (val15=='~') {
@@ -1376,7 +1346,7 @@
             if(val15==' ') {
                 ex12 = aux12;
             }
-            else if (val15=='-') {
+            else if (val15=='\'') {
                 ex12 = ((10-parseInt(aux12))%10).toString(); 
             }
             else if (val15=='~') {
@@ -1392,7 +1362,7 @@
             if(val15==' ') {
                 ex12 = aux12;
             }
-            else if (val15=='-') {
+            else if (val15=='\'') {
                 ex12 = ((10-parseInt(aux12))%10).toString(); 
             }
             else if (val15=='~') {
@@ -1412,7 +1382,7 @@
             if(val15==' ') {
                 ex12 = aux12;
             }
-            else if (val15=='-') {
+            else if (val15=='\'') {
                 ex12 = ((10-parseInt(aux12))%10).toString(); 
             }
             else if (val15=='~') {
@@ -1424,7 +1394,7 @@
         }
 
         if (val13=='') {
-            ex13 = "";
+            ex13 = ex11;
         }
         else if (val13=='+') {
             ex13 = ((parseInt(ex11) + parseInt(ex12))%10).toString();
@@ -1440,12 +1410,12 @@
     $("#id_a5").change(function() {
 
         val15 = $("#id_a5").val();
-        $("#exp1").html(val11.concat(val12," ",val13," ",val14,val15));
+        $("#exp1").html("[[".concat(val11,val12,"]"," ",val13," ","[",val14,val15,"]]"));
 
         if(val15==' ') {
             ex12 = aux12;
         }
-        else if (val15=='-') {
+        else if (val15=='\'') {
             ex12 = ((10-parseInt(aux12))%10).toString(); 
         }
         else if (val15=='~') {
@@ -1456,7 +1426,7 @@
         }
 
         if (val13=='') {
-            ex13 = "";
+            ex13 = ex11;
         }
         else if (val13=='+') {
             ex13 = ((parseInt(ex11) + parseInt(ex12))%10).toString();
@@ -1484,7 +1454,7 @@
     $("#id_b1").change(function() {
 
         val21 = $("#id_b1 option:selected").text();
-        $("#exp2").html(val21.concat(val22," ",val23," ",val24,val25));
+        $("#exp2").html("[[".concat(val21,val22,"]"," ",val23," ","[",val24,val25,"]]"));
 
         if (val21=='a') {
             ex21 = digits[0].toString();
@@ -1492,7 +1462,7 @@
             if(val22==' ') {
             ex21 = aux21;
             }
-            else if (val22=='-') {
+            else if (val22=='\'') {
                 ex21 = ((10-parseInt(aux21))%10).toString(); 
             }
             else if (val22=='~') {
@@ -1508,7 +1478,7 @@
             if(val22==' ') {
                 ex21 = aux21;
             }
-            else if (val22=='-') {
+            else if (val22=='\'') {
                 ex21 = ((10-parseInt(aux21))%10).toString(); 
             }
             else if (val22=='~') {
@@ -1524,7 +1494,7 @@
             if(val22==' ') {
                 ex21 = aux21;
             }
-            else if (val22=='-') {
+            else if (val22=='\'') {
                 ex21 = ((10-parseInt(aux21))%10).toString(); 
             }
             else if (val22=='~') {
@@ -1540,7 +1510,7 @@
             if(val22==' ') {
                 ex21 = aux21;
             }
-            else if (val22=='-') {
+            else if (val22=='\'') {
                 ex21 = ((10-parseInt(aux21))%10).toString(); 
             }
             else if (val22=='~') {
@@ -1556,7 +1526,7 @@
             if(val22==' ') {
                 ex21 = aux21;
             }
-            else if (val22=='-') {
+            else if (val22=='\'') {
                 ex21 = ((10-parseInt(aux21))%10).toString(); 
             }
             else if (val22=='~') {
@@ -1572,7 +1542,7 @@
             if(val22==' ') {
                 ex21 = aux21;
             }
-            else if (val22=='-') {
+            else if (val22=='\'') {
                 ex21 = ((10-parseInt(aux21))%10).toString(); 
             }
             else if (val22=='~') {
@@ -1596,7 +1566,7 @@
             if(val22==' ') {
                 ex21 = aux21;
             }
-            else if (val22=='-') {
+            else if (val22=='\'') {
                 ex21 = ((10-parseInt(aux21))%10).toString(); 
             }
             else if (val22=='~') {
@@ -1620,7 +1590,7 @@
             if(val22==' ') {
                 ex21 = aux21;
             }
-            else if (val22=='-') {
+            else if (val22=='\'') {
                 ex21 = ((10-parseInt(aux21))%10).toString(); 
             }
             else if (val22=='~') {
@@ -1644,7 +1614,7 @@
             if(val22==' ') {
                 ex21 = aux21;
             }
-            else if (val22=='-') {
+            else if (val22=='\'') {
                 ex21 = ((10-parseInt(aux21))%10).toString(); 
             }
             else if (val22=='~') {
@@ -1668,7 +1638,7 @@
             if(val22==' ') {
                 ex21 = aux21;
             }
-            else if (val22=='-') {
+            else if (val22=='\'') {
                 ex21 = ((10-parseInt(aux21))%10).toString(); 
             }
             else if (val22=='~') {
@@ -1684,7 +1654,7 @@
             if(val22==' ') {
                 ex21 = aux21;
             }
-            else if (val22=='-') {
+            else if (val22=='\'') {
                 ex21 = ((10-parseInt(aux21))%10).toString(); 
             }
             else if (val22=='~') {
@@ -1704,7 +1674,7 @@
             if(val22==' ') {
                 ex21 = aux21;
             }
-            else if (val22=='-') {
+            else if (val22=='\'') {
                 ex21 = ((10-parseInt(aux21))%10).toString(); 
             }
             else if (val22=='~') {
@@ -1716,7 +1686,7 @@
         }
 
         if (val23=='') {
-            ex23 = "";
+            ex23 = ex21;
         }
         else if (val23=='+') {
             ex23 = ((parseInt(ex21) + parseInt(ex22))%10).toString();
@@ -1732,12 +1702,12 @@
     $("#id_b2").change(function() {
 
         val22 = $("#id_b2").val();
-        $("#exp2").html(val21.concat(val22," ",val23," ",val24,val25));
+        $("#exp2").html("[[".concat(val21,val22,"]"," ",val23," ","[",val24,val25,"]]"));
 
         if(val22==' ') {
             ex21 = aux21;
         }
-        else if (val22=='-') {
+        else if (val22=='\'') {
             ex21 = ((10-parseInt(aux21))%10).toString(); 
         }
         else if (val22=='~') {
@@ -1748,7 +1718,7 @@
         }
 
         if (val23=='') {
-            ex23 = "";
+            ex23 = ex21;
         }
         else if (val23=='+') {
             ex23 = ((parseInt(ex21) + parseInt(ex22))%10).toString();
@@ -1764,11 +1734,14 @@
     $("#id_b3").change(function() {
 
         val23 = $("#id_b3").val();
-        $("#exp2").html(val21.concat(val22," ",val23," ",val24,val25));
+        $("#exp2").html("[[".concat(val21,val22,"]"," ",val23," ","[",val24,val25,"]]"));
 
 
         if (val23=='') {
-            ex23 = "";
+            ex23 = ex21;
+            $("#id_b4").val('').change();
+            $("#id_b5").val(' ').change();
+            ex22 = "";
         }
         else if (val23=='+') {
             ex23 = ((parseInt(ex21) + parseInt(ex22))%10).toString();
@@ -1784,7 +1757,7 @@
     $("#id_b4").change(function() {
 
         val24 = $("#id_b4 option:selected").text();
-        $("#exp2").html(val21.concat(val22," ",val23," ",val24,val25));
+        $("#exp2").html("[[".concat(val21,val22,"]"," ",val23," ","[",val24,val25,"]]"));
 
         if (val24=='a') {
             ex22 = digits[0].toString();
@@ -1792,7 +1765,7 @@
             if(val25==' ') {
             ex22 = aux22;
             }
-            else if (val25=='-') {
+            else if (val25=='\'') {
                 ex22 = ((10-parseInt(aux22))%10).toString(); 
             }
             else if (val25=='~') {
@@ -1808,7 +1781,7 @@
             if(val25==' ') {
                 ex22 = aux22;
             }
-            else if (val25=='-') {
+            else if (val25=='\'') {
                 ex22 = ((10-parseInt(aux22))%10).toString(); 
             }
             else if (val25=='~') {
@@ -1824,7 +1797,7 @@
             if(val25==' ') {
                 ex22 = aux22;
             }
-            else if (val25=='-') {
+            else if (val25=='\'') {
                 ex22 = ((10-parseInt(aux22))%10).toString(); 
             }
             else if (val25=='~') {
@@ -1840,7 +1813,7 @@
             if(val25==' ') {
                 ex22 = aux22;
             }
-            else if (val25=='-') {
+            else if (val25=='\'') {
                 ex22 = ((10-parseInt(aux22))%10).toString(); 
             }
             else if (val25=='~') {
@@ -1856,7 +1829,7 @@
             if(val25==' ') {
                 ex22 = aux22;
             }
-            else if (val25=='-') {
+            else if (val25=='\'') {
                 ex22 = ((10-parseInt(aux22))%10).toString(); 
             }
             else if (val25=='~') {
@@ -1872,7 +1845,7 @@
             if(val25==' ') {
                 ex22 = aux22;
             }
-            else if (val25=='-') {
+            else if (val25=='\'') {
                 ex22 = ((10-parseInt(aux22))%10).toString(); 
             }
             else if (val25=='~') {
@@ -1896,7 +1869,7 @@
             if(val25==' ') {
                 ex22 = aux22;
             }
-            else if (val25=='-') {
+            else if (val25=='\'') {
                 ex22 = ((10-parseInt(aux22))%10).toString(); 
             }
             else if (val25=='~') {
@@ -1920,7 +1893,7 @@
             if(val25==' ') {
                 ex22 = aux22;
             }
-            else if (val25=='-') {
+            else if (val25=='\'') {
                 ex22 = ((10-parseInt(aux22))%10).toString(); 
             }
             else if (val25=='~') {
@@ -1944,7 +1917,7 @@
             if(val25==' ') {
                 ex22 = aux22;
             }
-            else if (val25=='-') {
+            else if (val25=='\'') {
                 ex22 = ((10-parseInt(aux22))%10).toString(); 
             }
             else if (val25=='~') {
@@ -1968,7 +1941,7 @@
             if(val25==' ') {
                 ex22 = aux22;
             }
-            else if (val25=='-') {
+            else if (val25=='\'') {
                 ex22 = ((10-parseInt(aux22))%10).toString(); 
             }
             else if (val25=='~') {
@@ -1984,7 +1957,7 @@
             if(val25==' ') {
                 ex22 = aux22;
             }
-            else if (val25=='-') {
+            else if (val25=='\'') {
                 ex22 = ((10-parseInt(aux22))%10).toString(); 
             }
             else if (val25=='~') {
@@ -2004,7 +1977,7 @@
             if(val25==' ') {
                 ex22 = aux22;
             }
-            else if (val25=='-') {
+            else if (val25=='\'') {
                 ex22 = ((10-parseInt(aux22))%10).toString(); 
             }
             else if (val25=='~') {
@@ -2016,7 +1989,7 @@
         }
 
         if (val23=='') {
-            ex23 = "";
+            ex23 = ex21;
         }
         else if (val23=='+') {
             ex23 = ((parseInt(ex21) + parseInt(ex22))%10).toString();
@@ -2032,12 +2005,12 @@
     $("#id_b5").change(function() {
 
         val25 = $("#id_b5").val();
-        $("#exp2").html(val21.concat(val22," ",val23," ",val24,val25));
+        $("#exp2").html("[[".concat(val21,val22,"]"," ",val23," ","[",val24,val25,"]]"));
 
         if(val25==' ') {
             ex22 = aux22;
         }
-        else if (val25=='-') {
+        else if (val25=='\'') {
             ex22 = ((10-parseInt(aux22))%10).toString(); 
         }
         else if (val25=='~') {
@@ -2048,7 +2021,7 @@
         }
 
         if (val23=='') {
-            ex23 = "";
+            ex23 = ex21;
         }
         else if (val23=='+') {
             ex23 = ((parseInt(ex21) + parseInt(ex22))%10).toString();
@@ -2075,7 +2048,7 @@
     $("#id_c1").change(function() {
 
         val31 = $("#id_c1 option:selected").text();
-        $("#exp3").html(val31.concat(val32," ",val33," ",val34,val35));
+        $("#exp3").html("[[".concat(val31,val32,"]"," ",val33," ","[",val34,val35,"]]"));
 
         if (val31=='a') {
             ex31 = digits[0].toString();
@@ -2083,7 +2056,7 @@
             if(val32==' ') {
             ex31 = aux31;
             }
-            else if (val32=='-') {
+            else if (val32=='\'') {
                 ex31 = ((10-parseInt(aux31))%10).toString(); 
             }
             else if (val32=='~') {
@@ -2099,7 +2072,7 @@
             if(val32==' ') {
                 ex31 = aux31;
             }
-            else if (val32=='-') {
+            else if (val32=='\'') {
                 ex31 = ((10-parseInt(aux31))%10).toString(); 
             }
             else if (val32=='~') {
@@ -2115,7 +2088,7 @@
             if(val32==' ') {
                 ex31 = aux31;
             }
-            else if (val32=='-') {
+            else if (val32=='\'') {
                 ex31 = ((10-parseInt(aux31))%10).toString(); 
             }
             else if (val32=='~') {
@@ -2131,7 +2104,7 @@
             if(val32==' ') {
                 ex31 = aux31;
             }
-            else if (val32=='-') {
+            else if (val32=='\'') {
                 ex31 = ((10-parseInt(aux31))%10).toString(); 
             }
             else if (val32=='~') {
@@ -2147,7 +2120,7 @@
             if(val32==' ') {
                 ex31 = aux31;
             }
-            else if (val32=='-') {
+            else if (val32=='\'') {
                 ex31 = ((10-parseInt(aux31))%10).toString(); 
             }
             else if (val32=='~') {
@@ -2163,7 +2136,7 @@
             if(val32==' ') {
                 ex31 = aux31;
             }
-            else if (val32=='-') {
+            else if (val32=='\'') {
                 ex31 = ((10-parseInt(aux31))%10).toString(); 
             }
             else if (val32=='~') {
@@ -2187,7 +2160,7 @@
             if(val33==' ') {
                 ex31 = aux31;
             }
-            else if (val33=='-') {
+            else if (val33=='\'') {
                 ex31 = ((10-parseInt(aux31))%10).toString(); 
             }
             else if (val33=='~') {
@@ -2211,7 +2184,7 @@
             if(val33==' ') {
                 ex31 = aux31;
             }
-            else if (val33=='-') {
+            else if (val33=='\'') {
                 ex31 = ((10-parseInt(aux31))%10).toString(); 
             }
             else if (val33=='~') {
@@ -2235,7 +2208,7 @@
             if(val33==' ') {
                 ex31 = aux31;
             }
-            else if (val33=='-') {
+            else if (val33=='\'') {
                 ex31 = ((10-parseInt(aux31))%10).toString(); 
             }
             else if (val33=='~') {
@@ -2259,7 +2232,7 @@
             if(val33==' ') {
                 ex31 = aux31;
             }
-            else if (val33=='-') {
+            else if (val33=='\'') {
                 ex31 = ((10-parseInt(aux31))%10).toString(); 
             }
             else if (val33=='~') {
@@ -2275,7 +2248,7 @@
             if(val33==' ') {
                 ex31 = aux31;
             }
-            else if (val33=='-') {
+            else if (val33=='\'') {
                 ex31 = ((10-parseInt(aux31))%10).toString(); 
             }
             else if (val33=='~') {
@@ -2295,7 +2268,7 @@
             if(val33==' ') {
                 ex31 = aux31;
             }
-            else if (val33=='-') {
+            else if (val33=='\'') {
                 ex31 = ((10-parseInt(aux31))%10).toString(); 
             }
             else if (val33=='~') {
@@ -2307,7 +2280,7 @@
         }
 
         if (val33=='') {
-            ex33 = "";
+            ex33 = ex31;
         }
         else if (val33=='+') {
             ex33 = ((parseInt(ex31) + parseInt(ex32))%10).toString();
@@ -2323,12 +2296,12 @@
     $("#id_c2").change(function() {
 
         val32 = $("#id_c2").val();
-        $("#exp3").html(val31.concat(val32," ",val33," ",val34,val35));
+        $("#exp3").html("[[".concat(val31,val32,"]"," ",val33," ","[",val34,val35,"]]"));
 
         if(val32==' ') {
             ex31 = aux31;
         }
-        else if (val32=='-') {
+        else if (val32=='\'') {
             ex31 = ((10-parseInt(aux31))%10).toString(); 
         }
         else if (val32=='~') {
@@ -2339,7 +2312,7 @@
         }
 
         if (val33=='') {
-            ex33 = "";
+            ex33 = ex31;
         }
         else if (val33=='+') {
             ex33 = ((parseInt(ex31) + parseInt(ex32))%10).toString();
@@ -2355,10 +2328,13 @@
     $("#id_c3").change(function() {
 
         val33 = $("#id_c3").val();
-        $("#exp3").html(val31.concat(val32," ",val33," ",val34,val35));
+        $("#exp3").html("[[".concat(val31,val32,"]"," ",val33," ","[",val34,val35,"]]"));
 
         if (val33=='') {
-            ex33 = "";
+            ex33 = ex31;
+            $("#id_c4").val('').change();
+            $("#id_c5").val(' ').change();
+            ex32 = "";
         }
         else if (val33=='+') {
             ex33 = ((parseInt(ex31) + parseInt(ex32))%10).toString();
@@ -2374,7 +2350,7 @@
     $("#id_c4").change(function() {
 
         val34 = $("#id_c4 option:selected").text();
-        $("#exp3").html(val31.concat(val32," ",val33," ",val34,val35));
+        $("#exp3").html("[[".concat(val31,val32,"]"," ",val33," ","[",val34,val35,"]]"));
 
         if (val34=='a') {
             ex32 = digits[0].toString();
@@ -2382,7 +2358,7 @@
             if(val35==' ') {
             ex32 = aux32;
             }
-            else if (val35=='-') {
+            else if (val35=='\'') {
                 ex32 = ((10-parseInt(aux32))%10).toString(); 
             }
             else if (val35=='~') {
@@ -2398,7 +2374,7 @@
             if(val35==' ') {
                 ex32 = aux32;
             }
-            else if (val35=='-') {
+            else if (val35=='\'') {
                 ex32 = ((10-parseInt(aux32))%10).toString(); 
             }
             else if (val35=='~') {
@@ -2414,7 +2390,7 @@
             if(val35==' ') {
                 ex32 = aux32;
             }
-            else if (val35=='-') {
+            else if (val35=='\'') {
                 ex32 = ((10-parseInt(aux32))%10).toString(); 
             }
             else if (val35=='~') {
@@ -2430,7 +2406,7 @@
             if(val35==' ') {
                 ex32 = aux32;
             }
-            else if (val35=='-') {
+            else if (val35=='\'') {
                 ex32 = ((10-parseInt(aux32))%10).toString(); 
             }
             else if (val35=='~') {
@@ -2446,7 +2422,7 @@
             if(val35==' ') {
                 ex32 = aux32;
             }
-            else if (val35=='-') {
+            else if (val35=='\'') {
                 ex32 = ((10-parseInt(aux32))%10).toString(); 
             }
             else if (val35=='~') {
@@ -2462,7 +2438,7 @@
             if(val35==' ') {
                 ex32 = aux32;
             }
-            else if (val35=='-') {
+            else if (val35=='\'') {
                 ex32 = ((10-parseInt(aux32))%10).toString(); 
             }
             else if (val35=='~') {
@@ -2486,7 +2462,7 @@
             if(val35==' ') {
                 ex32 = aux32;
             }
-            else if (val35=='-') {
+            else if (val35=='\'') {
                 ex32 = ((10-parseInt(aux32))%10).toString(); 
             }
             else if (val35=='~') {
@@ -2510,7 +2486,7 @@
             if(val35==' ') {
                 ex32 = aux32;
             }
-            else if (val35=='-') {
+            else if (val35=='\'') {
                 ex32 = ((10-parseInt(aux32))%10).toString(); 
             }
             else if (val35=='~') {
@@ -2534,7 +2510,7 @@
             if(val35==' ') {
                 ex32 = aux32;
             }
-            else if (val35=='-') {
+            else if (val35=='\'') {
                 ex32 = ((10-parseInt(aux32))%10).toString(); 
             }
             else if (val35=='~') {
@@ -2558,7 +2534,7 @@
             if(val35==' ') {
                 ex32 = aux32;
             }
-            else if (val35=='-') {
+            else if (val35=='\'') {
                 ex32 = ((10-parseInt(aux32))%10).toString(); 
             }
             else if (val35=='~') {
@@ -2574,7 +2550,7 @@
             if(val35==' ') {
                 ex32 = aux32;
             }
-            else if (val35=='-') {
+            else if (val35=='\'') {
                 ex32 = ((10-parseInt(aux32))%10).toString(); 
             }
             else if (val35=='~') {
@@ -2594,7 +2570,7 @@
             if(val35==' ') {
                 ex32 = aux32;
             }
-            else if (val35=='-') {
+            else if (val35=='\'') {
                 ex32 = ((10-parseInt(aux32))%10).toString(); 
             }
             else if (val35=='~') {
@@ -2606,7 +2582,7 @@
         }
 
         if (val33=='') {
-            ex33 = "";
+            ex33 = ex31;
         }
         else if (val33=='+') {
             ex33 = ((parseInt(ex31) + parseInt(ex32))%10).toString();
@@ -2622,12 +2598,12 @@
     $("#id_c5").change(function() {
 
         val35 = $("#id_c5").val();
-        $("#exp3").html(val31.concat(val32," ",val33," ",val34,val35));
+        $("#exp3").html("[[".concat(val31,val32,"]"," ",val33," ","[",val34,val35,"]]"));
 
         if(val35==' ') {
             ex32 = aux32;
         }
-        else if (val35=='-') {
+        else if (val35=='\'') {
             ex32 = ((10-parseInt(aux32))%10).toString(); 
         }
         else if (val35=='~') {
@@ -2638,7 +2614,7 @@
         }
 
         if (val33=='') {
-            ex33 = "";
+            ex33 = ex31;
         }
         else if (val33=='+') {
             ex33 = ((parseInt(ex31) + parseInt(ex32))%10).toString();
@@ -2666,7 +2642,7 @@
     $("#id_d1").change(function() {
 
         val41 = $("#id_d1 option:selected").text();
-        $("#exp4").html(val41.concat(val42," ",val43," ",val44,val45));
+        $("#exp4").html("[[".concat(val41,val42,"]"," ",val43," ","[",val44,val45,"]]"));
 
         if (val41=='a') {
             ex41 = digits[0].toString();
@@ -2674,7 +2650,7 @@
             if(val42==' ') {
             ex41 = aux41;
             }
-            else if (val42=='-') {
+            else if (val42=='\'') {
                 ex41 = ((10-parseInt(aux41))%10).toString(); 
             }
             else if (val42=='~') {
@@ -2690,7 +2666,7 @@
             if(val42==' ') {
                 ex41 = aux41;
             }
-            else if (val42=='-') {
+            else if (val42=='\'') {
                 ex41 = ((10-parseInt(aux41))%10).toString(); 
             }
             else if (val42=='~') {
@@ -2706,7 +2682,7 @@
             if(val42==' ') {
                 ex41 = aux41;
             }
-            else if (val42=='-') {
+            else if (val42=='\'') {
                 ex41 = ((10-parseInt(aux41))%10).toString(); 
             }
             else if (val42=='~') {
@@ -2722,7 +2698,7 @@
             if(val42==' ') {
                 ex41 = aux41;
             }
-            else if (val42=='-') {
+            else if (val42=='\'') {
                 ex41 = ((10-parseInt(aux41))%10).toString(); 
             }
             else if (val42=='~') {
@@ -2738,7 +2714,7 @@
             if(val42==' ') {
                 ex41 = aux41;
             }
-            else if (val42=='-') {
+            else if (val42=='\'') {
                 ex41 = ((10-parseInt(aux41))%10).toString(); 
             }
             else if (val42=='~') {
@@ -2754,7 +2730,7 @@
             if(val42==' ') {
                 ex41 = aux41;
             }
-            else if (val42=='-') {
+            else if (val42=='\'') {
                 ex41 = ((10-parseInt(aux41))%10).toString(); 
             }
             else if (val42=='~') {
@@ -2778,7 +2754,7 @@
             if(val42==' ') {
                 ex41 = aux41;
             }
-            else if (val42=='-') {
+            else if (val42=='\'') {
                 ex41 = ((10-parseInt(aux41))%10).toString(); 
             }
             else if (val42=='~') {
@@ -2802,7 +2778,7 @@
             if(val42==' ') {
                 ex41 = aux41;
             }
-            else if (val42=='-') {
+            else if (val42=='\'') {
                 ex41 = ((10-parseInt(aux41))%10).toString(); 
             }
             else if (val42=='~') {
@@ -2826,7 +2802,7 @@
             if(val42==' ') {
                 ex41 = aux41;
             }
-            else if (val42=='-') {
+            else if (val42=='\'') {
                 ex41 = ((10-parseInt(aux41))%10).toString(); 
             }
             else if (val42=='~') {
@@ -2850,7 +2826,7 @@
             if(val42==' ') {
                 ex41 = aux41;
             }
-            else if (val42=='-') {
+            else if (val42=='\'') {
                 ex41 = ((10-parseInt(aux41))%10).toString(); 
             }
             else if (val42=='~') {
@@ -2866,7 +2842,7 @@
             if(val42==' ') {
                 ex41 = aux41;
             }
-            else if (val42=='-') {
+            else if (val42=='\'') {
                 ex41 = ((10-parseInt(aux41))%10).toString(); 
             }
             else if (val42=='~') {
@@ -2886,7 +2862,7 @@
             if(val42==' ') {
                 ex41 = aux41;
             }
-            else if (val42=='-') {
+            else if (val42=='\'') {
                 ex41 = ((10-parseInt(aux41))%10).toString(); 
             }
             else if (val42=='~') {
@@ -2898,7 +2874,7 @@
         }
 
         if (val43=='') {
-            ex43 = "";
+            ex43 = ex41;
         }
         else if (val43=='+') {
             ex43 = ((parseInt(ex41) + parseInt(ex42))%10).toString();
@@ -2914,12 +2890,12 @@
     $("#id_d2").change(function() {
 
         val42 = $("#id_d2").val();
-        $("#exp4").html(val41.concat(val42," ",val43," ",val44,val45));
+        $("#exp4").html("[[".concat(val41,val42,"]"," ",val43," ","[",val44,val45,"]]"));
 
         if(val42==' ') {
             ex41 = aux41;
         }
-        else if (val42=='-') {
+        else if (val42=='\'') {
             ex41 = ((10-parseInt(aux41))%10).toString(); 
         }
         else if (val42=='~') {
@@ -2930,7 +2906,7 @@
         }
 
         if (val43=='') {
-            ex43 = "";
+            ex43 = ex41;
         }
         else if (val43=='+') {
             ex43 = ((parseInt(ex41) + parseInt(ex42))%10).toString();
@@ -2946,10 +2922,13 @@
     $("#id_d3").change(function() {
 
         val43 = $("#id_d3").val();
-        $("#exp4").html(val41.concat(val42," ",val43," ",val44,val45));
+        $("#exp4").html("[[".concat(val41,val42,"]"," ",val43," ","[",val44,val45,"]]"));
 
         if (val43=='') {
-            ex43 = "";
+            ex43 = ex41;
+            $("#id_d4").val('').change();
+            $("#id_d5").val(' ').change();
+            ex42 = "";
         }
         else if (val43=='+') {
             ex43 = ((parseInt(ex41) + parseInt(ex42))%10).toString();
@@ -2965,7 +2944,7 @@
     $("#id_d4").change(function() {
 
         val44 = $("#id_d4 option:selected").text();
-        $("#exp4").html(val41.concat(val42," ",val43," ",val44,val45));
+        $("#exp4").html("[[".concat(val41,val42,"]"," ",val43," ","[",val44,val45,"]]"));
 
         if (val44=='a') {
             ex42 = digits[0].toString();
@@ -2973,7 +2952,7 @@
             if(val45==' ') {
             ex42 = aux42;
             }
-            else if (val45=='-') {
+            else if (val45=='\'') {
                 ex42 = ((10-parseInt(aux42))%10).toString(); 
             }
             else if (val45=='~') {
@@ -2989,7 +2968,7 @@
             if(val45==' ') {
                 ex42 = aux42;
             }
-            else if (val45=='-') {
+            else if (val45=='\'') {
                 ex42 = ((10-parseInt(aux42))%10).toString(); 
             }
             else if (val45=='~') {
@@ -3005,7 +2984,7 @@
             if(val45==' ') {
                 ex42 = aux42;
             }
-            else if (val45=='-') {
+            else if (val45=='\'') {
                 ex42 = ((10-parseInt(aux42))%10).toString(); 
             }
             else if (val45=='~') {
@@ -3021,7 +3000,7 @@
             if(val45==' ') {
                 ex42 = aux42;
             }
-            else if (val45=='-') {
+            else if (val45=='\'') {
                 ex42 = ((10-parseInt(aux42))%10).toString(); 
             }
             else if (val45=='~') {
@@ -3037,7 +3016,7 @@
             if(val45==' ') {
                 ex42 = aux42;
             }
-            else if (val45=='-') {
+            else if (val45=='\'') {
                 ex42 = ((10-parseInt(aux42))%10).toString(); 
             }
             else if (val45=='~') {
@@ -3053,7 +3032,7 @@
             if(val45==' ') {
                 ex42 = aux42;
             }
-            else if (val45=='-') {
+            else if (val45=='\'') {
                 ex42 = ((10-parseInt(aux42))%10).toString(); 
             }
             else if (val45=='~') {
@@ -3077,7 +3056,7 @@
             if(val45==' ') {
                 ex42 = aux42;
             }
-            else if (val45=='-') {
+            else if (val45=='\'') {
                 ex42 = ((10-parseInt(aux42))%10).toString(); 
             }
             else if (val45=='~') {
@@ -3101,7 +3080,7 @@
             if(val45==' ') {
                 ex42 = aux42;
             }
-            else if (val45=='-') {
+            else if (val45=='\'') {
                 ex42 = ((10-parseInt(aux42))%10).toString(); 
             }
             else if (val45=='~') {
@@ -3125,7 +3104,7 @@
             if(val45==' ') {
                 ex42 = aux42;
             }
-            else if (val45=='-') {
+            else if (val45=='\'') {
                 ex42 = ((10-parseInt(aux42))%10).toString(); 
             }
             else if (val45=='~') {
@@ -3149,7 +3128,7 @@
             if(val45==' ') {
                 ex42 = aux42;
             }
-            else if (val45=='-') {
+            else if (val45=='\'') {
                 ex42 = ((10-parseInt(aux42))%10).toString(); 
             }
             else if (val45=='~') {
@@ -3165,7 +3144,7 @@
             if(val45==' ') {
                 ex42 = aux42;
             }
-            else if (val45=='-') {
+            else if (val45=='\'') {
                 ex42 = ((10-parseInt(aux42))%10).toString(); 
             }
             else if (val45=='~') {
@@ -3185,7 +3164,7 @@
             if(val45==' ') {
                 ex42 = aux42;
             }
-            else if (val45=='-') {
+            else if (val45=='\'') {
                 ex42 = ((10-parseInt(aux42))%10).toString(); 
             }
             else if (val45=='~') {
@@ -3197,7 +3176,7 @@
         }
 
         if (val43=='') {
-            ex43 = "";
+            ex43 = ex41;
         }
         else if (val43=='+') {
             ex43 = ((parseInt(ex41) + parseInt(ex42))%10).toString();
@@ -3213,12 +3192,12 @@
     $("#id_d5").change(function() {
 
         val45 = $("#id_d5").val();
-        $("#exp4").html(val41.concat(val42," ",val43," ",val44,val45));
+        $("#exp4").html("[[".concat(val41,val42,"]"," ",val43," ","[",val44,val45,"]]"));
 
         if(val45==' ') {
             ex42 = aux42;
         }
-        else if (val45=='-') {
+        else if (val45=='\'') {
             ex42 = ((10-parseInt(aux42))%10).toString(); 
         }
         else if (val45=='~') {
@@ -3229,7 +3208,7 @@
         }
 
         if (val43=='') {
-            ex43 = "";
+            ex43 = ex41;
         }
         else if (val43=='+') {
             ex43 = ((parseInt(ex41) + parseInt(ex42))%10).toString();
@@ -3256,7 +3235,7 @@
     $("#id_e1").change(function() {
 
         val51 = $("#id_e1 option:selected").text();
-        $("#exp5").html(val51.concat(val52," ",val53," ",val54,val55));
+        $("#exp5").html("[[".concat(val51,val52,"]"," ",val53," ","[",val54,val55,"]]"));
 
         if (val51=='a') {
             ex51 = digits[0].toString();
@@ -3264,7 +3243,7 @@
             if(val52==' ') {
             ex51 = aux51;
             }
-            else if (val52=='-') {
+            else if (val52=='\'') {
                 ex51 = ((10-parseInt(aux51))%10).toString(); 
             }
             else if (val52=='~') {
@@ -3280,7 +3259,7 @@
             if(val52==' ') {
                 ex51 = aux51;
             }
-            else if (val52=='-') {
+            else if (val52=='\'') {
                 ex51 = ((10-parseInt(aux51))%10).toString(); 
             }
             else if (val52=='~') {
@@ -3296,7 +3275,7 @@
             if(val52==' ') {
                 ex51 = aux51;
             }
-            else if (val52=='-') {
+            else if (val52=='\'') {
                 ex51 = ((10-parseInt(aux51))%10).toString(); 
             }
             else if (val52=='~') {
@@ -3312,7 +3291,7 @@
             if(val52==' ') {
                 ex51 = aux51;
             }
-            else if (val52=='-') {
+            else if (val52=='\'') {
                 ex51 = ((10-parseInt(aux51))%10).toString(); 
             }
             else if (val52=='~') {
@@ -3328,7 +3307,7 @@
             if(val52==' ') {
                 ex51 = aux51;
             }
-            else if (val52=='-') {
+            else if (val52=='\'') {
                 ex51 = ((10-parseInt(aux51))%10).toString(); 
             }
             else if (val52=='~') {
@@ -3344,7 +3323,7 @@
             if(val52==' ') {
                 ex51 = aux51;
             }
-            else if (val52=='-') {
+            else if (val52=='\'') {
                 ex51 = ((10-parseInt(aux51))%10).toString(); 
             }
             else if (val52=='~') {
@@ -3368,7 +3347,7 @@
             if(val52==' ') {
                 ex51 = aux51;
             }
-            else if (val52=='-') {
+            else if (val52=='\'') {
                 ex51 = ((10-parseInt(aux51))%10).toString(); 
             }
             else if (val52=='~') {
@@ -3392,7 +3371,7 @@
             if(val52==' ') {
                 ex51 = aux51;
             }
-            else if (val52=='-') {
+            else if (val52=='\'') {
                 ex51 = ((10-parseInt(aux51))%10).toString(); 
             }
             else if (val52=='~') {
@@ -3416,7 +3395,7 @@
             if(val52==' ') {
                 ex51 = aux51;
             }
-            else if (val52=='-') {
+            else if (val52=='\'') {
                 ex51 = ((10-parseInt(aux51))%10).toString(); 
             }
             else if (val52=='~') {
@@ -3440,7 +3419,7 @@
             if(val52==' ') {
                 ex51 = aux51;
             }
-            else if (val52=='-') {
+            else if (val52=='\'') {
                 ex51 = ((10-parseInt(aux51))%10).toString(); 
             }
             else if (val52=='~') {
@@ -3456,7 +3435,7 @@
             if(val52==' ') {
                 ex51 = aux51;
             }
-            else if (val52=='-') {
+            else if (val52=='\'') {
                 ex51 = ((10-parseInt(aux51))%10).toString(); 
             }
             else if (val52=='~') {
@@ -3476,7 +3455,7 @@
             if(val52==' ') {
                 ex51 = aux51;
             }
-            else if (val52=='-') {
+            else if (val52=='\'') {
                 ex51 = ((10-parseInt(aux51))%10).toString(); 
             }
             else if (val52=='~') {
@@ -3488,7 +3467,7 @@
         }
 
         if (val53=='') {
-            ex53 = "";
+            ex53 = ex51;
         }
         else if (val53=='+') {
             ex53 = ((parseInt(ex51) + parseInt(ex52))%10).toString();
@@ -3504,12 +3483,12 @@
     $("#id_e2").change(function() {
 
         val52 = $("#id_e2").val();
-        $("#exp5").html(val51.concat(val52," ",val53," ",val54,val55));
+        $("#exp5").html("[[".concat(val51,val52,"]"," ",val53," ","[",val54,val55,"]]"));
 
         if(val52==' ') {
             ex51 = aux51;
         }
-        else if (val52=='-') {
+        else if (val52=='\'') {
             ex51 = ((10-parseInt(aux51))%10).toString(); 
         }
         else if (val52=='~') {
@@ -3520,7 +3499,7 @@
         }
 
         if (val53=='') {
-            ex53 = "";
+            ex53 = ex51;
         }
         else if (val53=='+') {
             ex53 = ((parseInt(ex51) + parseInt(ex52))%10).toString();
@@ -3536,10 +3515,13 @@
     $("#id_e3").change(function() {
 
         val53 = $("#id_e3").val();
-        $("#exp5").html(val51.concat(val52," ",val53," ",val54,val55));
+        $("#exp5").html("[[".concat(val51,val52,"]"," ",val53," ","[",val54,val55,"]]"));
 
         if (val53=='') {
-            ex53 = "";
+            ex53 = ex51;
+            $("#id_e4").val('').change();
+            $("#id_e5").val(' ').change();
+            ex52 = "";
         }
         else if (val53=='+') {
             ex53 = ((parseInt(ex51) + parseInt(ex52))%10).toString();
@@ -3555,7 +3537,7 @@
     $("#id_e4").change(function() {
 
         val54 = $("#id_e4 option:selected").text();
-        $("#exp5").html(val51.concat(val52," ",val53," ",val54,val55));
+        $("#exp5").html("[[".concat(val51,val52,"]"," ",val53," ","[",val54,val55,"]]"));
 
         if (val54=='a') {
             ex52 = digits[0].toString();
@@ -3563,7 +3545,7 @@
             if(val55==' ') {
             ex52 = aux52;
             }
-            else if (val55=='-') {
+            else if (val55=='\'') {
                 ex52 = ((10-parseInt(aux52))%10).toString(); 
             }
             else if (val55=='~') {
@@ -3579,7 +3561,7 @@
             if(val55==' ') {
                 ex52 = aux52;
             }
-            else if (val55=='-') {
+            else if (val55=='\'') {
                 ex52 = ((10-parseInt(aux52))%10).toString(); 
             }
             else if (val55=='~') {
@@ -3595,7 +3577,7 @@
             if(val55==' ') {
                 ex52 = aux52;
             }
-            else if (val55=='-') {
+            else if (val55=='\'') {
                 ex52 = ((10-parseInt(aux52))%10).toString(); 
             }
             else if (val55=='~') {
@@ -3611,7 +3593,7 @@
             if(val55==' ') {
                 ex52 = aux52;
             }
-            else if (val55=='-') {
+            else if (val55=='\'') {
                 ex52 = ((10-parseInt(aux52))%10).toString(); 
             }
             else if (val55=='~') {
@@ -3627,7 +3609,7 @@
             if(val55==' ') {
                 ex52 = aux52;
             }
-            else if (val55=='-') {
+            else if (val55=='\'') {
                 ex52 = ((10-parseInt(aux52))%10).toString(); 
             }
             else if (val55=='~') {
@@ -3643,7 +3625,7 @@
             if(val55==' ') {
                 ex52 = aux52;
             }
-            else if (val55=='-') {
+            else if (val55=='\'') {
                 ex52 = ((10-parseInt(aux52))%10).toString(); 
             }
             else if (val55=='~') {
@@ -3667,7 +3649,7 @@
             if(val55==' ') {
                 ex52 = aux52;
             }
-            else if (val55=='-') {
+            else if (val55=='\'') {
                 ex52 = ((10-parseInt(aux52))%10).toString(); 
             }
             else if (val55=='~') {
@@ -3691,7 +3673,7 @@
             if(val55==' ') {
                 ex52 = aux52;
             }
-            else if (val55=='-') {
+            else if (val55=='\'') {
                 ex52 = ((10-parseInt(aux52))%10).toString(); 
             }
             else if (val55=='~') {
@@ -3715,7 +3697,7 @@
             if(val55==' ') {
                 ex52 = aux52;
             }
-            else if (val55=='-') {
+            else if (val55=='\'') {
                 ex52 = ((10-parseInt(aux52))%10).toString(); 
             }
             else if (val55=='~') {
@@ -3739,7 +3721,7 @@
             if(val55==' ') {
                 ex52 = aux52;
             }
-            else if (val55=='-') {
+            else if (val55=='\'') {
                 ex52 = ((10-parseInt(aux52))%10).toString(); 
             }
             else if (val55=='~') {
@@ -3755,7 +3737,7 @@
             if(val55==' ') {
                 ex52 = aux52;
             }
-            else if (val55=='-') {
+            else if (val55=='\'') {
                 ex52 = ((10-parseInt(aux52))%10).toString(); 
             }
             else if (val55=='~') {
@@ -3775,7 +3757,7 @@
             if(val55==' ') {
                 ex52 = aux52;
             }
-            else if (val55=='-') {
+            else if (val55=='\'') {
                 ex52 = ((10-parseInt(aux52))%10).toString(); 
             }
             else if (val55=='~') {
@@ -3787,7 +3769,7 @@
         }
 
         if (val53=='') {
-            ex53 = "";
+            ex53 = ex51;
         }
         else if (val53=='+') {
             ex53 = ((parseInt(ex51) + parseInt(ex52))%10).toString();
@@ -3804,12 +3786,12 @@
     $("#id_e5").change(function() {
 
         val55 = $("#id_e5").val();
-        $("#exp5").html(val51.concat(val52," ",val53," ",val54,val55));
+        $("#exp5").html("[[".concat(val51,val52,"]"," ",val53," ","[",val54,val55,"]]"));
 
         if(val55==' ') {
             ex52 = aux52;
         }
-        else if (val55=='-') {
+        else if (val55=='\'') {
             ex52 = ((10-parseInt(aux52))%10).toString(); 
         }
         else if (val55=='~') {
@@ -3820,7 +3802,7 @@
         }
 
         if (val53=='') {
-            ex53 = "";
+            ex53 = ex51;
         }
         else if (val53=='+') {
             ex53 = ((parseInt(ex51) + parseInt(ex52))%10).toString();
@@ -3847,7 +3829,7 @@
     $("#id_f1").change(function() {
 
         val61 = $("#id_f1 option:selected").text();
-        $("#exp6").html(val61.concat(val62," ",val63," ",val64,val65));
+        $("#exp6").html("[[".concat(val61,val62,"]"," ",val63," ","[",val64,val65,"]]"));
 
         if (val61=='a') {
             ex61 = digits[0].toString();
@@ -3855,7 +3837,7 @@
             if(val62==' ') {
             ex61 = aux61;
             }
-            else if (val62=='-') {
+            else if (val62=='\'') {
                 ex61 = ((10-parseInt(aux61))%10).toString(); 
             }
             else if (val62=='~') {
@@ -3871,7 +3853,7 @@
             if(val62==' ') {
                 ex61 = aux61;
             }
-            else if (val62=='-') {
+            else if (val62=='\'') {
                 ex61 = ((10-parseInt(aux61))%10).toString(); 
             }
             else if (val62=='~') {
@@ -3887,7 +3869,7 @@
             if(val62==' ') {
                 ex61 = aux61;
             }
-            else if (val62=='-') {
+            else if (val62=='\'') {
                 ex61 = ((10-parseInt(aux61))%10).toString(); 
             }
             else if (val62=='~') {
@@ -3903,7 +3885,7 @@
             if(val62==' ') {
                 ex61 = aux61;
             }
-            else if (val62=='-') {
+            else if (val62=='\'') {
                 ex61 = ((10-parseInt(aux61))%10).toString(); 
             }
             else if (val62=='~') {
@@ -3919,7 +3901,7 @@
             if(val62==' ') {
                 ex61 = aux61;
             }
-            else if (val62=='-') {
+            else if (val62=='\'') {
                 ex61 = ((10-parseInt(aux61))%10).toString(); 
             }
             else if (val62=='~') {
@@ -3935,7 +3917,7 @@
             if(val62==' ') {
                 ex61 = aux61;
             }
-            else if (val62=='-') {
+            else if (val62=='\'') {
                 ex61 = ((10-parseInt(aux61))%10).toString(); 
             }
             else if (val62=='~') {
@@ -3959,7 +3941,7 @@
             if(val62==' ') {
                 ex61 = aux61;
             }
-            else if (val62=='-') {
+            else if (val62=='\'') {
                 ex61 = ((10-parseInt(aux61))%10).toString(); 
             }
             else if (val62=='~') {
@@ -3983,7 +3965,7 @@
             if(val62==' ') {
                 ex61 = aux61;
             }
-            else if (val62=='-') {
+            else if (val62=='\'') {
                 ex61 = ((10-parseInt(aux61))%10).toString(); 
             }
             else if (val62=='~') {
@@ -4007,7 +3989,7 @@
             if(val62==' ') {
                 ex61 = aux61;
             }
-            else if (val62=='-') {
+            else if (val62=='\'') {
                 ex61 = ((10-parseInt(aux61))%10).toString(); 
             }
             else if (val62=='~') {
@@ -4031,7 +4013,7 @@
             if(val62==' ') {
                 ex61 = aux61;
             }
-            else if (val62=='-') {
+            else if (val62=='\'') {
                 ex61 = ((10-parseInt(aux61))%10).toString(); 
             }
             else if (val62=='~') {
@@ -4047,7 +4029,7 @@
             if(val62==' ') {
                 ex61 = aux61;
             }
-            else if (val62=='-') {
+            else if (val62=='\'') {
                 ex61 = ((10-parseInt(aux61))%10).toString(); 
             }
             else if (val62=='~') {
@@ -4067,7 +4049,7 @@
             if(val62==' ') {
                 ex61 = aux61;
             }
-            else if (val62=='-') {
+            else if (val62=='\'') {
                 ex61 = ((10-parseInt(aux61))%10).toString(); 
             }
             else if (val62=='~') {
@@ -4079,7 +4061,7 @@
         }
 
         if (val63=='') {
-            ex63 = "";
+            ex63 = ex61;
         }
         else if (val63=='+') {
             ex63 = ((parseInt(ex61) + parseInt(ex61))%10).toString();
@@ -4095,12 +4077,12 @@
     $("#id_f2").change(function() {
 
         val62 = $("#id_f2").val();
-        $("#exp6").html(val61.concat(val62," ",val63," ",val64,val65));
+        $("#exp6").html("[[".concat(val61,val62,"]"," ",val63," ","[",val64,val65,"]]"));
 
         if(val62==' ') {
             ex61 = aux61;
         }
-        else if (val62=='-') {
+        else if (val62=='\'') {
             ex61 = ((10-parseInt(aux61))%10).toString(); 
         }
         else if (val62=='~') {
@@ -4111,7 +4093,7 @@
         }
 
         if (val63=='') {
-            ex63 = "";
+            ex63 = ex61;
         }
         else if (val63=='+') {
             ex63 = ((parseInt(ex61) + parseInt(ex61))%10).toString();
@@ -4127,10 +4109,13 @@
     $("#id_f3").change(function() {
 
         val63 = $("#id_f3").val();
-        $("#exp6").html(val61.concat(val62," ",val63," ",val64,val65));
+       $("#exp6").html("[[".concat(val61,val62,"]"," ",val63," ","[",val64,val65,"]]"));
 
         if (val63=='') {
-            ex63 = "";
+            ex63 = ex61;
+            $("#id_f4").val('').change();
+            $("#id_f5").val(' ').change();
+            ex62 = "";
         }
         else if (val63=='+') {
             ex63 = ((parseInt(ex61) + parseInt(ex62))%10).toString();
@@ -4146,7 +4131,7 @@
     $("#id_f4").change(function() {
 
         val64 = $("#id_f4 option:selected").text();
-        $("#exp6").html(val61.concat(val62," ",val63," ",val64,val65));
+        $("#exp6").html("[[".concat(val61,val62,"]"," ",val63," ","[",val64,val65,"]]"));
 
         if (val64=='a') {
             ex62 = digits[0].toString();
@@ -4154,7 +4139,7 @@
             if(val65==' ') {
             ex62 = aux62;
             }
-            else if (val65=='-') {
+            else if (val65=='\'') {
                 ex62 = ((10-parseInt(aux62))%10).toString(); 
             }
             else if (val65=='~') {
@@ -4170,7 +4155,7 @@
             if(val65==' ') {
                 ex62 = aux62;
             }
-            else if (val65=='-') {
+            else if (val65=='\'') {
                 ex62 = ((10-parseInt(aux62))%10).toString(); 
             }
             else if (val65=='~') {
@@ -4186,7 +4171,7 @@
             if(val65==' ') {
                 ex62 = aux62;
             }
-            else if (val65=='-') {
+            else if (val65=='\'') {
                 ex62 = ((10-parseInt(aux62))%10).toString(); 
             }
             else if (val65=='~') {
@@ -4202,7 +4187,7 @@
             if(val65==' ') {
                 ex62 = aux62;
             }
-            else if (val65=='-') {
+            else if (val65=='\'') {
                 ex62 = ((10-parseInt(aux62))%10).toString(); 
             }
             else if (val65=='~') {
@@ -4218,7 +4203,7 @@
             if(val65==' ') {
                 ex62 = aux62;
             }
-            else if (val65=='-') {
+            else if (val65=='\'') {
                 ex62 = ((10-parseInt(aux62))%10).toString(); 
             }
             else if (val65=='~') {
@@ -4234,7 +4219,7 @@
             if(val65==' ') {
                 ex62 = aux62;
             }
-            else if (val65=='-') {
+            else if (val65=='\'') {
                 ex62 = ((10-parseInt(aux62))%10).toString(); 
             }
             else if (val65=='~') {
@@ -4258,7 +4243,7 @@
             if(val65==' ') {
                 ex62 = aux62;
             }
-            else if (val65=='-') {
+            else if (val65=='\'') {
                 ex62 = ((10-parseInt(aux62))%10).toString(); 
             }
             else if (val65=='~') {
@@ -4282,7 +4267,7 @@
             if(val65==' ') {
                 ex62 = aux62;
             }
-            else if (val65=='-') {
+            else if (val65=='\'') {
                 ex62 = ((10-parseInt(aux62))%10).toString(); 
             }
             else if (val65=='~') {
@@ -4306,7 +4291,7 @@
             if(val65==' ') {
                 ex62 = aux62;
             }
-            else if (val65=='-') {
+            else if (val65=='\'') {
                 ex62 = ((10-parseInt(aux62))%10).toString(); 
             }
             else if (val65=='~') {
@@ -4330,7 +4315,7 @@
             if(val65==' ') {
                 ex62 = aux62;
             }
-            else if (val65=='-') {
+            else if (val65=='\'') {
                 ex62 = ((10-parseInt(aux62))%10).toString(); 
             }
             else if (val65=='~') {
@@ -4346,7 +4331,7 @@
             if(val65==' ') {
                 ex62 = aux62;
             }
-            else if (val65=='-') {
+            else if (val65=='\'') {
                 ex62 = ((10-parseInt(aux62))%10).toString(); 
             }
             else if (val65=='~') {
@@ -4366,7 +4351,7 @@
             if(val65==' ') {
                 ex62 = aux62;
             }
-            else if (val65=='-') {
+            else if (val65=='\'') {
                 ex62 = ((10-parseInt(aux62))%10).toString(); 
             }
             else if (val65=='~') {
@@ -4378,7 +4363,7 @@
         }
 
         if (val63=='') {
-            ex63 = "";
+            ex63 = ex61;
         }
         else if (val63=='+') {
             ex63 = ((parseInt(ex61) + parseInt(ex62))%10).toString();
@@ -4394,12 +4379,12 @@
     $("#id_f5").change(function() {
 
         val65 = $("#id_f5").val();
-        $("#exp6").html(val61.concat(val62," ",val63," ",val64,val65));
+        $("#exp6").html("[[".concat(val61,val62,"]"," ",val63," ","[",val64,val65,"]]"));
 
         if(val65==' ') {
             ex62 = aux62;
         }
-        else if (val65=='-') {
+        else if (val65=='\'') {
             ex62 = ((10-parseInt(aux62))%10).toString(); 
         }
         else if (val65=='~') {
@@ -4410,7 +4395,7 @@
         }
 
          if (val63=='') {
-            ex63 = "";
+            ex63 = ex61;
         }
         else if (val63=='+') {
             ex63 = ((parseInt(ex61) + parseInt(ex62))%10).toString();
